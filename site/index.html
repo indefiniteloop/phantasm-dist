@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+            Phantasm | Project-Scoped Memory Runtime for AI Coding Agents
+        </title>
+        <meta
+            name="description"
+            content="Phantasm is a local, project-scoped memory runtime for AI coding agents. Bootstrap each project once, compile relevant context, and keep agent guidance tied to the codebase."
+        />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
+        <meta name="author" content="Manoj Sachwani" />
+        <meta name="theme-color" content="#120726" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Phantasm" />
+        <meta
+            property="og:title"
+            content="Phantasm | Project-Scoped Memory Runtime for AI Coding Agents"
+        />
+        <meta
+            property="og:description"
+            content="Local-first memory runtime for coding agents, with repository-scoped or project-scoped state, explicit runtime operations, and managed agent guidance."
+        />
+        <meta property="og:image" content="/og/phantasm-og.svg" />
+        <meta property="og:image:alt" content="Phantasm homepage preview" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="Phantasm | Project-Scoped Memory Runtime for AI Coding Agents"
+        />
+        <meta
+            name="twitter:description"
+            content="Local-first memory runtime for coding agents, with repository-scoped state and managed agent guidance."
+        />
+        <meta name="twitter:image" content="/og/phantasm-og.svg" />
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "Phantasm",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "macOS, Linux, Windows",
+                "description": "A project-scoped memory runtime for AI coding agents that keeps durable context, guidance, and runtime state attached to each repository.",
+                "url": "/",
+                "author": {
+                    "@type": "Person",
+                    "name": "Manoj Sachwani",
+                    "url": "https://manojsachwani.com"
+                },
+                "sameAs": [
+                    "https://github.com/indefiniteloop/phantasm-dist",
+                    "https://manojsachwani.com",
+                    "https://indefiniteloop.com",
+                    "https://fullstack.tel"
+                ]
+            }
+        </script>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body class="landing-page">
+        <div class="page-ambient" aria-hidden="true">
+            <span class="orb orb-one"></span>
+            <span class="orb orb-two"></span>
+            <span class="orb orb-three"></span>
+            <span class="wave wave-one"></span>
+            <span class="wave wave-two"></span>
+            <span class="grid-glow"></span>
+        </div>
+
+        <main class="shell landing-shell">
+            <section class="hero-panel">
+                <nav class="masthead">
+                    <a class="brand" href="./index.html"
+                        ><img
+                            src="branding/phantasm-mark-transparent.png"
+                            width="60"
+                    /></a>
+                    <div class="masthead-links">
+                        <a href="./getting-started.html">Get Started</a>
+                        <a href="./configuration.html">Configuration</a>
+                        <a href="./commands.html">Commands</a>
+                        <a href="./why-phantasm.html">Why Phantasm</a>
+                        <a href="./architecture.html">Architecture</a>
+                        <a
+                            class="contact-link"
+                            href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm"
+                            target="_blank"
+                            >GitHub</a
+                        >
+                    </div>
+                </nav>
+
+                <div class="hero-layout">
+                    <div class="hero-copy">
+                        <p class="eyebrow">
+                            A MEMORY SYSTEM BUILT FOR CROSS AGENTIC WORK
+                        </p>
+                        <!--<p class="hero-kicker"></p>-->
+                        <h1 class="glass-title" data-text="PHANTASM">
+                            PHANTASM
+                        </h1>
+                        <p class="hero-lede">
+                            Persistent, project-scoped memory for AI coding
+                            agents, wrapped in a local runtime that stays
+                            attached to the repository or folder/project where
+                            the work actually happens. Fast, local and made in
+                            rust.
+                        </p>
+                        <!--<div class="hero-actions">
+                            <a
+                                class="button button-primary"
+                                href="./getting-started.html"
+                                >See the setup flow</a
+                            >
+                            <a
+                                class="button button-secondary"
+                                href="./why-phantasm.html"
+                                >Why Phantasm?</a
+                            >
+                        </div>-->
+                    </div>
+                </div>
+            </section>
+
+            <section class="install-spotlight" aria-label="Quick install">
+                <article class="install-panel install-panel-hero">
+                    <div class="install-heading">
+                        <div>
+                            <p class="eyebrow">Quick Install</p>
+                            <h2>
+                                Install once. Bootstrap every repository, folder
+                                or project.
+                            </h2>
+                        </div>
+                        <div>
+                            <p class="install-note">
+                                Use Homebrew on macOS or Linuxbrew if you already
+                                have it. The published install script remains the
+                                fallback. A local Rust toolchain is not required
+                                for normal use.
+                            </p>
+                        </div>
+                    </div>
+                    <pre><code>brew install indefiniteloop/tap/phantasm
+# or
+curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh | sh
+phantasm --version
+cd /path/to/project
+phantasm bootstrap</code></pre>
+                </article>
+            </section>
+
+            <section class="faq-grid" aria-label="Frequently asked questions">
+                <article class="panel faq-panel">
+                    <p class="eyebrow">FAQ</p>
+                    <h2>What people ask right after bootstrap</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3>Do I need Rust installed to use Phantasm?</h3>
+                            <p>
+                                No. The public install paths use Homebrew or the
+                                published install script, so a Rust toolchain is
+                                only needed if you plan to build Phantasm from
+                                source.
+                            </p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>Where does the runtime store project data?</h3>
+                            <p>
+                                Inside the repository under
+                                <code>.phantasm/</code>. Config lives in
+                                <code>phantasm.toml</code> and
+                                <code>clients.toml</code>, while mutable state
+                                lives under <code>.phantasm/state/</code>.
+                            </p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>
+                                How do I change the default client or trust
+                                rules?
+                            </h3>
+                            <p>
+                                Edit the files created by bootstrap. The
+                                <a href="./configuration.html"
+                                    >configuration reference</a
+                                >
+                                explains every supported key in both runtime
+                                config files.
+                            </p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>
+                                Can I set context length or token budget today?
+                            </h3>
+                            <p>
+                                Not yet. The current shipped config surface does
+                                not expose a context-length setting after
+                                bootstrap. The configuration reference calls this
+                                out explicitly so the docs stay aligned with the
+                                code.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!--<section class="feature-strip" aria-label="Highlights">
+                <article class="feature-card">
+                    <p class="card-label">01</p>
+                    <h2>Bootstrap per project</h2>
+                    <p>
+                        Run <code>phantasm bootstrap</code> in each repository to
+                        create a dedicated <code>.phantasm/</code> runtime.
+                    </p>
+                </article>
+                <article class="feature-card">
+                    <p class="card-label">02</p>
+                    <h2>Guide the agent</h2>
+                    <p>
+                        Use managed instruction blocks in <code>AGENTS.md</code>,
+                        <code>CLAUDE.md</code>, or any custom agent file.
+                    </p>
+                </article>
+            </section>-->
+
+            <section class="info-grid">
+                <article class="manifest-panel">
+                    <h2>Local-first memory orchestration for real projects</h2>
+
+                    <div class="manifest-links">
+                        <a href="./getting-started.html">User setup guide</a>
+                        <a href="./configuration.html"
+                            >Configuration reference</a
+                        >
+                        <a href="./commands.html">Commands and usage</a>
+                        <a href="./why-phantasm.html">Why Phantasm?</a>
+                        <a href="./architecture.html">Architecture</a>
+                        <a
+                            href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm"
+                            target="_blank"
+                            >Repository</a
+                        >
+                    </div>
+                </article>
+            </section>
+
+            <footer class="site-footer">
+                <a
+                    href="https://manojsachwani.com?utm_source=phatasm"
+                    target="_blank"
+                    >manojsachwani.com</a
+                >
+                <a
+                    href="https://indefiniteloop.com?utm_source=phatasm"
+                    target="_blank"
+                    >indefiniteloop.com</a
+                >
+                <a
+                    href="https://fullstack.tel?utm_source=phatasm"
+                    target="_blank"
+                    >fullstack.tel</a
+                >
+            </footer>
+        </main>
+    </body>
+</html>

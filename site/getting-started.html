@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Getting Started with Phantasm | Install and Bootstrap Project Memory</title>
+    <meta name="description" content="Install Phantasm on macOS, Linux, or Windows and bootstrap project-scoped memory for AI coding agents with the Phantasm CLI.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="author" content="Manoj Sachwani">
+    <meta name="theme-color" content="#120726">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Phantasm">
+    <meta property="og:title" content="Getting Started with Phantasm">
+    <meta property="og:description" content="Install Phantasm and bootstrap a local, repository-scoped memory runtime for AI coding agents.">
+    <meta property="og:image" content="/og/phantasm-og.svg">
+    <meta property="og:image:alt" content="Phantasm getting started page preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Getting Started with Phantasm">
+    <meta name="twitter:description" content="Install Phantasm and bootstrap a local memory runtime for coding agents.">
+    <meta name="twitter:image" content="/og/phantasm-og.svg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Getting Started with Phantasm",
+        "description": "Installation and setup guide for bootstrapping Phantasm into a repository.",
+        "author": {
+          "@type": "Person",
+          "name": "Manoj Sachwani",
+          "url": "https://manojsachwani.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Phantasm"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="topnav">
+        <a href="./index.html">Home</a>
+        <a href="./getting-started.html">Getting Started</a>
+        <a href="./configuration.html">Configuration</a>
+        <a href="./commands.html">Commands</a>
+        <a href="./why-phantasm.html">Why Phantasm</a>
+        <a href="./architecture.html">Architecture</a>
+      </nav>
+
+      <header class="page-header">
+        <p class="eyebrow">Getting Started</p>
+        <h1>Set up Phantasm without building from source</h1>
+      </header>
+
+      <section class="panel">
+        <h2>macOS and Linux</h2>
+        <pre><code>brew install indefiniteloop/tap/phantasm
+# or
+curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh | sh
+phantasm --version</code></pre>
+        <p>Use Homebrew if it is already part of your workflow. The shell installer remains the fallback path for Unix systems without Brew.</p>
+      </section>
+
+      <section class="panel">
+        <h2>New to Homebrew?</h2>
+        <p>Start by checking whether Homebrew is already installed.</p>
+        <pre><code>brew --version</code></pre>
+        <p>If that says <code>brew: command not found</code>, install Homebrew first:</p>
+        <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        <p>Then reopen your terminal if prompted, run <code>brew --version</code> again, and install Phantasm with <code>brew install indefiniteloop/tap/phantasm</code>.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Windows</h2>
+        <p>Use the published Windows release asset or run <code>scripts/install.ps1</code> from the public distribution repo.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Turn it on for a project</h2>
+        <pre><code>cd /path/to/project
+phantasm bootstrap</code></pre>
+        <p>This creates the local <code>.phantasm/</code> runtime for that project.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Add agent guidance</h2>
+        <pre><code>phantasm bootstrap --agent-guidance
+phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
+        <p>These options add a managed Phantasm instruction block to common agent files. Phantasm asks for confirmation before it writes the file.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Inspect the generated config files</h2>
+        <p>
+          After bootstrap, review <code>.phantasm/phantasm.toml</code> and
+          <code>.phantasm/clients.toml</code> using the
+          <a href="./configuration.html">configuration reference</a>.
+          It documents every current key, default, and limitation in the shipped runtime.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Inspect the full command surface</h2>
+        <pre><code>phantasm --help</code></pre>
+        <p>The help output includes both the top-level CLI commands and the full current MVP runtime operations list.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Important limitation</h2>
+        <p>
+          The current binary does not yet expose a first-class end-user MCP <code>serve</code>
+          command. Today the public setup flow is <code>bootstrap</code>, and the advanced runtime
+          flow is <code>handle-request</code>.
+        </p>
+      </section>
+
+      <footer class="site-footer">
+        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+      </footer>
+    </main>
+  </body>
+  </html>

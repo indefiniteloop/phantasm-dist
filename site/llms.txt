@@ -1,0 +1,83 @@
+# Phantasm
+
+Phantasm is a local, project-scoped memory runtime for AI coding agents.
+It bootstraps into each repository, stores durable runtime state under `.phantasm/`,
+and exposes explicit operations for ingesting, searching, compiling, inspecting,
+auditing, snapshotting, and maintaining project memory.
+
+## Primary pages
+
+- Home: /index.html
+- Getting Started: /getting-started.html
+- Configuration: /configuration.html
+- Commands: /commands.html
+- Why Phantasm: /why-phantasm.html
+- Architecture: /architecture.html
+
+## Key ideas
+
+- Memory is project-scoped, not one global machine-wide memory bucket.
+- Runtime state is local to each repository under `.phantasm/state/`.
+- Durable truth lives in a single authoritative SQLite store per project.
+- The public runtime currently exposes `bootstrap` and `handle-request`.
+- Requests use an explicit JSON envelope with versioned operations.
+- Search and compile are designed to be deterministic for the same runtime state and request.
+
+## Core CLI
+
+```bash
+phantasm --help
+phantasm --version
+phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
+phantasm handle-request '<json request envelope>'
+```
+
+## Common setup
+
+```bash
+brew install indefiniteloop/tap/phantasm
+# or
+curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh?utm_source=phatasm | sh
+phantasm --version
+cd /path/to/project
+phantasm bootstrap
+```
+
+## Runtime operations
+
+- bootstrap
+- ingest
+- revise
+- tombstone
+- archive
+- promote
+- resolve_conflict
+- accept_suggestion
+- reject_suggestion
+- defer_review
+- resolve_review
+- search
+- compile
+- inspect
+- audit
+- review_queue
+- health
+- snapshot_export
+- snapshot_import
+- backup_list
+- backup_restore
+- maintenance_plan
+- maintenance_run
+
+## Related docs
+
+- Commands and usage doc: /commands.html
+- Configuration reference: /configuration.html
+- User setup guide: /getting-started.html
+- Comparison page: /why-phantasm.html
+- Architecture overview: /architecture.html
+
+## External references
+
+- GitHub repository: https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm
+- Author: https://manojsachwani.com?utm_source=phatasm

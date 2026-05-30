@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phantasm CLI Commands | Bootstrap, Handle Requests, and Runtime Ops</title>
+    <meta name="description" content="Reference for the Phantasm CLI, including bootstrap, handle-request, agent guidance options, and the current MVP runtime operation surface.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="author" content="Manoj Sachwani">
+    <meta name="theme-color" content="#120726">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Phantasm">
+    <meta property="og:title" content="Phantasm CLI Commands">
+    <meta property="og:description" content="CLI reference for Phantasm bootstrap, handle-request, and the current project memory runtime operations.">
+    <meta property="og:image" content="/og/phantasm-og.svg">
+    <meta property="og:image:alt" content="Phantasm commands page preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Phantasm CLI Commands">
+    <meta name="twitter:description" content="Reference for the Phantasm CLI and memory runtime operations.">
+    <meta name="twitter:image" content="/og/phantasm-og.svg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Phantasm CLI Commands",
+        "description": "Command reference for the Phantasm bootstrap flow and request runtime.",
+        "author": {
+          "@type": "Person",
+          "name": "Manoj Sachwani",
+          "url": "https://manojsachwani.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Phantasm"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="topnav">
+        <a href="./index.html">Home</a>
+        <a href="./getting-started.html">Getting Started</a>
+        <a href="./configuration.html">Configuration</a>
+        <a href="./commands.html">Commands</a>
+        <a href="./why-phantasm.html">Why Phantasm</a>
+        <a href="./architecture.html">Architecture</a>
+      </nav>
+
+      <header class="page-header">
+        <p class="eyebrow">Commands</p>
+        <h1>Phantasm CLI reference</h1>
+      </header>
+
+      <section class="panel">
+        <pre><code>phantasm --help
+phantasm --version
+phantasm bootstrap [project-path] [--agent-guidance] [--agent-file &lt;path&gt;]
+phantasm handle-request '&lt;json request envelope&gt;'</code></pre>
+        <p><code>phantasm --help</code> now prints the full current MVP operation surface for <code>handle-request</code>.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Common command</h2>
+        <p><code>phantasm bootstrap</code> is the standard setup command for a project.</p>
+        <pre><code>phantasm bootstrap
+phantasm bootstrap .
+phantasm bootstrap /path/to/project</code></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Agent guidance options</h2>
+        <pre><code>phantasm bootstrap --agent-guidance
+phantasm bootstrap --agent-file AGENTS.md
+phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
+        <p>Before Phantasm appends or creates any agent file, it prompts for confirmation with a <code>y/N</code> question.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Full MVP runtime operations</h2>
+        <p>
+          The current <code>handle-request</code> surface includes:
+          <code>bootstrap</code>, <code>ingest</code>, <code>revise</code>, <code>tombstone</code>,
+          <code>archive</code>, <code>promote</code>, <code>resolve_conflict</code>,
+          <code>accept_suggestion</code>, <code>reject_suggestion</code>,
+          <code>defer_review</code>, <code>resolve_review</code>, <code>search</code>,
+          <code>compile</code>, <code>inspect</code>, <code>audit</code>,
+          <code>review_queue</code>, <code>health</code>, <code>snapshot_export</code>,
+          <code>snapshot_import</code>, <code>backup_list</code>, <code>backup_restore</code>,
+          <code>maintenance_plan</code>, and <code>maintenance_run</code>.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Advanced runtime command</h2>
+        <p><code>handle-request</code> runs one JSON request against the current project runtime.</p>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'</code></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Configuration files after bootstrap</h2>
+        <p>
+          For the current post-bootstrap config surface, including every key in
+          <code>phantasm.toml</code> and <code>clients.toml</code>, see
+          <a href="./configuration.html">configuration.html</a>.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>More detail</h2>
+        <p>
+          For the repository docs version of this reference, see
+          <a href="https://github.com/indefiniteloop/phantasm-dist/blob/main/docs/commands-and-usage.md?utm_source=phatasm" target="_blank">docs/commands-and-usage.md</a>.
+        </p>
+      </section>
+
+      <footer class="site-footer">
+        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+      </footer>
+    </main>
+  </body>
+  </html>
