@@ -132,8 +132,13 @@ You can also inspect the built-in help:
 phantasm --help
 ```
 
-The help output now includes the full current MVP runtime operation
-surface in addition to the top-level CLI commands.
+The help output lists top-level commands. Use command-specific help for
+options:
+
+```bash
+phantasm agents --help
+phantasm help bootstrap
+```
 
 ## Turn Phantasm On For A Project
 
@@ -153,11 +158,18 @@ If you also want repository agent instruction files to mention
 Phantasm automatically, run:
 
 ```bash
-phantasm bootstrap --agent-guidance
+phantasm agents --add
 ```
 
 Phantasm will ask for confirmation before it appends or creates any
-agent file content. Reply `y` or `yes` to continue.
+agent file content. Reply `y` or `yes` to continue. Before changing an
+existing agent file, it creates a timestamped sibling backup.
+
+To target specific files instead of scanning common agent filenames:
+
+```bash
+phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md
+```
 
 ## What `bootstrap` Creates
 

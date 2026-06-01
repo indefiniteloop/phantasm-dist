@@ -5,12 +5,13 @@ common ways to use them.
 
 ## Command Summary
 
-Phantasm currently exposes four user-facing entry points:
+Phantasm currently exposes five user-facing entry points:
 
 ```bash
 phantasm --help
 phantasm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
+phantasm agents --add [project-path] [--agent-file <path>]
 phantasm handle-request '<json request envelope>'
 ```
 
@@ -21,21 +22,23 @@ integrations, and direct testing.
 
 ## `phantasm --help`
 
-Shows the built-in command summary, examples, and the full current
-MVP `handle-request` operation surface.
+Shows the built-in command index in the same command-oriented style as
+`br --help`.
 
 Example:
 
 ```bash
 phantasm --help
+phantasm help agents
+phantasm agents --help
 ```
 
 What it includes:
 
 - the public CLI entrypoints
-- the current `bootstrap` options
-- the full supported `handle-request` operations list
-- example command lines for users, wrappers, and advanced operators
+- a short description for each top-level command
+- `help <command>` and `<command> --help` discovery for command-specific
+  usage and options
 
 ## `phantasm --version`
 
@@ -102,6 +105,25 @@ Behavior:
   guidance mode
 - before writing anything, Phantasm prompts for confirmation with a
   `y/N` question in the terminal
+- existing files are copied to timestamped sibling backup files before
+  Phantasm changes them
+
+## `phantasm agents --add`
+
+Adds or refreshes managed Phantasm guidance without bootstrapping the
+project again.
+
+```bash
+phantasm agents --add
+phantasm agents --add /path/to/project
+phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md
+```
+
+With no `--agent-file`, the command scans the same common files as
+`bootstrap --agent-guidance`. Existing files receive timestamped sibling
+backups before edits. The managed block tells agents to invoke Phantasm
+memory workflows sequentially rather than running `handle-request`
+processes in parallel.
 
 ## `phantasm handle-request`
 
@@ -134,11 +156,11 @@ Expected result:
 - `bootstrap` creates `.phantasm/`
 - `health` returns JSON with `"status":"ok"`
 
-### Add agent instructions during setup
+### Add or refresh agent instructions
 
 ```bash
 cd /path/to/project
-phantasm bootstrap --agent-guidance
+phantasm agents --add
 ```
 
 This updates existing supported agent files or creates `AGENTS.md`
@@ -185,7 +207,8 @@ The current runtime supports these operations:
 - `maintenance_plan`
 - `maintenance_run`
 
-This is the same MVP operation set now shown by `phantasm --help`.
+These operations remain available through `handle-request`. Use the
+request API documentation when integrating them.
 
 ## Troubleshooting
 

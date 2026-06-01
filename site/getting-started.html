@@ -85,9 +85,9 @@ phantasm bootstrap</code></pre>
 
       <section class="panel">
         <h2>Add agent guidance</h2>
-        <pre><code>phantasm bootstrap --agent-guidance
-phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-        <p>These options add a managed Phantasm instruction block to common agent files. Phantasm asks for confirmation before it writes the file.</p>
+        <pre><code>phantasm agents --add
+phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
+        <p>This adds a managed Phantasm instruction block to common agent files. Phantasm asks for confirmation before it writes the file and backs up existing files before changing them.</p>
       </section>
 
       <section class="panel">
@@ -102,8 +102,10 @@ phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
 
       <section class="panel">
         <h2>Inspect the full command surface</h2>
-        <pre><code>phantasm --help</code></pre>
-        <p>The help output includes both the top-level CLI commands and the full current MVP runtime operations list.</p>
+        <pre><code>phantasm --help
+phantasm agents --help
+phantasm help bootstrap</code></pre>
+        <p>The top-level help lists commands. Command-specific help shows the available options for each workflow.</p>
       </section>
 
       <section class="panel">

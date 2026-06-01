@@ -57,8 +57,9 @@
         <pre><code>phantasm --help
 phantasm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file &lt;path&gt;]
+phantasm agents --add [project-path] [--agent-file &lt;path&gt;]
 phantasm handle-request '&lt;json request envelope&gt;'</code></pre>
-        <p><code>phantasm --help</code> now prints the full current MVP operation surface for <code>handle-request</code>.</p>
+        <p><code>phantasm --help</code> prints a command index. Use <code>phantasm agents --help</code> or <code>phantasm help agents</code> for command-specific options.</p>
       </section>
 
       <section class="panel">
@@ -73,8 +74,10 @@ phantasm bootstrap /path/to/project</code></pre>
         <h2>Agent guidance options</h2>
         <pre><code>phantasm bootstrap --agent-guidance
 phantasm bootstrap --agent-file AGENTS.md
-phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-        <p>Before Phantasm appends or creates any agent file, it prompts for confirmation with a <code>y/N</code> question.</p>
+phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md
+phantasm agents --add
+phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
+        <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup. It also prompts for confirmation with a <code>y/N</code> question.</p>
       </section>
 
       <section class="panel">

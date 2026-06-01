@@ -19,7 +19,7 @@ auditing, snapshotting, and maintaining project memory.
 - Memory is project-scoped, not one global machine-wide memory bucket.
 - Runtime state is local to each repository under `.phantasm/state/`.
 - Durable truth lives in a single authoritative SQLite store per project.
-- The public runtime currently exposes `bootstrap` and `handle-request`.
+- The top-level CLI exposes `bootstrap`, `agents --add`, and `handle-request`.
 - Requests use an explicit JSON envelope with versioned operations.
 - Search and compile are designed to be deterministic for the same runtime state and request.
 
@@ -27,8 +27,10 @@ auditing, snapshotting, and maintaining project memory.
 
 ```bash
 phantasm --help
+phantasm help agents
 phantasm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
+phantasm agents --add [project-path] [--agent-file <path>]
 phantasm handle-request '<json request envelope>'
 ```
 
@@ -41,6 +43,7 @@ curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/s
 phantasm --version
 cd /path/to/project
 phantasm bootstrap
+phantasm agents --add
 ```
 
 ## Runtime operations
