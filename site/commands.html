@@ -83,22 +83,60 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
       <section class="panel">
         <h2>Full MVP runtime operations</h2>
         <p>
-          The current <code>handle-request</code> surface includes:
-          <code>bootstrap</code>, <code>ingest</code>, <code>revise</code>, <code>tombstone</code>,
-          <code>archive</code>, <code>promote</code>, <code>resolve_conflict</code>,
-          <code>accept_suggestion</code>, <code>reject_suggestion</code>,
-          <code>defer_review</code>, <code>resolve_review</code>, <code>search</code>,
-          <code>compile</code>, <code>inspect</code>, <code>audit</code>,
-          <code>review_queue</code>, <code>health</code>, <code>snapshot_export</code>,
-          <code>snapshot_import</code>, <code>backup_list</code>, <code>backup_restore</code>,
-          <code>maintenance_plan</code>, and <code>maintenance_run</code>.
+          The current <code>handle-request</code> surface is the stable operation layer
+          used by agents and wrappers. Run these requests from the bootstrapped
+          project root so Phantasm resolves the correct <code>.phantasm/</code> runtime.
         </p>
+        <p>
+          Every request includes <code>api_version</code>, <code>operation</code>,
+          <code>request_id</code>, <code>client.profile</code>, and <code>params</code>.
+          Mutating operations also require <code>idempotency_key</code>. Snapshot import,
+          backup restore, and maintenance run require explicit <code>confirmations</code>.
+        </p>
+        <pre><code>{
+  "api_version": "v1",
+  "operation": "health",
+  "request_id": "health-1",
+  "client": { "profile": "codex" },
+  "params": {}
+}</code></pre>
       </section>
 
       <section class="panel">
-        <h2>Advanced runtime command</h2>
-        <p><code>handle-request</code> runs one JSON request against the current project runtime.</p>
+        <h2>Advanced runtime examples</h2>
+        <p><code>handle-request</code> runs one JSON request against the current project runtime. These examples are intentionally single-line so agents and humans can paste them into a terminal.</p>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"search","request_id":"search-auth-timeout","client":{"profile":"codex"},"params":{"query":"auth timeout","filters":{"include_conflicts":true,"review_augmented_view":true}}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"]}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"provenance":{"source":"agent","reason":"captured during implementation"}}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-1","client":{"profile":"codex"},"params":{"record_id":"rec_example"}}'</code></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Operation reference</h2>
+        <p><strong><code>bootstrap</code></strong> initializes or verifies <code>.phantasm/</code>. Humans usually use the top-level <code>phantasm bootstrap</code> command.</p>
+        <p><strong><code>ingest</code></strong> adds memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Required params: <code>record_kind</code>, <code>payload</code>.</p>
+        <p><strong><code>revise</code></strong> creates a successor and supersedes a target record. Required params: <code>target_record_id</code>, <code>payload</code>.</p>
+        <p><strong><code>tombstone</code></strong> retires invalid truth. Required params: <code>record_id</code>.</p>
+        <p><strong><code>archive</code></strong> keeps memory for audit while excluding it from ordinary search and compile. Required params: <code>record_id</code>.</p>
+        <p><strong><code>promote</code></strong> promotes scoped memory into project truth. Required params: <code>source_record_id</code>.</p>
+        <p><strong><code>resolve_conflict</code></strong> chooses a winning record and retires losers. Required params: <code>winner_record_id</code>, <code>loser_record_ids</code>. Optional <code>loser_state</code> defaults to <code>superseded</code>.</p>
+        <p><strong><code>accept_suggestion</code></strong> converts a suggestion into authoritative memory. Required params: <code>suggestion_id</code>.</p>
+        <p><strong><code>reject_suggestion</code></strong> rejects a suggestion without creating authoritative memory. Required params: <code>suggestion_id</code>.</p>
+        <p><strong><code>defer_review</code></strong> defers a review item. Required params: <code>review_item_id</code>, <code>wake_condition</code>.</p>
+        <p><strong><code>resolve_review</code></strong> marks a review item resolved. Required params: <code>review_item_id</code>.</p>
+        <p><strong><code>search</code></strong> finds records by optional <code>query</code> and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, and <code>worktree_id</code>.</p>
+        <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, and search-style filters.</p>
+        <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>.</p>
+        <p><strong><code>audit</code></strong> lists operation history and effects. Params: optional <code>actor</code>, <code>object_id</code>, <code>operation_name</code>, <code>limit</code>.</p>
+        <p><strong><code>review_queue</code></strong> lists open and deferred review items.</p>
+        <p><strong><code>health</code></strong> reports runtime health, conflicts, review count, failed maintenance, diagnostics, and recommendations.</p>
+        <p><strong><code>snapshot_export</code></strong> writes a full runtime snapshot bundle. Param: optional <code>export_name</code>.</p>
+        <p><strong><code>snapshot_import</code></strong> restores a snapshot bundle after creating a safety backup. Required param: <code>bundle_path</code>. Optional <code>mode</code> is <code>replace</code> or <code>merge</code>.</p>
+        <p><strong><code>backup_list</code></strong> lists registered backups and manifests.</p>
+        <p><strong><code>backup_restore</code></strong> restores a registered backup by ID after creating a safety backup. Required param: <code>backup_id</code>.</p>
+        <p><strong><code>maintenance_plan</code></strong> dry-runs recommended maintenance and required backup actions.</p>
+        <p><strong><code>maintenance_run</code></strong> executes explicit maintenance operations. Optional <code>operations</code> defaults to <code>["reparse_client_profiles"]</code>.</p>
       </section>
 
       <section class="panel">
