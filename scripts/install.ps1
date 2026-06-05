@@ -67,8 +67,16 @@ try {
     New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
     Expand-Archive -Path $archivePath -DestinationPath $extractDir -Force
     Copy-Item (Join-Path $extractDir "phantasm.exe") (Join-Path $InstallDir "phantasm.exe") -Force
+    $phmExtractPath = Join-Path $extractDir "phm.exe"
+    if (Test-Path $phmExtractPath) {
+        Copy-Item $phmExtractPath (Join-Path $InstallDir "phm.exe") -Force
+    }
+    else {
+        Copy-Item (Join-Path $InstallDir "phantasm.exe") (Join-Path $InstallDir "phm.exe") -Force
+    }
 
     Write-Host "Installed phantasm to $(Join-Path $InstallDir 'phantasm.exe')"
+    Write-Host "Installed phm alias to $(Join-Path $InstallDir 'phm.exe')"
     & (Join-Path $InstallDir "phantasm.exe") --version
 
     $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
@@ -81,7 +89,7 @@ try {
     Write-Host ""
     Write-Host "Next step:"
     Write-Host "  cd C:\path\to\your\project"
-    Write-Host "  phantasm bootstrap"
+    Write-Host "  phm bootstrap"
 }
 finally {
     Remove-Item -Recurse -Force $tempDir -ErrorAction SilentlyContinue

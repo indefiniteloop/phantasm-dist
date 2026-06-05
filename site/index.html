@@ -83,6 +83,7 @@
                         <a href="./commands.html">Commands</a>
                         <a href="./why-phantasm.html">Why Phantasm</a>
                         <a href="./architecture.html">Architecture</a>
+                        <a href="./changelog.html">Changelog</a>
                         <a
                             class="contact-link"
                             href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm"
@@ -147,11 +148,13 @@
 # or
 curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh | sh
 phantasm --version
+phm --version
 cd /path/to/project
 phantasm bootstrap
 phantasm agents --add
 phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
-phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code></pre>
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
+printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin</code></pre>
                 </article>
             </section>
 
@@ -160,6 +163,13 @@ phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code
                     <p class="eyebrow">FAQ</p>
                     <h2>What people ask right after bootstrap</h2>
                     <div class="faq-list">
+                        <div class="faq-item">
+                            <h3>What is queued for the next release?</h3>
+                            <p>
+                                Read the <a href="./changelog.html">release changelog</a>.
+                                It separates unreleased changes from versioned releases.
+                            </p>
+                        </div>
                         <div class="faq-item">
                             <h3>Do I need Rust installed to use Phantasm?</h3>
                             <p>
@@ -240,6 +250,7 @@ phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code
                         <a href="./commands.html">Commands and usage</a>
                         <a href="./why-phantasm.html">Why Phantasm?</a>
                         <a href="./architecture.html">Architecture</a>
+                        <a href="./changelog.html">Changelog</a>
                         <a
                             href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm"
                             target="_blank"

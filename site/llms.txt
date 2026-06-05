@@ -20,19 +20,28 @@ auditing, snapshotting, and maintaining project memory.
 - Runtime state is local to each repository under `.phantasm/state/`.
 - Durable truth lives in a single authoritative SQLite store per project.
 - The top-level CLI exposes `bootstrap`, `agents --add`, and `handle-request`.
+- `phm` is installed as a shorthand alias for the same CLI as `phantasm`.
 - Requests use an explicit JSON envelope with versioned operations.
+- handle-request input can be passed as one argv JSON string, `--stdin`, or `--file <path>`.
+- Raw request input must be valid UTF-8; JSON strings support spec-compliant Unicode escapes.
 - The `describe` operation returns machine-readable API schemas, safety rules, and runnable examples.
+- Complete describe targets also return CLI alias and request transport metadata.
+- Every response includes `notices`; release_update notices appear once per project/client profile after a binary update.
 - Search and compile are designed to be deterministic for the same runtime state and request.
 
 ## Core CLI
 
 ```bash
 phantasm --help
+phm --help
 phantasm help agents
 phantasm --version
+phm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
 phantasm handle-request '<json request envelope>'
+phantasm handle-request --stdin
+phantasm handle-request --file request.json
 phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 ```
@@ -44,6 +53,7 @@ brew install indefiniteloop/tap/phantasm
 # or
 curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh?utm_source=phatasm | sh
 phantasm --version
+phm --version
 cd /path/to/project
 phantasm bootstrap
 phantasm agents --add
@@ -82,6 +92,7 @@ Agents should call describe for machine-readable API discovery:
 phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
+printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin
 ```
 
 ## Related docs
@@ -91,6 +102,7 @@ phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
 - User setup guide: /getting-started.html
 - Comparison page: /why-phantasm.html
 - Architecture overview: /architecture.html
+- Changelog: /changelog.html
 
 ## External references
 

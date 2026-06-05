@@ -14,7 +14,7 @@ Usage:
 
 Options:
   --version      Release version to install. Accepts 0.1.0 or v0.1.0.
-  --install-dir  Destination directory for the phantasm binary.
+  --install-dir  Destination directory for the phantasm and phm binaries.
   --repo         GitHub repository slug. Defaults to PHANTASM_INSTALL_REPO or indefiniteloop/phantasm-dist.
   --help         Show this help text.
 EOF
@@ -125,8 +125,14 @@ fi
 mkdir -p "$INSTALL_DIR"
 tar -C "$tmpdir" -xzf "$tmpdir/$ARCHIVE_NAME"
 install -m 0755 "$tmpdir/phantasm" "$INSTALL_DIR/phantasm"
+if [ -f "$tmpdir/phm" ]; then
+  install -m 0755 "$tmpdir/phm" "$INSTALL_DIR/phm"
+else
+  cp "$INSTALL_DIR/phantasm" "$INSTALL_DIR/phm"
+fi
 
 echo "Installed phantasm to $INSTALL_DIR/phantasm"
+echo "Installed phm alias to $INSTALL_DIR/phm"
 "$INSTALL_DIR/phantasm" --version
 
 case ":$PATH:" in
@@ -141,4 +147,4 @@ esac
 
 echo
 echo "Next step:"
-echo "  cd /path/to/your/project && phantasm bootstrap"
+echo "  cd /path/to/your/project && phm bootstrap"

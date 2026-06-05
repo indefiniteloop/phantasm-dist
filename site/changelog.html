@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phantasm Changelog | Release Notes</title>
+    <meta name="description" content="Release-based changelog for Phantasm, including CLI, runtime API, documentation, and bug fix changes by version.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="author" content="Manoj Sachwani">
+    <meta name="theme-color" content="#120726">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Phantasm">
+    <meta property="og:title" content="Phantasm Changelog">
+    <meta property="og:description" content="Release notes for Phantasm by version.">
+    <meta property="og:image" content="/og/phantasm-og.svg">
+    <meta property="og:image:alt" content="Phantasm changelog page preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Phantasm Changelog">
+    <meta name="twitter:description" content="Release notes for Phantasm by version.">
+    <meta name="twitter:image" content="/og/phantasm-og.svg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Phantasm Changelog",
+        "description": "Release-based changelog for Phantasm.",
+        "author": {
+          "@type": "Person",
+          "name": "Manoj Sachwani",
+          "url": "https://manojsachwani.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Phantasm"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="topnav">
+        <a href="./index.html">Home</a>
+        <a href="./getting-started.html">Getting Started</a>
+        <a href="./configuration.html">Configuration</a>
+        <a href="./commands.html">Commands</a>
+        <a href="./why-phantasm.html">Why Phantasm</a>
+        <a href="./architecture.html">Architecture</a>
+        <a href="./changelog.html">Changelog</a>
+      </nav>
+
+      <header class="page-header page-header-wide">
+        <p class="eyebrow">Changelog</p>
+        <h1>Release notes by version</h1>
+        <p class="page-lede">
+          Changelog entries are release based. Unreleased entries describe changes queued for the
+          next release; versioned entries describe changes that have shipped.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2>Unreleased</h2>
+        <p>
+          These changes are queued for the next Phantasm release and should be moved under that
+          release version when it is tagged.
+        </p>
+
+        <h3>Added</h3>
+        <ul class="list-tight">
+          <li>Added <code>phm</code> as a shorthand CLI binary for the same command surface as <code>phantasm</code>.</li>
+          <li>Added <code>phantasm handle-request --stdin</code> for request envelopes supplied through standard input.</li>
+          <li>Added <code>phantasm handle-request --file &lt;path&gt;</code> for UTF-8 request envelope files.</li>
+          <li>Added machine-readable <code>cli</code> and <code>request_transport</code> metadata to complete <code>describe</code> targets.</li>
+          <li>Added top-level response <code>notices</code> metadata for all successful <code>handle-request</code> responses.</li>
+          <li>Added first-call <code>release_update</code> notices after binary upgrades, scoped per bootstrapped project and client profile.</li>
+          <li>Added project-local release notice seen state using <code>release_notice_seen.&lt;client_profile&gt;</code>.</li>
+          <li>Added public and internal documentation for the <code>phm</code> alias, request input modes, response notices, release update notices, and release metadata maintenance.</li>
+        </ul>
+
+        <h3>Changed</h3>
+        <ul class="list-tight">
+          <li>Updated <code>describe target=all|*|api</code> to document response metadata, <code>notices</code>, release update notice shape, CLI aliasing, and request transport options.</li>
+          <li>Updated <code>health</code> guidance to make it a good first call after agent startup because it can surface one-time release notices.</li>
+          <li>Updated built-in <code>help handle-request</code> with the <code>--stdin</code>, <code>--file &lt;path&gt;</code>, and <code>notices</code> behavior.</li>
+          <li>Updated public install and usage docs to verify both <code>phantasm</code> and <code>phm</code>.</li>
+          <li>Updated release documentation to require reviewing embedded release notice metadata before tagging.</li>
+        </ul>
+
+        <h3>Fixed</h3>
+        <ul class="list-tight">
+          <li>Fixed JSON parsing for printable UTF-8 strings so non-ASCII text is preserved correctly.</li>
+          <li>Fixed JSON <code>\uXXXX</code> escape handling, including valid surrogate pairs and invalid surrogate rejection.</li>
+          <li>Fixed JSON string output so printable Unicode remains readable while control characters are still escaped.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Earlier releases</h2>
+        <p>
+          Earlier public releases established the initial local project memory runtime, bootstrap
+          flow, agent guidance management, JSON <code>handle-request</code> API, operation catalog,
+          SQLite-backed project state, snapshots, backups, maintenance operations, and public
+          install paths.
+        </p>
+      </section>
+
+      <footer class="site-footer">
+        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+      </footer>
+    </main>
+  </body>
+  </html>

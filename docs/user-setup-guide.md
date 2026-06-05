@@ -68,6 +68,7 @@ After that, verify the install:
 
 ```bash
 phantasm --version
+phm --version
 ```
 
 If you prefer the standalone installer, run:
@@ -81,7 +82,7 @@ What this does:
 - downloads the latest Phantasm release from the public
   `indefiniteloop/phantasm-dist` GitHub Releases page
 - checks the release checksum
-- installs `phantasm` into `~/.local/bin` by default
+- installs `phantasm` and `phm` into `~/.local/bin` by default
 - prints a PATH hint if needed
 
 Homebrew is the preferred Unix install path if it is already part of
@@ -118,6 +119,7 @@ Run:
 
 ```bash
 phantasm --version
+phm --version
 ```
 
 You should see output like:
@@ -130,6 +132,7 @@ You can also inspect the built-in help:
 
 ```bash
 phantasm --help
+phm --help
 ```
 
 The help output lists top-level commands. Use command-specific help for
@@ -201,7 +204,7 @@ Use across projects:
 1. Install `phantasm` once on your machine.
 2. In each project, run `phantasm bootstrap`.
 3. Point your integrations or wrappers at the same installed
-   `phantasm` binary.
+   `phantasm` binary, or its `phm` shorthand alias.
 
 Use across agents:
 
@@ -225,7 +228,12 @@ The advanced integration command is:
 
 ```bash
 phantasm handle-request '<json request envelope>'
+phantasm handle-request --stdin
+phantasm handle-request --file request.json
 ```
+
+The request input must be valid UTF-8. JSON strings safely preserve
+printable Unicode and support standard `\uXXXX` escapes.
 
 Agents and wrappers can ask Phantasm for the complete machine-readable
 runtime API before they know any operation-specific schema:
@@ -239,6 +247,9 @@ phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
 `describe` is read-only, does not require an existing project runtime,
 and returns request envelope rules, operation params, idempotency and
 confirmation requirements, safety guidance, and runnable examples.
+The complete API targets also include CLI alias and request transport
+metadata for wrappers, plus the response `notices` schema used for
+first-call-after-update release notices.
 Use `target="all"` or `target="*"` for the complete operation catalog,
 `target="api"` for the complete API schema, and an operation name such
 as `ingest` for a focused schema.
@@ -300,7 +311,7 @@ If you prefer not to use the installer script:
 2. Verify it against the published `SHA256SUMS` file.
 3. Extract the binary.
 4. Place `phantasm` or `phantasm.exe` in a directory on your PATH.
-5. Run `phantasm --version`.
+5. Run `phantasm --version` and `phm --version`.
 6. Run `phantasm bootstrap` inside each project you want to use.
 
 ## Next Step
@@ -308,3 +319,5 @@ If you prefer not to use the installer script:
 Once Phantasm is installed and your project has been bootstrapped,
 use the agent or integration you prefer and make sure it runs from
 that project directory.
+
+For release-based changes, see [changelog.md](changelog.md).

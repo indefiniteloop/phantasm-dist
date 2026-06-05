@@ -3,16 +3,23 @@
 This page collects the current public CLI commands and the most
 common ways to use them.
 
+For release-based changes, see [changelog.md](changelog.md).
+
 ## Command Summary
 
-Phantasm currently exposes five user-facing entry points:
+Phantasm exposes the same command surface through either `phantasm` or
+the shorthand `phm` binary:
 
 ```bash
 phantasm --help
+phm --help
 phantasm --version
+phm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
 phantasm handle-request '<json request envelope>'
+phantasm handle-request --stdin
+phantasm handle-request --file request.json
 ```
 
 `bootstrap` is the normal setup command.
@@ -29,6 +36,7 @@ Example:
 
 ```bash
 phantasm --help
+phm --help
 phantasm help agents
 phantasm agents --help
 ```
@@ -48,6 +56,7 @@ Example:
 
 ```bash
 phantasm --version
+phm --version
 ```
 
 ## `phantasm bootstrap`
@@ -136,6 +145,19 @@ Example health check:
 phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'
 ```
 
+Safer input modes are available when shell quoting or argv size is a
+problem:
+
+```bash
+printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin
+phantasm handle-request --stdin
+phantasm handle-request --file request.json
+```
+
+Request input must be valid UTF-8. JSON strings round-trip printable
+Unicode safely and accept standard escapes including `\uXXXX` surrogate
+pairs.
+
 Machine-readable API discovery:
 
 ```bash
@@ -143,6 +165,12 @@ phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 ```
+
+Complete describe targets also include machine-readable `cli` and
+`request_transport` metadata: the `phm` alias, accepted input modes,
+UTF-8 requirement, Unicode escape policy, and sequential execution rule.
+They also document the `notices` response field and release update
+notice shape.
 
 Important rule:
 
@@ -186,6 +214,12 @@ Mutation fields:
 - `idempotency_key`: required for mutating operations
 - `confirmations`: required for `snapshot_import`, `backup_restore`,
   and `maintenance_run`
+
+Every response includes a `notices` array. After a Phantasm binary
+update, the first successful request for each project/client profile
+returns a structured `release_update` notice with version, highlights,
+breaking changes, and recommended agent action. Later calls suppress it
+until the installed version changes again.
 
 Read-only operations:
 
@@ -282,6 +316,7 @@ the file.
 
 ```bash
 phantasm --version
+phm --version
 cd /project-one && phantasm bootstrap
 cd /project-two && phantasm bootstrap
 ```
@@ -306,6 +341,8 @@ strings.
 - `target` values: `all`, `*`, `api`, or any operation name such as
   `ingest`, `search`, or `maintenance_run`
 - `all`, `*`, and `api` return the complete operation catalog/schema
+- Complete targets also include `cli` and `request_transport` metadata
+  for wrappers.
 - Short request form supported:
   `{"operation":"describe","params":{"target":"ingest"}}`
 - Mutating: no
@@ -478,6 +515,8 @@ Lists open and deferred review items.
 
 Reports runtime health, conflict count, review count, failed
 maintenance count, profiles, diagnostics, and recommended maintenance.
+It is the recommended first call after agent startup because it can
+surface one-time `release_update` notices.
 
 - Params today: `{}`
 - Mutating: no

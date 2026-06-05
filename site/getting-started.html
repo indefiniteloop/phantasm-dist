@@ -46,6 +46,7 @@
         <a href="./commands.html">Commands</a>
         <a href="./why-phantasm.html">Why Phantasm</a>
         <a href="./architecture.html">Architecture</a>
+        <a href="./changelog.html">Changelog</a>
       </nav>
 
       <header class="page-header">
@@ -58,7 +59,8 @@
         <pre><code>brew install indefiniteloop/tap/phantasm
 # or
 curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh | sh
-phantasm --version</code></pre>
+phantasm --version
+phm --version</code></pre>
         <p>Use Homebrew if it is already part of your workflow. The shell installer remains the fallback path for Unix systems without Brew.</p>
       </section>
 
@@ -103,13 +105,18 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
       <section class="panel">
         <h2>Inspect the full command surface</h2>
         <pre><code>phantasm --help
+phm --help
 phantasm agents --help
 phantasm help bootstrap
 phantasm help handle-request</code></pre>
-        <p>The top-level help lists commands. Command-specific help shows the available options for each workflow. Agents and wrappers can also call <code>describe</code> for machine-readable operation schemas and examples.</p>
+        <p><code>phm</code> is the shorthand alias for the same CLI. The top-level help lists commands. Command-specific help shows the available options for each workflow. Agents and wrappers can also call <code>describe</code> for machine-readable operation schemas and examples.</p>
         <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
-phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'</code></pre>
+phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
+printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin
+phantasm handle-request --file request.json</code></pre>
+        <p><code>handle-request</code> input must be valid UTF-8. JSON strings preserve printable Unicode and accept standard <code>\uXXXX</code> escapes.</p>
+        <p>Every response includes <code>notices</code>. After a binary update, the first successful request from each client profile in a bootstrapped project includes a structured <code>release_update</code> notice; later calls suppress it until the installed version changes again.</p>
       </section>
 
       <section class="panel">
