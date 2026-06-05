@@ -136,6 +136,14 @@ Example health check:
 phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'
 ```
 
+Machine-readable API discovery:
+
+```bash
+phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
+```
+
 Important rule:
 
 - run this from the project root you bootstrapped, or it will not
@@ -181,8 +189,8 @@ Mutation fields:
 
 Read-only operations:
 
-- `search`, `compile`, `inspect`, `audit`, `review_queue`, `health`,
-  `backup_list`, `maintenance_plan`
+- `describe`, `search`, `compile`, `inspect`, `audit`, `review_queue`,
+  `health`, `backup_list`, `maintenance_plan`
 
 Mutating operations:
 
@@ -192,6 +200,19 @@ Mutating operations:
   `snapshot_import`, `backup_restore`, `maintenance_run`
 
 ### Agent-oriented examples
+
+Ask Phantasm for the complete machine-readable API schema:
+
+```bash
+phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
+```
+
+Ask Phantasm how to use one operation:
+
+```bash
+phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
+```
 
 Search memory before making a change:
 
@@ -273,6 +294,24 @@ The current runtime supports the following operations. This section
 documents the practical V1 shape implemented by the CLI today. The API
 may grow additional optional fields over time, but these names and
 core meanings are the stable integration surface.
+
+### `describe`
+
+Returns machine-readable API schema, operation params, safety rules,
+and runnable examples in one response. Agents should use this when they
+need to discover Phantasm without reading docs or hunting source
+strings.
+
+- Params: optional `target`
+- `target` values: `all`, `*`, `api`, or any operation name such as
+  `ingest`, `search`, or `maintenance_run`
+- `all`, `*`, and `api` return the complete operation catalog/schema
+- Short request form supported:
+  `{"operation":"describe","params":{"target":"ingest"}}`
+- Mutating: no
+- Requires existing runtime: no
+- Agent use: first-call discovery and focused per-operation schema
+  lookup
 
 ### `bootstrap`
 

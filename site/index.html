@@ -149,7 +149,9 @@ curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/s
 phantasm --version
 cd /path/to/project
 phantasm bootstrap
-phantasm agents --add</code></pre>
+phantasm agents --add
+phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code></pre>
                 </article>
             </section>
 

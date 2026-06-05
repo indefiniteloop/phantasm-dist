@@ -104,8 +104,12 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <h2>Inspect the full command surface</h2>
         <pre><code>phantasm --help
 phantasm agents --help
-phantasm help bootstrap</code></pre>
-        <p>The top-level help lists commands. Command-specific help shows the available options for each workflow.</p>
+phantasm help bootstrap
+phantasm help handle-request</code></pre>
+        <p>The top-level help lists commands. Command-specific help shows the available options for each workflow. Agents and wrappers can also call <code>describe</code> for machine-readable operation schemas and examples.</p>
+        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'</code></pre>
       </section>
 
       <section class="panel">

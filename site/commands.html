@@ -92,6 +92,9 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
           <code>request_id</code>, <code>client.profile</code>, and <code>params</code>.
           Mutating operations also require <code>idempotency_key</code>. Snapshot import,
           backup restore, and maintenance run require explicit <code>confirmations</code>.
+          The <code>describe</code> operation is the machine-readable discovery surface
+          and can be called in short form when an agent does not know the full
+          envelope yet.
         </p>
         <pre><code>{
   "api_version": "v1",
@@ -105,6 +108,9 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
       <section class="panel">
         <h2>Advanced runtime examples</h2>
         <p><code>handle-request</code> runs one JSON request against the current project runtime. These examples are intentionally single-line so agents and humans can paste them into a terminal.</p>
+        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</code></pre>
+        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code></pre>
+        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"search","request_id":"search-auth-timeout","client":{"profile":"codex"},"params":{"query":"auth timeout","filters":{"include_conflicts":true,"review_augmented_view":true}}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"]}}'</code></pre>
@@ -114,6 +120,7 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
 
       <section class="panel">
         <h2>Operation reference</h2>
+        <p><strong><code>describe</code></strong> is the important agent discovery operation. It returns machine-readable API schema, operation params, safety rules, and runnable examples. Optional param: <code>target</code>; use <code>all</code>, <code>*</code>, <code>api</code>, or an operation name such as <code>ingest</code>. <code>all</code>, <code>*</code>, and <code>api</code> return the complete catalog/schema. Short form is supported: <code>{"operation":"describe","params":{"target":"ingest"}}</code>.</p>
         <p><strong><code>bootstrap</code></strong> initializes or verifies <code>.phantasm/</code>. Humans usually use the top-level <code>phantasm bootstrap</code> command.</p>
         <p><strong><code>ingest</code></strong> adds memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Required params: <code>record_kind</code>, <code>payload</code>.</p>
         <p><strong><code>revise</code></strong> creates a successor and supersedes a target record. Required params: <code>target_record_id</code>, <code>payload</code>.</p>

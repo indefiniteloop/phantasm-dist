@@ -138,6 +138,7 @@ options:
 ```bash
 phantasm agents --help
 phantasm help bootstrap
+phantasm help handle-request
 ```
 
 ## Turn Phantasm On For A Project
@@ -225,6 +226,22 @@ The advanced integration command is:
 ```bash
 phantasm handle-request '<json request envelope>'
 ```
+
+Agents and wrappers can ask Phantasm for the complete machine-readable
+runtime API before they know any operation-specific schema:
+
+```bash
+phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
+```
+
+`describe` is read-only, does not require an existing project runtime,
+and returns request envelope rules, operation params, idempotency and
+confirmation requirements, safety guidance, and runnable examples.
+Use `target="all"` or `target="*"` for the complete operation catalog,
+`target="api"` for the complete API schema, and an operation name such
+as `ingest` for a focused schema.
 
 That means:
 

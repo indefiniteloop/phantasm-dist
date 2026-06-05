@@ -21,6 +21,7 @@ auditing, snapshotting, and maintaining project memory.
 - Durable truth lives in a single authoritative SQLite store per project.
 - The top-level CLI exposes `bootstrap`, `agents --add`, and `handle-request`.
 - Requests use an explicit JSON envelope with versioned operations.
+- The `describe` operation returns machine-readable API schemas, safety rules, and runnable examples.
 - Search and compile are designed to be deterministic for the same runtime state and request.
 
 ## Core CLI
@@ -32,6 +33,8 @@ phantasm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
 phantasm handle-request '<json request envelope>'
+phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 ```
 
 ## Common setup
@@ -48,6 +51,7 @@ phantasm agents --add
 
 ## Runtime operations
 
+- describe
 - bootstrap
 - ingest
 - revise
@@ -71,6 +75,14 @@ phantasm agents --add
 - backup_restore
 - maintenance_plan
 - maintenance_run
+
+Agents should call describe for machine-readable API discovery:
+
+```bash
+phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
+phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
+```
 
 ## Related docs
 
