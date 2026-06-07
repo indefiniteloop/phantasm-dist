@@ -169,6 +169,11 @@ Phantasm will ask for confirmation before it appends or creates any
 agent file content. Reply `y` or `yes` to continue. Before changing an
 existing agent file, it creates a timestamped sibling backup.
 
+After updating Phantasm, rerun `phantasm agents --add` to refresh the
+managed guidance block. You do not need to remove the old block first.
+Phantasm replaces only the managed block between its markers and
+preserves surrounding file content.
+
 To target specific files instead of scanning common agent filenames:
 
 ```bash

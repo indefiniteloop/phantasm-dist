@@ -27,7 +27,8 @@ auditing, snapshotting, and maintaining project memory.
 - The `describe` operation returns machine-readable API schemas, safety rules, and runnable examples.
 - Complete describe targets also return CLI alias and request transport metadata.
 - Every response includes `notices`; release_update notices appear once per project/client profile after a binary update.
-- Search and compile are designed to be deterministic for the same runtime state and request.
+- Search is deterministic by default and supports opt-in tokenized or fuzzy discovery modes.
+- Compile is designed to be deterministic for the same runtime state and request.
 
 ## Core CLI
 
@@ -45,6 +46,10 @@ phantasm handle-request --file request.json
 phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 ```
+
+Rerun `phantasm agents --add` after Phantasm updates when managed agent
+guidance changes. It refreshes the managed block in place, backs up
+existing files, and preserves text outside the managed markers.
 
 ## Common setup
 

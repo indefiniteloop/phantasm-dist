@@ -82,7 +82,7 @@ phantasm bootstrap --agent-file AGENTS.md
 phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md
 phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-        <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup. It also prompts for confirmation with a <code>y/N</code> question.</p>
+        <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. After updating Phantasm, rerun the command to replace the managed block in place; do not delete and re-add it manually. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup, preserves text outside the managed markers, and prompts for confirmation with a <code>y/N</code> question.</p>
       </section>
 
       <section class="panel">
@@ -148,7 +148,7 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <p><strong><code>reject_suggestion</code></strong> rejects a suggestion without creating authoritative memory. Required params: <code>suggestion_id</code>.</p>
         <p><strong><code>defer_review</code></strong> defers a review item. Required params: <code>review_item_id</code>, <code>wake_condition</code>.</p>
         <p><strong><code>resolve_review</code></strong> marks a review item resolved. Required params: <code>review_item_id</code>.</p>
-        <p><strong><code>search</code></strong> finds records by optional <code>query</code> and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, and <code>worktree_id</code>.</p>
+        <p><strong><code>search</code></strong> finds records by optional <code>query</code>, optional <code>match_mode</code> (<code>exact</code>, <code>tokens</code>, or <code>fuzzy</code>), optional <code>rank_by</code> (<code>deterministic</code> or <code>relevance</code>), optional <code>group_by=record_kind</code>, and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, <code>worktree_id</code>, <code>subject_key</code>, <code>record_kind</code>, <code>created_after</code>, <code>created_before</code>, <code>payload_contains</code>, and <code>payload_matches</code>.</p>
         <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, and search-style filters.</p>
         <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>.</p>
         <p><strong><code>audit</code></strong> lists operation history and effects. Params: optional <code>actor</code>, <code>object_id</code>, <code>operation_name</code>, <code>limit</code>.</p>

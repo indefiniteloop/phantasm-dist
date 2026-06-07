@@ -4,13 +4,25 @@ Phantasm changelog entries are release based. Unreleased entries
 describe changes queued for the next release; versioned entries describe
 changes that have shipped.
 
-## Unreleased
+## v0.1.9
 
-These changes are queued for the next Phantasm release and should be
-moved under that release version when it is tagged.
+These changes shipped in the Phantasm v0.1.9 release.
 
 ### Added
 
+- Added opt-in `search.params.match_mode` values `exact`, `tokens`, and
+  `fuzzy`, keeping exact deterministic search as the default.
+- Added `search.params.rank_by` with `deterministic` and `relevance`
+  ordering modes.
+- Added `search` match diagnostics with per-result scores, matched
+  fields, and matched terms.
+- Added `search.params.group_by=record_kind` aggregations with grouped
+  counts and sample record IDs.
+- Added `search.filters.payload_contains` and
+  `search.filters.payload_matches` for payload substring and regex
+  filtering.
+- Added `search.filters.subject_key`, `record_kind`, `created_after`,
+  and `created_before` for practical metadata filtering.
 - Added `phm` as a shorthand CLI binary for the same command surface as
   `phantasm`.
 - Added `phantasm handle-request --stdin` for request envelopes supplied
@@ -31,6 +43,9 @@ moved under that release version when it is tagged.
 
 ### Changed
 
+- Updated `describe` schemas, built-in help, public docs, and site docs
+  to document search match modes, ranking, aggregations, and expanded
+  filters.
 - Updated `describe target=all|*|api` to document response metadata,
   `notices`, release update notice shape, CLI aliasing, and request
   transport options.

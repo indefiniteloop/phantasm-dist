@@ -89,7 +89,7 @@ phantasm bootstrap</code></pre>
         <h2>Add agent guidance</h2>
         <pre><code>phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-        <p>This adds a managed Phantasm instruction block to common agent files. Phantasm asks for confirmation before it writes the file and backs up existing files before changing them.</p>
+        <p>This adds or refreshes a managed Phantasm instruction block in common agent files. After updating Phantasm, rerun <code>phantasm agents --add</code> to replace the managed block in place; you do not need to remove it first. Phantasm asks for confirmation before it writes the file, backs up existing files before changing them, and preserves text outside the managed markers.</p>
       </section>
 
       <section class="panel">

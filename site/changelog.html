@@ -59,14 +59,19 @@
       </header>
 
       <section class="panel">
-        <h2>Unreleased</h2>
+        <h2>v0.1.9</h2>
         <p>
-          These changes are queued for the next Phantasm release and should be moved under that
-          release version when it is tagged.
+          These changes shipped in the Phantasm v0.1.9 release.
         </p>
 
         <h3>Added</h3>
         <ul class="list-tight">
+          <li>Added opt-in <code>search.params.match_mode</code> values <code>exact</code>, <code>tokens</code>, and <code>fuzzy</code>, keeping exact deterministic search as the default.</li>
+          <li>Added <code>search.params.rank_by</code> with <code>deterministic</code> and <code>relevance</code> ordering modes.</li>
+          <li>Added <code>search</code> match diagnostics with per-result scores, matched fields, and matched terms.</li>
+          <li>Added <code>search.params.group_by=record_kind</code> aggregations with grouped counts and sample record IDs.</li>
+          <li>Added <code>search.filters.payload_contains</code> and <code>search.filters.payload_matches</code> for payload substring and regex filtering.</li>
+          <li>Added <code>search.filters.subject_key</code>, <code>record_kind</code>, <code>created_after</code>, and <code>created_before</code> for practical metadata filtering.</li>
           <li>Added <code>phm</code> as a shorthand CLI binary for the same command surface as <code>phantasm</code>.</li>
           <li>Added <code>phantasm handle-request --stdin</code> for request envelopes supplied through standard input.</li>
           <li>Added <code>phantasm handle-request --file &lt;path&gt;</code> for UTF-8 request envelope files.</li>
@@ -79,6 +84,7 @@
 
         <h3>Changed</h3>
         <ul class="list-tight">
+          <li>Updated <code>describe</code> schemas, built-in help, public docs, and site docs to document search match modes, ranking, aggregations, and expanded filters.</li>
           <li>Updated <code>describe target=all|*|api</code> to document response metadata, <code>notices</code>, release update notice shape, CLI aliasing, and request transport options.</li>
           <li>Updated <code>health</code> guidance to make it a good first call after agent startup because it can surface one-time release notices.</li>
           <li>Updated built-in <code>help handle-request</code> with the <code>--stdin</code>, <code>--file &lt;path&gt;</code>, and <code>notices</code> behavior.</li>

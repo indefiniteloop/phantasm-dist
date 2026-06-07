@@ -134,6 +134,12 @@ backups before edits. The managed block tells agents to invoke Phantasm
 memory workflows sequentially rather than running `handle-request`
 processes in parallel.
 
+After updating Phantasm, rerun `phantasm agents --add` to refresh the
+managed guidance block in place. Do not delete and re-add the block
+manually. Text outside the managed Phantasm markers is preserved; manual
+edits inside the managed block are replaced by the current generated
+guidance.
+
 ## `phantasm handle-request`
 
 Executes one JSON request envelope against the project in the
@@ -310,7 +316,9 @@ This updates existing supported agent files or creates `AGENTS.md`
 if none are found.
 
 You must confirm the write in the terminal before Phantasm changes
-the file.
+the file. Existing files are backed up first. When a new Phantasm
+version changes agent guidance, rerun this command to replace the
+managed block in place while preserving surrounding content.
 
 ### Use one installed binary across many projects
 
@@ -463,11 +471,15 @@ Marks a review item resolved.
 
 Finds memory records deterministically.
 
-- Params: optional `query`, optional `filters`
+- Params: optional `query`, optional `match_mode` (`exact`, `tokens`, or
+  `fuzzy`), optional `rank_by` (`deterministic` or `relevance`), optional
+  `group_by` (`record_kind`), optional `filters`
 - Supported filters: `scope`, `include_superseded`,
   `include_archived`, `include_tombstoned`, `include_conflicts`,
   `include_sensitive`, `review_augmented_view`,
-  `include_raw_evidence`, `branch_name`, `worktree_id`
+  `include_raw_evidence`, `branch_name`, `worktree_id`,
+  `subject_key`, `record_kind`, `created_after`, `created_before`,
+  `payload_contains`, `payload_matches`
 - Mutating: no
 - Agent use: look up prior decisions and constraints before editing
 
