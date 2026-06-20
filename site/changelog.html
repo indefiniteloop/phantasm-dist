@@ -59,14 +59,14 @@
       </header>
 
       <section class="panel">
-        <h2>v0.1.9</h2>
+        <h2>v0.2.0</h2>
         <p>
-          These changes shipped in the Phantasm v0.1.9 release.
+          These changes shipped in the Phantasm v0.2.0 release.
         </p>
 
         <h3>Added</h3>
         <ul class="list-tight">
-          <li>Added opt-in <code>search.params.match_mode</code> values <code>exact</code>, <code>tokens</code>, and <code>fuzzy</code>, keeping exact deterministic search as the default.</li>
+          <li>Added <code>search.params.match_mode</code> values <code>tokens</code>, <code>exact</code>, and <code>fuzzy</code>, with token matching as the default for natural multi-term queries.</li>
           <li>Added <code>search.params.rank_by</code> with <code>deterministic</code> and <code>relevance</code> ordering modes.</li>
           <li>Added <code>search</code> match diagnostics with per-result scores, matched fields, and matched terms.</li>
           <li>Added <code>search.params.group_by=record_kind</code> aggregations with grouped counts and sample record IDs.</li>
@@ -79,7 +79,9 @@
           <li>Added top-level response <code>notices</code> metadata for all successful <code>handle-request</code> responses.</li>
           <li>Added first-call <code>release_update</code> notices after binary upgrades, scoped per bootstrapped project and client profile.</li>
           <li>Added project-local release notice seen state using <code>release_notice_seen.&lt;client_profile&gt;</code>.</li>
-          <li>Added public and internal documentation for the <code>phm</code> alias, request input modes, response notices, release update notices, and release metadata maintenance.</li>
+          <li>Added structured confirmation validation for high-impact operations. <code>resolve_conflict</code>, <code>snapshot_import</code>, <code>backup_restore</code>, and <code>maintenance_run</code> now require <code>approved_by</code>, <code>reason</code>, <code>operation</code>, and a <code>target</code> object matching the mutation request.</li>
+          <li>Added duplicate <code>subject_key</code> ingest refusal so callers get the existing record id and clear <code>revise</code> guidance instead of accidentally creating conflicting truth.</li>
+          <li>Added public and internal documentation for the <code>phm</code> alias, request input modes, response notices, release update notices, structured confirmations, ingest create-vs-update semantics, and release metadata maintenance.</li>
         </ul>
 
         <h3>Changed</h3>
@@ -89,6 +91,8 @@
           <li>Updated <code>health</code> guidance to make it a good first call after agent startup because it can surface one-time release notices.</li>
           <li>Updated built-in <code>help handle-request</code> with the <code>--stdin</code>, <code>--file &lt;path&gt;</code>, and <code>notices</code> behavior.</li>
           <li>Updated public install and usage docs to verify both <code>phantasm</code> and <code>phm</code>.</li>
+          <li>Updated <code>ingest</code> schema, built-in help, public docs, site docs, and managed agent guidance to make it explicit that <code>ingest</code> creates new memory and <code>revise</code> updates existing memory.</li>
+          <li>Updated conflict resolution examples to include the required structured confirmation payload.</li>
           <li>Updated release documentation to require reviewing embedded release notice metadata before tagging.</li>
         </ul>
 

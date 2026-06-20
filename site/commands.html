@@ -97,8 +97,10 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <p>
           Every request includes <code>api_version</code>, <code>operation</code>,
           <code>request_id</code>, <code>client.profile</code>, and <code>params</code>.
-          Mutating operations also require <code>idempotency_key</code>. Snapshot import,
-          backup restore, and maintenance run require explicit <code>confirmations</code>.
+          Mutating operations also require <code>idempotency_key</code>. <code>resolve_conflict</code>,
+          snapshot import, backup restore, and maintenance run require structured
+          <code>confirmations</code> with <code>approved_by</code>, <code>reason</code>,
+          <code>operation</code>, and a <code>target</code> matching the requested mutation.
           The <code>describe</code> operation is the machine-readable discovery surface
           and can be called in short form when an agent does not know the full
           envelope yet.
@@ -138,28 +140,28 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <h2>Operation reference</h2>
         <p><strong><code>describe</code></strong> is the important agent discovery operation. It returns machine-readable API schema, response schema, operation params, safety rules, and runnable examples. Optional param: <code>target</code>; use <code>all</code>, <code>*</code>, <code>api</code>, or an operation name such as <code>ingest</code>. <code>all</code>, <code>*</code>, and <code>api</code> return the complete catalog/schema plus <code>cli</code>, <code>request_transport</code>, and <code>notices</code> metadata. Short form is supported: <code>{"operation":"describe","params":{"target":"ingest"}}</code>.</p>
         <p><strong><code>bootstrap</code></strong> initializes or verifies <code>.phantasm/</code>. Humans usually use the top-level <code>phantasm bootstrap</code> command.</p>
-        <p><strong><code>ingest</code></strong> adds memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Required params: <code>record_kind</code>, <code>payload</code>.</p>
+        <p><strong><code>ingest</code></strong> creates new memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Use <code>revise</code>, not <code>ingest</code>, to update an existing record; duplicate <code>subject_key</code> ingests are refused while a live record exists and return the existing record id. Required params: <code>record_kind</code>, <code>payload</code>.</p>
         <p><strong><code>revise</code></strong> creates a successor and supersedes a target record. Required params: <code>target_record_id</code>, <code>payload</code>.</p>
         <p><strong><code>tombstone</code></strong> retires invalid truth. Required params: <code>record_id</code>.</p>
         <p><strong><code>archive</code></strong> keeps memory for audit while excluding it from ordinary search and compile. Required params: <code>record_id</code>.</p>
         <p><strong><code>promote</code></strong> promotes scoped memory into project truth. Required params: <code>source_record_id</code>.</p>
-        <p><strong><code>resolve_conflict</code></strong> chooses a winning record and retires losers. Required params: <code>winner_record_id</code>, <code>loser_record_ids</code>. Optional <code>loser_state</code> defaults to <code>superseded</code>.</p>
+        <p><strong><code>resolve_conflict</code></strong> chooses a winning record and retires losers. Required params: <code>winner_record_id</code>, <code>loser_record_ids</code>. Optional <code>loser_state</code> defaults to <code>superseded</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the winner, losers, and resolved loser state.</p>
         <p><strong><code>accept_suggestion</code></strong> converts a suggestion into authoritative memory. Required params: <code>suggestion_id</code>.</p>
         <p><strong><code>reject_suggestion</code></strong> rejects a suggestion without creating authoritative memory. Required params: <code>suggestion_id</code>.</p>
         <p><strong><code>defer_review</code></strong> defers a review item. Required params: <code>review_item_id</code>, <code>wake_condition</code>.</p>
         <p><strong><code>resolve_review</code></strong> marks a review item resolved. Required params: <code>review_item_id</code>.</p>
-        <p><strong><code>search</code></strong> finds records by optional <code>query</code>, optional <code>match_mode</code> (<code>exact</code>, <code>tokens</code>, or <code>fuzzy</code>), optional <code>rank_by</code> (<code>deterministic</code> or <code>relevance</code>), optional <code>group_by=record_kind</code>, and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, <code>worktree_id</code>, <code>subject_key</code>, <code>record_kind</code>, <code>created_after</code>, <code>created_before</code>, <code>payload_contains</code>, and <code>payload_matches</code>.</p>
+        <p><strong><code>search</code></strong> finds records by optional <code>query</code>, optional <code>match_mode</code> (<code>tokens</code> default, <code>exact</code>, or <code>fuzzy</code>), optional <code>rank_by</code> (<code>deterministic</code> or <code>relevance</code>), optional <code>group_by=record_kind</code>, and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, <code>worktree_id</code>, <code>subject_key</code>, <code>record_kind</code>, <code>created_after</code>, <code>created_before</code>, <code>payload_contains</code>, and <code>payload_matches</code>.</p>
         <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, and search-style filters.</p>
         <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>.</p>
         <p><strong><code>audit</code></strong> lists operation history and effects. Params: optional <code>actor</code>, <code>object_id</code>, <code>operation_name</code>, <code>limit</code>.</p>
         <p><strong><code>review_queue</code></strong> lists open and deferred review items.</p>
         <p><strong><code>health</code></strong> reports runtime health, conflicts, review count, failed maintenance, diagnostics, recommendations, and first-call release notices after binary updates.</p>
         <p><strong><code>snapshot_export</code></strong> writes a full runtime snapshot bundle. Param: optional <code>export_name</code>.</p>
-        <p><strong><code>snapshot_import</code></strong> restores a snapshot bundle after creating a safety backup. Required param: <code>bundle_path</code>. Optional <code>mode</code> is <code>replace</code> or <code>merge</code>.</p>
+        <p><strong><code>snapshot_import</code></strong> restores a snapshot bundle after creating a safety backup. Required param: <code>bundle_path</code>. Optional <code>mode</code> is <code>replace</code> or <code>merge</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the bundle path and resolved mode.</p>
         <p><strong><code>backup_list</code></strong> lists registered backups and manifests.</p>
-        <p><strong><code>backup_restore</code></strong> restores a registered backup by ID after creating a safety backup. Required param: <code>backup_id</code>.</p>
+        <p><strong><code>backup_restore</code></strong> restores a registered backup by ID after creating a safety backup. Required param: <code>backup_id</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the backup ID.</p>
         <p><strong><code>maintenance_plan</code></strong> dry-runs recommended maintenance and required backup actions.</p>
-        <p><strong><code>maintenance_run</code></strong> executes explicit maintenance operations. Optional <code>operations</code> defaults to <code>["reparse_client_profiles"]</code>.</p>
+        <p><strong><code>maintenance_run</code></strong> executes explicit maintenance operations. Optional <code>operations</code> defaults to <code>["reparse_client_profiles"]</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the resolved operations list.</p>
       </section>
 
       <section class="panel">

@@ -27,7 +27,9 @@ auditing, snapshotting, and maintaining project memory.
 - The `describe` operation returns machine-readable API schemas, safety rules, and runnable examples.
 - Complete describe targets also return CLI alias and request transport metadata.
 - Every response includes `notices`; release_update notices appear once per project/client profile after a binary update.
-- Search is deterministic by default and supports opt-in tokenized or fuzzy discovery modes.
+- Search uses deterministic token matching by default and supports exact or fuzzy discovery modes.
+- High-impact mutations require structured confirmations with approved_by, reason, operation, and a target matching the request.
+- Ingest creates new memory; use revise to update existing records. Duplicate subject_key ingests are refused while a live record exists and return the existing record id with revise guidance.
 - Compile is designed to be deterministic for the same runtime state and request.
 
 ## Core CLI

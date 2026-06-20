@@ -218,8 +218,9 @@ Required fields:
 Mutation fields:
 
 - `idempotency_key`: required for mutating operations
-- `confirmations`: required for `snapshot_import`, `backup_restore`,
-  and `maintenance_run`
+- `confirmations`: required for `resolve_conflict`,
+  `snapshot_import`, `backup_restore`, and `maintenance_run`; include
+  `approved_by`, `reason`, `operation`, and matching `target`
 
 Every response includes a `notices` array. After a Phantasm binary
 update, the first successful request for each project/client profile
@@ -287,7 +288,7 @@ phantasm handle-request '{"api_version":"v1","operation":"snapshot_export","requ
 Run confirmed maintenance:
 
 ```bash
-phantasm handle-request '{"api_version":"v1","operation":"maintenance_run","request_id":"maint-1","client":{"profile":"codex"},"idempotency_key":"maintenance-reparse-profiles","confirmations":{"approved_by":"Manoj","reason":"refresh profiles after config edit"},"params":{"operations":["reparse_client_profiles"]}}'
+phantasm handle-request '{"api_version":"v1","operation":"maintenance_run","request_id":"maint-1","client":{"profile":"codex"},"idempotency_key":"maintenance-reparse-profiles","confirmations":{"approved_by":"Manoj","reason":"refresh profiles after config edit","operation":"maintenance_run","target":{"operations":["reparse_client_profiles"]}},"params":{"operations":["reparse_client_profiles"]}}'
 ```
 
 ## Common Workflows
@@ -370,16 +371,19 @@ this operation through `handle-request`.
 
 ### `ingest`
 
-Adds memory. Trusted client profiles create authoritative records.
-Untrusted profiles create suggestions plus review items so a human or
-trusted agent can review them later.
+Creates new memory. Trusted client profiles create authoritative
+records. Untrusted profiles create suggestions plus review items so a
+human or trusted agent can review them later. Use `revise`, not
+`ingest`, to update an existing record. A duplicate `subject_key`
+ingest is refused while a live record exists and returns guidance that
+points to `revise` with the existing record id.
 
 - Required params: `record_kind`, `payload`
 - Common params: `scope`, `subject_key`, `provenance`, `sensitivity`,
   `raw_evidence`
 - Mutating: yes
 - Agent use: capture durable decisions, constraints, implementation
-  facts, or evidence after confirming they are project truth
+  facts, or evidence after confirming they are new project truth
 
 ### `revise`
 
@@ -428,6 +432,11 @@ records.
 - Optional params: `loser_state`, default `superseded`
 - Practical loser states: `superseded`, `archived`, `tombstoned`
 - Mutating: yes
+- Requires `idempotency_key`: yes
+- Requires `confirmations`: yes
+  `confirmations` must include `approved_by`, `reason`, `operation`,
+  and `target`; `target` must match `winner_record_id`,
+  `loser_record_ids`, and resolved `loser_state`.
 - Agent use: settle contradictory memory after human or trusted-agent
   decision
 
@@ -471,8 +480,8 @@ Marks a review item resolved.
 
 Finds memory records deterministically.
 
-- Params: optional `query`, optional `match_mode` (`exact`, `tokens`, or
-  `fuzzy`), optional `rank_by` (`deterministic` or `relevance`), optional
+- Params: optional `query`, optional `match_mode` (`tokens` default,
+  `exact`, or `fuzzy`), optional `rank_by` (`deterministic` or `relevance`), optional
   `group_by` (`record_kind`), optional `filters`
 - Supported filters: `scope`, `include_superseded`,
   `include_archived`, `include_tombstoned`, `include_conflicts`,
@@ -557,6 +566,8 @@ backup.
 - Mutating: yes
 - Requires `idempotency_key`: yes
 - Requires `confirmations`: yes
+  `confirmations` must include `approved_by`, `reason`, `operation`,
+  and `target`; `target` must match `bundle_path` and resolved `mode`.
 
 ### `backup_list`
 
@@ -574,6 +585,8 @@ Restores a registered backup by ID after creating a safety backup.
 - Mutating: yes
 - Requires `idempotency_key`: yes
 - Requires `confirmations`: yes
+  `confirmations` must include `approved_by`, `reason`, `operation`,
+  and `target`; `target` must match `backup_id`.
 
 ### `maintenance_plan`
 
@@ -594,6 +607,8 @@ Records and executes explicit maintenance operations.
 - Mutating: yes
 - Requires `idempotency_key`: yes
 - Requires `confirmations`: yes
+  `confirmations` must include `approved_by`, `reason`, `operation`,
+  and `target`; `target` must match the resolved `operations` list.
 
 ## Troubleshooting
 

@@ -125,7 +125,7 @@ phm --version
 You should see output like:
 
 ```text
-phantasm 0.1.0
+phantasm 0.2.0
 ```
 
 You can also inspect the built-in help:

@@ -4,14 +4,14 @@ Phantasm changelog entries are release based. Unreleased entries
 describe changes queued for the next release; versioned entries describe
 changes that have shipped.
 
-## v0.1.9
+## v0.2.0
 
-These changes shipped in the Phantasm v0.1.9 release.
+These changes shipped in the Phantasm v0.2.0 release.
 
 ### Added
 
-- Added opt-in `search.params.match_mode` values `exact`, `tokens`, and
-  `fuzzy`, keeping exact deterministic search as the default.
+- Added `search.params.match_mode` values `tokens`, `exact`, and
+  `fuzzy`, with token matching as the default for natural multi-term queries.
 - Added `search.params.rank_by` with `deterministic` and `relevance`
   ordering modes.
 - Added `search` match diagnostics with per-result scores, matched
@@ -37,9 +37,17 @@ These changes shipped in the Phantasm v0.1.9 release.
   scoped per bootstrapped project and client profile.
 - Added project-local release notice seen state using
   `release_notice_seen.<client_profile>`.
+- Added structured confirmation validation for high-impact operations.
+  `resolve_conflict`, `snapshot_import`, `backup_restore`, and
+  `maintenance_run` now require `approved_by`, `reason`, `operation`,
+  and a `target` object matching the mutation request.
+- Added duplicate `subject_key` ingest refusal so callers get the
+  existing record id and clear `revise` guidance instead of accidentally
+  creating conflicting truth.
 - Added public and internal documentation for the `phm` alias, request
-  input modes, response notices, release update notices, and release
-  metadata maintenance.
+  input modes, response notices, release update notices, structured
+  confirmations, ingest create-vs-update semantics, and release metadata
+  maintenance.
 
 ### Changed
 
@@ -55,6 +63,11 @@ These changes shipped in the Phantasm v0.1.9 release.
   `--file <path>`, and `notices` behavior.
 - Updated public install and usage docs to verify both `phantasm` and
   `phm`.
+- Updated `ingest` schema, built-in help, public docs, site docs, and
+  managed agent guidance to make it explicit that `ingest` creates new
+  memory and `revise` updates existing memory.
+- Updated conflict resolution examples to include the required
+  structured confirmation payload.
 - Updated release documentation to require reviewing embedded release
   notice metadata before tagging.
 
