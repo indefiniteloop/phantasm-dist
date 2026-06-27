@@ -53,10 +53,41 @@
         <p class="eyebrow">Changelog</p>
         <h1>Release notes by version</h1>
         <p class="page-lede">
-          Changelog entries are release based. Unreleased entries describe changes queued for the
-          next release; versioned entries describe changes that have shipped.
+          Changelog entries are version based. Changes queued after a release should go under the
+          next planned version heading immediately, even before the release ships. Do not use a
+          placeholder holding section.
         </p>
       </header>
+
+      <section class="panel">
+        <h2>v0.2.1</h2>
+        <p>
+          These changes are queued for the Phantasm v0.2.1 release and have not shipped yet.
+        </p>
+
+        <h3>Added</h3>
+        <ul class="list-tight">
+          <li>Added operation-specific CLI help for <code>handle-request</code> so callers can print a single operation schema and runnable example without sending a runtime request first.</li>
+          <li>Added <code>params.dry_run</code> preview support for mutating operations. This lets callers inspect no-write outcomes such as <code>ingest</code> <code>would_create</code>/<code>would_update</code> results before risking collisions or writes to the wrong scope.</li>
+          <li>Added payload fidelity metadata on write responses so callers can compare request bytes and hashes with the stored payload.</li>
+          <li>Added mojibake detection warnings on write responses so UTF-8 transport corruption is surfaced immediately instead of being silently persisted.</li>
+        </ul>
+
+        <h3>Changed</h3>
+        <ul class="list-tight">
+          <li>Updated unsupported operation validation errors to list all valid operation names and point callers to <code>describe target=all</code> or <code>target=*</code> for the full operation catalog.</li>
+          <li>Updated required-field validation errors to be operation aware. They now include the missing or invalid <code>params.&lt;field&gt;</code>, the expected type, the required param set for that operation, the field description, a runnable example request, and a <code>describe target=&lt;operation&gt;</code> recovery hint.</li>
+          <li>Updated <code>health</code> to expose grouped <code>live_conflict_subjects</code> alongside <code>live_conflict_count</code> so agents can identify affected <code>record_kind</code>/<code>subject_key</code> pairs without scanning audit history.</li>
+          <li>Updated <code>live_conflict</code> lifecycle effect payloads to include the affected <code>record_id</code>, <code>record_kind</code>, and <code>subject_key</code> for faster recovery through the audit surface.</li>
+          <li>Updated built-in help, operation schemas, and public/internal command references to document <code>dry_run</code> previews and the newer operation-specific help surface.</li>
+        </ul>
+
+        <h3>Fixed</h3>
+        <ul class="list-tight">
+          <li>Fixed snapshot bundle export to capture SQLite WAL-backed state atomically instead of risking inconsistent snapshot contents.</li>
+          <li>Fixed raw-evidence attachment persistence to behave more defensively around write-time evidence storage.</li>
+        </ul>
+      </section>
 
       <section class="panel">
         <h2>v0.2.0</h2>

@@ -1,8 +1,56 @@
 # Changelog
 
-Phantasm changelog entries are release based. Unreleased entries
-describe changes queued for the next release; versioned entries describe
-changes that have shipped.
+Phantasm changelog entries are version based. Changes queued after a
+release should go under the next planned version heading immediately,
+even before the release ships. Do not use a placeholder holding
+section.
+
+## v0.2.1
+
+These changes are queued for the Phantasm v0.2.1 release and have not
+shipped yet.
+
+### Added
+
+- Added operation-specific CLI help for `handle-request` so callers can
+  print a single operation schema and runnable example without sending a
+  runtime request first.
+- Added `params.dry_run` preview support for mutating operations. This
+  lets callers inspect no-write outcomes such as `ingest`
+  `would_create`/`would_update` results before risking collisions or
+  writes to the wrong scope.
+- Added payload fidelity metadata on write responses so callers can
+  compare request bytes and hashes with the stored payload.
+- Added mojibake detection warnings on write responses so UTF-8
+  transport corruption is surfaced immediately instead of being silently
+  persisted.
+
+### Changed
+
+- Updated unsupported operation validation errors to list all valid
+  operation names and point callers to `describe target=all` or
+  `target=*` for the full operation catalog.
+- Updated required-field validation errors to be operation aware. They
+  now include the missing or invalid `params.<field>`, the expected
+  type, the required param set for that operation, the field
+  description, a runnable example request, and a
+  `describe target=<operation>` recovery hint.
+- Updated `health` to expose grouped `live_conflict_subjects` alongside
+  `live_conflict_count` so agents can identify affected
+  `record_kind`/`subject_key` pairs without scanning audit history.
+- Updated `live_conflict` lifecycle effect payloads to include the
+  affected `record_id`, `record_kind`, and `subject_key` for faster
+  recovery through the audit surface.
+- Updated built-in help, operation schemas, and public/internal command
+  references to document `dry_run` previews and the newer
+  operation-specific help surface.
+
+### Fixed
+
+- Fixed snapshot bundle export to capture SQLite WAL-backed state
+  atomically instead of risking inconsistent snapshot contents.
+- Fixed raw-evidence attachment persistence to behave more defensively
+  around write-time evidence storage.
 
 ## v0.2.0
 

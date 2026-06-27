@@ -217,10 +217,12 @@ Required fields:
 
 Mutation fields:
 
-- `idempotency_key`: required for mutating operations
+- `idempotency_key`: required for mutating operations unless the request
+  is a preview-only `params.dry_run=true` call
 - `confirmations`: required for `resolve_conflict`,
   `snapshot_import`, `backup_restore`, and `maintenance_run`; include
-  `approved_by`, `reason`, `operation`, and matching `target`
+  `approved_by`, `reason`, `operation`, and matching `target`. Dry-run
+  previews skip confirmation because they do not mutate runtime state.
 
 Every response includes a `notices` array. After a Phantasm binary
 update, the first successful request for each project/client profile
@@ -271,6 +273,12 @@ Ingest a durable project decision:
 
 ```bash
 phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"provenance":{"source":"agent","reason":"captured during implementation"}}}'
+```
+
+Preview an ingest without writing runtime state:
+
+```bash
+phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout-preview","client":{"profile":"codex"},"params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"dry_run":true}}'
 ```
 
 Inspect a returned object:
@@ -367,7 +375,9 @@ this operation through `handle-request`.
 
 - Params today: `{}`
 - Mutating: yes
-- Requires `idempotency_key`: yes when called through `handle-request`
+- Optional preview param: `dry_run`
+- Requires `idempotency_key`: yes when called through `handle-request`,
+  unless `dry_run=true`
 
 ### `ingest`
 
@@ -380,8 +390,11 @@ points to `revise` with the existing record id.
 
 - Required params: `record_kind`, `payload`
 - Common params: `scope`, `subject_key`, `provenance`, `sensitivity`,
-  `raw_evidence`
+  `raw_evidence`, `dry_run`
 - Mutating: yes
+- Dry-run behavior: returns a no-write preview, including
+  `would_create` or `would_update` for trusted profiles and
+  suggestion-preview output for untrusted profiles
 - Agent use: capture durable decisions, constraints, implementation
   facts, or evidence after confirming they are new project truth
 
@@ -390,7 +403,7 @@ points to `revise` with the existing record id.
 Creates a successor record and supersedes the target record.
 
 - Required params: `target_record_id`, `payload`
-- Common params: `provenance`, `sensitivity`, `raw_evidence`
+- Common params: `provenance`, `sensitivity`, `raw_evidence`, `dry_run`
 - Mutating: yes
 - Agent use: replace stale memory without losing lineage
 
@@ -400,6 +413,7 @@ Retires a record because it should no longer be treated as truth.
 
 - Required params: `record_id`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: remove known-bad memory from ordinary use while keeping an
   audit trail
 
@@ -410,6 +424,7 @@ search and compile.
 
 - Required params: `record_id`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: move no-longer-current but still useful context out of the
   default truth set
 
@@ -421,6 +436,7 @@ preserving lineage.
 - Required params: `source_record_id`
 - Common params: `provenance`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: turn branch/worktree-specific truth into project truth
 
 ### `resolve_conflict`
@@ -437,6 +453,8 @@ records.
   `confirmations` must include `approved_by`, `reason`, `operation`,
   and `target`; `target` must match `winner_record_id`,
   `loser_record_ids`, and resolved `loser_state`.
+- Optional preview param: `dry_run`; dry-run previews do not require
+  confirmations
 - Agent use: settle contradictory memory after human or trusted-agent
   decision
 
@@ -447,6 +465,7 @@ linked review item when present.
 
 - Required params: `suggestion_id`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: accept memory proposed by an untrusted profile
 
 ### `reject_suggestion`
@@ -455,6 +474,7 @@ Rejects a pending suggestion without creating authoritative memory.
 
 - Required params: `suggestion_id`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: discard proposed memory that is incorrect, irrelevant, or
   too weak
 
@@ -464,6 +484,7 @@ Marks a review item deferred until a condition is met.
 
 - Required params: `review_item_id`, `wake_condition`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: postpone review when the correct decision depends on
   future work
 
@@ -473,6 +494,7 @@ Marks a review item resolved.
 
 - Required params: `review_item_id`
 - Mutating: yes
+- Optional preview param: `dry_run`
 - Agent use: close review work after the underlying conflict,
   suggestion, or maintenance concern was handled
 
@@ -517,8 +539,11 @@ Returns full object details for specific IDs.
 
 Lists operation history and effect summaries.
 
-- Params: optional `actor`, `object_id`, `operation_name`, `limit`
+- Params: optional `actor`, `object_id`, `operation_name`, `limit`,
+  `cursor`
 - Default limit: `50`
+- Pagination: use `data.next_cursor` from one response as
+  `params.cursor` on the next request to fetch older operations
 - Mutating: no
 - Agent use: understand who changed memory and what each operation
   affected
@@ -534,10 +559,10 @@ Lists open and deferred review items.
 
 ### `health`
 
-Reports runtime health, conflict count, review count, failed
-maintenance count, profiles, diagnostics, and recommended maintenance.
-It is the recommended first call after agent startup because it can
-surface one-time `release_update` notices.
+Reports runtime health, conflict count, live conflict subjects,
+review count, failed maintenance count, profiles, diagnostics, and
+recommended maintenance. It is the recommended first call after agent
+startup because it can surface one-time `release_update` notices.
 
 - Params today: `{}`
 - Mutating: no
@@ -551,6 +576,7 @@ and registers it as a backup.
 - Params: optional `export_name`
 - Mutating: yes
 - Requires `idempotency_key`: yes
+- Optional preview param: `dry_run`
 - Agent use: preserve state before a large refactor or risky runtime
   operation
 
@@ -568,6 +594,8 @@ backup.
 - Requires `confirmations`: yes
   `confirmations` must include `approved_by`, `reason`, `operation`,
   and `target`; `target` must match `bundle_path` and resolved `mode`.
+- Optional preview param: `dry_run`; dry-run previews do not require
+  confirmations
 
 ### `backup_list`
 
@@ -587,6 +615,8 @@ Restores a registered backup by ID after creating a safety backup.
 - Requires `confirmations`: yes
   `confirmations` must include `approved_by`, `reason`, `operation`,
   and `target`; `target` must match `backup_id`.
+- Optional preview param: `dry_run`; dry-run previews do not require
+  confirmations
 
 ### `maintenance_plan`
 
@@ -609,6 +639,8 @@ Records and executes explicit maintenance operations.
 - Requires `confirmations`: yes
   `confirmations` must include `approved_by`, `reason`, `operation`,
   and `target`; `target` must match the resolved `operations` list.
+- Optional preview param: `dry_run`; dry-run previews do not require
+  confirmations
 
 ## Troubleshooting
 
