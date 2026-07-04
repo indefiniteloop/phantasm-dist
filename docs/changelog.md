@@ -1,14 +1,53 @@
 # Changelog
 
-Phantasm changelog entries are version based. Changes queued after a
-release should go under the next planned version heading immediately,
-even before the release ships. Do not use a placeholder holding
-section.
+Phantasm changelog entries are version based. Each section describes
+what ships in that release. Use concrete version headings rather than
+placeholder holding sections.
+
+## v0.2.2
+
+These changes ship in the Phantasm v0.2.2 release.
+
+### Added
+
+- Added human-friendly memory CLI commands for routine workflows:
+  `phantasm list`, `phantasm show <id>`, `phantasm search "query"`,
+  `phantasm add --kind <kind> --subject <key>`, `phantasm stats`, and
+  `phantasm status`.
+- Added a default `inspect` summary when called without object IDs,
+  including record counts, live/conflict counts, lifecycle state counts,
+  scope counts, review item count, timestamp bounds, and compact live
+  and conflict record lists.
+- Added opt-in `compile.params.explain=true` diagnostics so callers can
+  see why compile candidates were selected or omitted, including
+  candidate rank, selection rank, token estimates, focus-subject
+  influence, lifecycle state, and token-budget omission reasons.
+- Added `ingest.params.review_required=true` so trusted callers can
+  intentionally create suggestions and review items instead of direct
+  authoritative memory for automatic or uncertain writes.
+- Added `write_mode` to ingest dry-run responses so callers can confirm
+  whether a request would write authoritative memory or queue a
+  suggestion.
+- Added a read-only `templates` operation with built-in templates for
+  project identity, architectural decision, operational constraint,
+  known issue, release procedure, environment setup, and deferred task
+  records.
+- Added `scripts/scale_test.sh`, a configurable scale harness covering
+  sequential ingest, concurrent writers, search, compile, snapshot
+  restore, and corrupt-snapshot recovery checks.
+
+### Changed
+
+- Updated `describe`, built-in help, managed agent guidance, public
+  command docs, and the public site to document `review_required`,
+  `compile.explain`, `templates`, the default `inspect` summary, and
+  human-friendly memory commands.
+- Updated internal operator documentation with quick and default scale
+  test commands and guidance on when to run scale/recovery checks.
 
 ## v0.2.1
 
-These changes are queued for the Phantasm v0.2.1 release and have not
-shipped yet.
+These changes shipped in the Phantasm v0.2.1 release.
 
 ### Added
 

@@ -17,12 +17,21 @@ phantasm --version
 phm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
+phantasm list [--kind <kind>] [--settled]
+phantasm show <id>
+phantasm search "query"
+phantasm add --kind decision --subject release-process [--text "..."] [--review]
+phantasm stats
+phantasm status
 phantasm handle-request '<json request envelope>'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json
 ```
 
 `bootstrap` is the normal setup command.
+
+The human memory commands wrap the runtime API for common terminal
+workflows: `list`, `show`, `search`, `add`, `stats`, and `status`.
 
 `handle-request` is the advanced runtime command used by wrappers,
 integrations, and direct testing.
@@ -140,6 +149,31 @@ manually. Text outside the managed Phantasm markers is preserved; manual
 edits inside the managed block are replaced by the current generated
 guidance.
 
+## Human memory commands
+
+These commands are convenience wrappers over the same project runtime
+used by `handle-request`.
+
+```bash
+phantasm list
+phantasm list --kind decision
+phantasm list --settled
+phantasm show rec_example
+phantasm search "release process"
+phantasm add --kind decision --subject release-process
+phantasm add --kind decision --subject release-process --text "Release from main after tests pass." --review
+phantasm stats
+phantasm status
+```
+
+`list` and `search` print compact rows with record id, kind, lifecycle
+state, subject, and payload summary. `show` expands one object id.
+`stats` prints record counts, lifecycle state counts, scope counts,
+review queue size, and timestamps. `status` combines health, counts,
+schema version, and recommended maintenance. `add` creates a memory
+record; use `--review` when the write should enter review instead of
+becoming authoritative immediately.
+
 ## `phantasm handle-request`
 
 Executes one JSON request envelope against the project in the
@@ -232,15 +266,16 @@ until the installed version changes again.
 
 Read-only operations:
 
-- `describe`, `search`, `compile`, `inspect`, `audit`, `review_queue`,
-  `health`, `backup_list`, `maintenance_plan`
+- `describe`, `templates`, `search`, `compile`, `inspect`, `audit`,
+  `review_queue`, `health`, `backup_list`, `maintenance_plan`
 
 Mutating operations:
 
-- `bootstrap`, `ingest`, `revise`, `tombstone`, `archive`, `promote`,
-  `resolve_conflict`, `accept_suggestion`, `reject_suggestion`,
-  `defer_review`, `resolve_review`, `snapshot_export`,
-  `snapshot_import`, `backup_restore`, `maintenance_run`
+- `bootstrap`, `ingest`, `ingest_many`, `revise`, `tombstone`,
+  `tombstone_many`, `archive`, `promote`, `resolve_conflict`,
+  `accept_suggestion`, `reject_suggestion`, `defer_review`,
+  `resolve_review`, `snapshot_export`, `snapshot_import`,
+  `backup_restore`, `maintenance_run`
 
 ### Agent-oriented examples
 
@@ -269,10 +304,35 @@ Compile focused memory for a task:
 phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"]}}'
 ```
 
+Ask compile to explain selected and omitted candidates:
+
+```bash
+phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout-explain","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"],"explain":true}}'
+```
+
+List built-in memory templates:
+
+```bash
+phantasm handle-request '{"api_version":"v1","operation":"templates","request_id":"templates-1","client":{"profile":"codex"},"params":{}}'
+```
+
 Ingest a durable project decision:
 
 ```bash
 phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"provenance":{"source":"agent","reason":"captured during implementation"}}}'
+```
+
+Create an ingest suggestion for review instead of writing authoritative
+memory immediately:
+
+```bash
+phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-review-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-review-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"review_required":true}}'
+```
+
+Ingest multiple independent records with per-item idempotency:
+
+```bash
+phantasm handle-request '{"api_version":"v1","operation":"ingest_many","request_id":"ingest-auth-batch","client":{"profile":"codex"},"idempotency_key":"ingest-auth-batch-v1","params":{"items":[{"idempotency_key":"ingest-auth-timeout-v1","record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."}},{"idempotency_key":"ingest-auth-issuer-v1","record_kind":"constraint","subject_key":"auth.issuer","payload":{"text":"Issuer validation is required."}}]}}'
 ```
 
 Preview an ingest without writing runtime state:
@@ -285,6 +345,12 @@ Inspect a returned object:
 
 ```bash
 phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-1","client":{"profile":"codex"},"params":{"record_id":"rec_example"}}'
+```
+
+Inspect the default project memory summary:
+
+```bash
+phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-summary","client":{"profile":"codex"},"params":{}}'
 ```
 
 Export a named snapshot:
@@ -379,24 +445,57 @@ this operation through `handle-request`.
 - Requires `idempotency_key`: yes when called through `handle-request`,
   unless `dry_run=true`
 
+### `templates`
+
+Returns built-in templates for common memory record kinds, including
+project identity, architectural decision, operational constraint, known
+issue, release procedure, environment setup, and deferred task.
+
+- Optional params: `template_id`
+- Read-only: yes
+- Runtime required: no
+- Agent use: choose a structured `record_kind`, `subject_key`, payload,
+  and provenance shape before calling `ingest`
+
 ### `ingest`
 
 Creates new memory. Trusted client profiles create authoritative
 records. Untrusted profiles create suggestions plus review items so a
-human or trusted agent can review them later. Use `revise`, not
-`ingest`, to update an existing record. A duplicate `subject_key`
+human or trusted agent can review them later. Trusted callers may also
+set `review_required=true` to force suggestion/review behavior when an
+automatic ingest is not clearly low-risk or explicitly approved. Use
+`revise`, not `ingest`, to update an existing record. A duplicate `subject_key`
 ingest is refused while a live record exists and returns guidance that
 points to `revise` with the existing record id.
 
 - Required params: `record_kind`, `payload`
 - Common params: `scope`, `subject_key`, `provenance`, `sensitivity`,
-  `raw_evidence`, `dry_run`
+  `raw_evidence`, `dry_run`, `review_required`
 - Mutating: yes
 - Dry-run behavior: returns a no-write preview, including
   `would_create` or `would_update` for trusted profiles and
   suggestion-preview output for untrusted profiles
 - Agent use: capture durable decisions, constraints, implementation
-  facts, or evidence after confirming they are new project truth
+  facts, or evidence after confirming they are new project truth; set
+  `review_required=true` for automatic or uncertain writes
+
+### `ingest_many`
+
+Creates multiple memory records in one request. Each item is processed
+independently and carries its own `idempotency_key`, so replay safety is
+tracked per item rather than only at the envelope level. Successful
+items are not rolled back when another item fails.
+
+- Required params: `items`
+- Each `items[]` entry requires: `idempotency_key`, `record_kind`,
+  `payload`
+- Common item params: `scope`, `subject_key`, `provenance`,
+  `sensitivity`, `raw_evidence`, `dry_run`, `review_required`
+- Mutating: yes
+- Batch result fields: `results`, `count`, `ok_count`, `error_count`,
+  `replayed_count`
+- Agent use: capture several independent facts in one request while
+  preserving per-item replay and failure reporting
 
 ### `revise`
 
@@ -416,6 +515,21 @@ Retires a record because it should no longer be treated as truth.
 - Optional preview param: `dry_run`
 - Agent use: remove known-bad memory from ordinary use while keeping an
   audit trail
+
+### `tombstone_many`
+
+Retires multiple records in one request. Each `items[]` entry carries
+its own `idempotency_key` and `record_id`, and successful items are not
+rolled back if another item fails validation or transition.
+
+- Required params: `items`
+- Each `items[]` entry requires: `idempotency_key`, `record_id`
+- Common item params: `reason`, `dry_run`
+- Mutating: yes
+- Batch result fields: `results`, `count`, `ok_count`, `error_count`,
+  `replayed_count`
+- Agent use: remove several invalid records from the default truth set
+  together while keeping per-item auditability
 
 ### `archive`
 

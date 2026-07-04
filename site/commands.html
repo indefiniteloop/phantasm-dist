@@ -61,6 +61,12 @@ phantasm --version
 phm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file &lt;path&gt;]
 phantasm agents --add [project-path] [--agent-file &lt;path&gt;]
+phantasm list [--kind &lt;kind&gt;] [--settled]
+phantasm show &lt;id&gt;
+phantasm search "query"
+phantasm add --kind decision --subject release-process [--text "..."] [--review]
+phantasm stats
+phantasm status
 phantasm handle-request '&lt;json request envelope&gt;'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json</code></pre>
@@ -83,6 +89,21 @@ phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md
 phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. After updating Phantasm, rerun the command to replace the managed block in place; do not delete and re-add it manually. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup, preserves text outside the managed markers, and prompts for confirmation with a <code>y/N</code> question.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Human memory commands</h2>
+        <p>These commands wrap the same project runtime used by <code>handle-request</code>, but avoid hand-written JSON for routine inspection and simple memory creation.</p>
+        <pre><code>phantasm list
+phantasm list --kind decision
+phantasm list --settled
+phantasm show rec_example
+phantasm search "release process"
+phantasm add --kind decision --subject release-process
+phantasm add --kind decision --subject release-process --text "Release from main after tests pass." --review
+phantasm stats
+phantasm status</code></pre>
+        <p><code>list</code> and <code>search</code> print compact rows with record id, kind, lifecycle state, subject, and payload summary. <code>show</code> expands one object id. <code>stats</code> prints record counts, lifecycle state counts, scope counts, review queue size, and timestamps. <code>status</code> combines health, counts, schema version, and recommended maintenance. <code>add</code> creates a memory record; use <code>--review</code> when the write should enter review instead of becoming authoritative immediately.</p>
       </section>
 
       <section class="panel">
@@ -131,11 +152,15 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</code></pre>
         <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code></pre>
         <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"templates","request_id":"templates-1","client":{"profile":"codex"},"params":{}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"search","request_id":"search-auth-timeout","client":{"profile":"codex"},"params":{"query":"auth timeout","filters":{"include_conflicts":true,"review_augmented_view":true}}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"]}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"],"explain":true}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"provenance":{"source":"agent","reason":"captured during implementation"}}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-review-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-review-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"review_required":true}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest_many","request_id":"ingest-auth-batch","client":{"profile":"codex"},"idempotency_key":"ingest-auth-batch-v1","params":{"items":[{"idempotency_key":"ingest-auth-timeout-v1","record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."}},{"idempotency_key":"ingest-auth-issuer-v1","record_kind":"constraint","subject_key":"auth.issuer","payload":{"text":"Issuer validation is required."}}]}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout-preview","client":{"profile":"codex"},"params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"dry_run":true}}'</code></pre>
+        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-summary","client":{"profile":"codex"},"params":{}}'</code></pre>
         <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-1","client":{"profile":"codex"},"params":{"record_id":"rec_example"}}'</code></pre>
       </section>
 
@@ -143,9 +168,12 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <h2>Operation reference</h2>
         <p><strong><code>describe</code></strong> is the important agent discovery operation. It returns machine-readable API schema, response schema, operation params, safety rules, and runnable examples. Optional param: <code>target</code>; use <code>all</code>, <code>*</code>, <code>api</code>, or an operation name such as <code>ingest</code>. <code>all</code>, <code>*</code>, and <code>api</code> return the complete catalog/schema plus <code>cli</code>, <code>request_transport</code>, and <code>notices</code> metadata. Short form is supported: <code>{"operation":"describe","params":{"target":"ingest"}}</code>.</p>
         <p><strong><code>bootstrap</code></strong> initializes or verifies <code>.phantasm/</code>. Humans usually use the top-level <code>phantasm bootstrap</code> command. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>ingest</code></strong> creates new memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Use <code>revise</code>, not <code>ingest</code>, to update an existing record; duplicate <code>subject_key</code> ingests are refused while a live record exists and return the existing record id. Required params: <code>record_kind</code>, <code>payload</code>. Common optional params include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>sensitivity</code>, <code>raw_evidence</code>, and <code>dry_run</code>. Dry runs return no-write preview output such as <code>would_create</code> or <code>would_update</code>.</p>
+        <p><strong><code>templates</code></strong> returns built-in templates for common memory record kinds such as project identity, architectural decision, operational constraint, known issue, release procedure, environment setup, and deferred task. Optional param: <code>template_id</code>. It is read-only and does not require a bootstrapped runtime.</p>
+        <p><strong><code>ingest</code></strong> creates new memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Trusted callers can set <code>review_required=true</code> to force suggestion/review behavior. Use <code>revise</code>, not <code>ingest</code>, to update an existing record; duplicate <code>subject_key</code> ingests are refused while a live record exists and return the existing record id. Required params: <code>record_kind</code>, <code>payload</code>. Common optional params include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>sensitivity</code>, <code>raw_evidence</code>, <code>dry_run</code>, and <code>review_required</code>. Dry runs return no-write preview output including <code>write_mode</code>, <code>would_create</code>, or <code>would_update</code>.</p>
+        <p><strong><code>ingest_many</code></strong> creates multiple memory records in one request. Required param: <code>items</code>. Each <code>items[]</code> entry requires <code>idempotency_key</code>, <code>record_kind</code>, and <code>payload</code>, and may include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>sensitivity</code>, <code>raw_evidence</code>, <code>dry_run</code>, and <code>review_required</code>. Successful items are not rolled back when another item fails, and the batch response reports <code>results</code>, <code>ok_count</code>, <code>error_count</code>, and <code>replayed_count</code>.</p>
         <p><strong><code>revise</code></strong> creates a successor and supersedes a target record. Required params: <code>target_record_id</code>, <code>payload</code>. Optional preview param: <code>dry_run</code>.</p>
         <p><strong><code>tombstone</code></strong> retires invalid truth. Required params: <code>record_id</code>. Optional preview param: <code>dry_run</code>.</p>
+        <p><strong><code>tombstone_many</code></strong> retires multiple records in one request. Required param: <code>items</code>. Each <code>items[]</code> entry requires <code>idempotency_key</code> and <code>record_id</code>, and may include <code>reason</code> and <code>dry_run</code>. Successful items are not rolled back when another item fails, and replay safety is tracked per item.</p>
         <p><strong><code>archive</code></strong> keeps memory for audit while excluding it from ordinary search and compile. Required params: <code>record_id</code>. Optional preview param: <code>dry_run</code>.</p>
         <p><strong><code>promote</code></strong> promotes scoped memory into project truth. Required params: <code>source_record_id</code>. Optional preview param: <code>dry_run</code>.</p>
         <p><strong><code>resolve_conflict</code></strong> chooses a winning record and retires losers. Required params: <code>winner_record_id</code>, <code>loser_record_ids</code>. Optional <code>loser_state</code> defaults to <code>superseded</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the winner, losers, and resolved loser state. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
@@ -154,8 +182,8 @@ phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
         <p><strong><code>defer_review</code></strong> defers a review item. Required params: <code>review_item_id</code>, <code>wake_condition</code>. Optional preview param: <code>dry_run</code>.</p>
         <p><strong><code>resolve_review</code></strong> marks a review item resolved. Required params: <code>review_item_id</code>. Optional preview param: <code>dry_run</code>.</p>
         <p><strong><code>search</code></strong> finds records by optional <code>query</code>, optional <code>match_mode</code> (<code>tokens</code> default, <code>exact</code>, or <code>fuzzy</code>), optional <code>rank_by</code> (<code>deterministic</code> or <code>relevance</code>), optional <code>group_by=record_kind</code>, and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, <code>worktree_id</code>, <code>subject_key</code>, <code>record_kind</code>, <code>created_after</code>, <code>created_before</code>, <code>payload_contains</code>, and <code>payload_matches</code>.</p>
-        <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, and search-style filters.</p>
-        <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>.</p>
+        <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, <code>explain</code>, and search-style filters. When <code>explain=true</code>, the response includes <code>selection_diagnostics</code> for selected and omitted candidates.</p>
+        <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>. With empty params, it returns a default memory summary with live records, scopes, lifecycle states, conflicts, and timestamps.</p>
         <p><strong><code>audit</code></strong> lists operation history and effects. Params: optional <code>actor</code>, <code>object_id</code>, <code>operation_name</code>, <code>limit</code>.</p>
         <p><strong><code>review_queue</code></strong> lists open and deferred review items.</p>
         <p><strong><code>health</code></strong> reports runtime health, conflicts, review count, failed maintenance, diagnostics, recommendations, and first-call release notices after binary updates.</p>

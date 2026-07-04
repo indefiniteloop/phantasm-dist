@@ -19,7 +19,8 @@ auditing, snapshotting, and maintaining project memory.
 - Memory is project-scoped, not one global machine-wide memory bucket.
 - Runtime state is local to each repository under `.phantasm/state/`.
 - Durable truth lives in a single authoritative SQLite store per project.
-- The top-level CLI exposes `bootstrap`, `agents --add`, and `handle-request`.
+- The top-level CLI exposes `bootstrap`, `agents --add`, human memory commands, and `handle-request`.
+- Human memory commands include `list`, `show <id>`, `search "query"`, `add --kind <kind> --subject <key>`, `stats`, and `status`.
 - `phm` is installed as a shorthand alias for the same CLI as `phantasm`.
 - Requests use an explicit JSON envelope with versioned operations.
 - handle-request input can be passed as one argv JSON string, `--stdin`, or `--file <path>`.
@@ -28,9 +29,13 @@ auditing, snapshotting, and maintaining project memory.
 - Complete describe targets also return CLI alias and request transport metadata.
 - Every response includes `notices`; release_update notices appear once per project/client profile after a binary update.
 - Search uses deterministic token matching by default and supports exact or fuzzy discovery modes.
+- Compile is deterministic by default and supports opt-in `explain` diagnostics for selected and omitted context candidates.
+- Inspect with empty params returns a default memory summary with live records, scopes, lifecycle states, conflicts, review count, and timestamps.
+- The read-only `templates` operation returns common record templates for project identity, architectural decisions, operational constraints, known issues, release procedures, environment setup, and deferred tasks.
 - High-impact mutations require structured confirmations with approved_by, reason, operation, and a target matching the request.
 - Ingest creates new memory; use revise to update existing records. Duplicate subject_key ingests are refused while a live record exists and return the existing record id with revise guidance.
-- Compile is designed to be deterministic for the same runtime state and request.
+- Trusted ingest callers can set `review_required=true` to create a suggestion and review item instead of authoritative memory.
+- Batch mutations `ingest_many` and `tombstone_many` process multiple items in one request using per-item idempotency keys and per-item result status.
 
 ## Core CLI
 
@@ -42,6 +47,12 @@ phantasm --version
 phm --version
 phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
+phantasm list
+phantasm show <id>
+phantasm search "query"
+phantasm add --kind decision --subject release-process
+phantasm stats
+phantasm status
 phantasm handle-request '<json request envelope>'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json
@@ -70,9 +81,12 @@ phantasm agents --add
 
 - describe
 - bootstrap
+- templates
 - ingest
+- ingest_many
 - revise
 - tombstone
+- tombstone_many
 - archive
 - promote
 - resolve_conflict

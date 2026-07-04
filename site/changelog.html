@@ -53,16 +53,39 @@
         <p class="eyebrow">Changelog</p>
         <h1>Release notes by version</h1>
         <p class="page-lede">
-          Changelog entries are version based. Changes queued after a release should go under the
-          next planned version heading immediately, even before the release ships. Do not use a
-          placeholder holding section.
+          Changelog entries are version based. Each section describes what ships in that release.
+          Use concrete version headings rather than placeholder holding sections.
         </p>
       </header>
 
       <section class="panel">
+        <h2>v0.2.2</h2>
+        <p>
+          These changes ship in the Phantasm v0.2.2 release.
+        </p>
+
+        <h3>Added</h3>
+        <ul class="list-tight">
+          <li>Added human-friendly memory CLI commands for routine workflows: <code>phantasm list</code>, <code>phantasm show &lt;id&gt;</code>, <code>phantasm search "query"</code>, <code>phantasm add --kind &lt;kind&gt; --subject &lt;key&gt;</code>, <code>phantasm stats</code>, and <code>phantasm status</code>.</li>
+          <li>Added a default <code>inspect</code> summary when called without object IDs, including record counts, live/conflict counts, lifecycle state counts, scope counts, review item count, timestamp bounds, and compact live and conflict record lists.</li>
+          <li>Added opt-in <code>compile.params.explain=true</code> diagnostics so callers can see why compile candidates were selected or omitted, including candidate rank, selection rank, token estimates, focus-subject influence, lifecycle state, and token-budget omission reasons.</li>
+          <li>Added <code>ingest.params.review_required=true</code> so trusted callers can intentionally create suggestions and review items instead of direct authoritative memory for automatic or uncertain writes.</li>
+          <li>Added <code>write_mode</code> to ingest dry-run responses so callers can confirm whether a request would write authoritative memory or queue a suggestion.</li>
+          <li>Added a read-only <code>templates</code> operation with built-in templates for project identity, architectural decision, operational constraint, known issue, release procedure, environment setup, and deferred task records.</li>
+          <li>Added <code>scripts/scale_test.sh</code>, a configurable scale harness covering sequential ingest, concurrent writers, search, compile, snapshot restore, and corrupt-snapshot recovery checks.</li>
+        </ul>
+
+        <h3>Changed</h3>
+        <ul class="list-tight">
+          <li>Updated <code>describe</code>, built-in help, managed agent guidance, public command docs, and the public site to document <code>review_required</code>, <code>compile.explain</code>, <code>templates</code>, the default <code>inspect</code> summary, and human-friendly memory commands.</li>
+          <li>Updated internal operator documentation with quick and default scale test commands and guidance on when to run scale/recovery checks.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
         <h2>v0.2.1</h2>
         <p>
-          These changes are queued for the Phantasm v0.2.1 release and have not shipped yet.
+          These changes shipped in the Phantasm v0.2.1 release.
         </p>
 
         <h3>Added</h3>
