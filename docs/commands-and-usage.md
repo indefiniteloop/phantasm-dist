@@ -266,8 +266,9 @@ until the installed version changes again.
 
 Read-only operations:
 
-- `describe`, `templates`, `search`, `compile`, `inspect`, `audit`,
-  `review_queue`, `health`, `backup_list`, `maintenance_plan`
+- `describe`, `templates`, `search`, `duplicate_review`, `compile`,
+  `inspect`, `audit`, `review_queue`, `stale_review`, `health`,
+  `backup_list`, `maintenance_plan`
 
 Mutating operations:
 
@@ -275,7 +276,7 @@ Mutating operations:
   `tombstone_many`, `archive`, `promote`, `resolve_conflict`,
   `accept_suggestion`, `reject_suggestion`, `defer_review`,
   `resolve_review`, `snapshot_export`, `snapshot_import`,
-  `backup_restore`, `maintenance_run`
+  `memory_export`, `memory_import`, `backup_restore`, `maintenance_run`
 
 ### Agent-oriented examples
 
@@ -470,7 +471,7 @@ points to `revise` with the existing record id.
 
 - Required params: `record_kind`, `payload`
 - Common params: `scope`, `subject_key`, `provenance`, `sensitivity`,
-  `raw_evidence`, `dry_run`, `review_required`
+  `quality`, `raw_evidence`, `dry_run`, `review_required`
 - Mutating: yes
 - Dry-run behavior: returns a no-write preview, including
   `would_create` or `would_update` for trusted profiles and
@@ -490,7 +491,7 @@ items are not rolled back when another item fails.
 - Each `items[]` entry requires: `idempotency_key`, `record_kind`,
   `payload`
 - Common item params: `scope`, `subject_key`, `provenance`,
-  `sensitivity`, `raw_evidence`, `dry_run`, `review_required`
+  `quality`, `sensitivity`, `raw_evidence`, `dry_run`, `review_required`
 - Mutating: yes
 - Batch result fields: `results`, `count`, `ok_count`, `error_count`,
   `replayed_count`
@@ -502,7 +503,7 @@ items are not rolled back when another item fails.
 Creates a successor record and supersedes the target record.
 
 - Required params: `target_record_id`, `payload`
-- Common params: `provenance`, `sensitivity`, `raw_evidence`, `dry_run`
+- Common params: `provenance`, `quality`, `sensitivity`, `raw_evidence`, `dry_run`
 - Mutating: yes
 - Agent use: replace stale memory without losing lineage
 
@@ -624,9 +625,24 @@ Finds memory records deterministically.
   `include_sensitive`, `review_augmented_view`,
   `include_raw_evidence`, `branch_name`, `worktree_id`,
   `subject_key`, `record_kind`, `created_after`, `created_before`,
-  `payload_contains`, `payload_matches`
+  `payload_contains`, `payload_matches`, `quality_confidence`,
+  `quality_source_type`, `quality_verified_before`,
+  `quality_verified_after`, `quality_expires_before`,
+  `quality_expires_after`, `quality_author`
 - Mutating: no
 - Agent use: look up prior decisions and constraints before editing
+
+### `duplicate_review`
+
+Finds likely semantic overlap between records and returns consolidation
+guidance without mutating memory.
+
+- Params: optional `min_similarity` (0-100, default `60`), `limit`
+  (default `20`), `include_cross_kind`, and `filters`
+- Response: duplicate groups with similarity score, members, preferred
+  canonical record, and `inspect`, `revise`, and `archive` actions
+- Mutating: no
+- Agent use: review likely duplicates before consolidating memory
 
 ### `compile`
 
@@ -637,6 +653,19 @@ Builds a deterministic context payload for an agent.
 - Uses the same filter keys as `search`
 - Mutating: no
 - Agent use: gather concise project memory for the current task
+
+### `stale_review`
+
+Finds records that need freshness review or may be affected by changed
+files.
+
+- Params: optional `max_age_days` (default `30`), `as_of` (`YYYY-MM-DD`),
+  `changed_files`, `include_missing_verified_at`, and `filters`
+- Response: candidates with reasons such as missing verification, stale
+  age, expiry, revalidation due, or changed-file impact, plus suggested
+  `inspect`, `revise`, and `archive` actions
+- Mutating: no
+- Agent use: review memory before or after code changes and maintenance
 
 ### `inspect`
 
@@ -710,6 +739,36 @@ backup.
   and `target`; `target` must match `bundle_path` and resolved `mode`.
 - Optional preview param: `dry_run`; dry-run previews do not require
   confirmations
+
+### `memory_export`
+
+Writes deterministic Git-reviewable project memory to a relative path
+inside the project.
+
+- Required params: `path`
+- Optional params: `format` (`json` default or `markdown`), `filters`,
+  `dry_run`
+- `json`: canonical `phantasm.memory.v1` format and the only importable
+  format
+- `markdown`: review-only rendering of the same records
+- Sensitive records: excluded by default; require
+  `filters.include_sensitive=true`, sensitive-read access, and an
+  export-capable client profile
+- Mutating: yes, because it writes the selected project file
+- Requires `idempotency_key`: yes unless `dry_run=true`
+
+### `memory_import`
+
+Adds records from a reviewed canonical JSON memory document.
+
+- Required params: `path` to a project-relative
+  `phantasm.memory.v1` JSON file
+- Behavior: additive; imported provenance records the import path and
+  duplicate live subject keys are rejected with revise guidance
+- Markdown exports are intentionally not importable
+- Mutating: yes
+- Requires `idempotency_key`: yes unless `dry_run=true`
+- Optional preview param: `dry_run`
 
 ### `backup_list`
 

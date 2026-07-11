@@ -125,7 +125,7 @@ phm --version
 You should see output like:
 
 ```text
-phantasm 0.2.2
+phantasm 0.2.3
 ```
 
 You can also inspect the built-in help:
@@ -258,6 +258,14 @@ first-call-after-update release notices.
 Use `target="all"` or `target="*"` for the complete operation catalog,
 `target="api"` for the complete API schema, and an operation name such
 as `ingest` for a focused schema.
+
+For v0.2.3, discover `stale_review`, `duplicate_review`,
+`memory_export`, and `memory_import` through the same surface. Store
+confidence, source, verification, expiry, revalidation, and authorship
+with record `quality` metadata. Export canonical JSON to a
+project-relative path for Git review; Markdown exports are review-only,
+and sensitive exports need a profile with `allow_sensitive_export=true`
+as well as explicit sensitive inclusion.
 
 That means:
 

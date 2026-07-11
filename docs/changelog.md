@@ -4,6 +4,45 @@ Phantasm changelog entries are version based. Each section describes
 what ships in that release. Use concrete version headings rather than
 placeholder holding sections.
 
+## v0.2.3
+
+These changes ship in the Phantasm v0.2.3 release.
+
+### Added
+
+- Added first-class `quality` metadata for records and suggestions.
+  Ingest and revise accept confidence, source, verification, expiration,
+  revalidation, and authorship fields; search and compile can filter on
+  that metadata.
+- Added read-only `stale_review` for memories with missing or old
+  verification, expiration or revalidation due dates, and changed-file
+  impact. It returns candidates, reasons, and follow-up actions.
+- Added read-only `duplicate_review` for likely semantic overlaps. It
+  returns similarity groups, a preferred canonical record, and
+  inspection/consolidation actions.
+- Added `memory_export` for deterministic Git-reviewable memory files:
+  canonical `phantasm.memory.v1` JSON is importable, while Markdown is
+  a review-only rendering. Export paths must be project-relative.
+- Added additive `memory_import` from reviewed canonical JSON. Imported
+  records retain their source data and record the import path in
+  provenance; duplicate live subject keys are rejected with normal
+  revise guidance.
+
+### Changed
+
+- Updated `describe`, built-in help, managed agent guidance, README,
+  public command docs, public site, and maintainer references to cover
+  quality metadata, review workflows, and memory exchange.
+- Updated release notices so the first successful request after a
+  v0.2.3 upgrade directs agents to discover the new surface and review
+  memory quality before importing/exporting project truth.
+
+### Security
+
+- Sensitive records remain excluded from memory exports by default.
+  Exporting them requires `filters.include_sensitive=true`, sensitive
+  read permission, and an export-capable client profile.
+
 ## v0.2.2
 
 These changes ship in the Phantasm v0.2.2 release.

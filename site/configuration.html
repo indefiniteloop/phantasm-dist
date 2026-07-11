@@ -7,7 +7,7 @@
     <meta name="description" content="Reference for every config option created by phantasm bootstrap, including phantasm.toml, clients.toml, defaults, supported values, and current limitations.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="Manoj Sachwani">
-    <meta name="theme-color" content="#120726">
+    <meta name="theme-color" content="#08080b">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Phantasm">
     <meta property="og:title" content="Phantasm Configuration Reference">
@@ -24,31 +24,32 @@
         "@type": "TechArticle",
         "headline": "Phantasm Configuration Reference",
         "description": "Reference for every config option produced by phantasm bootstrap.",
-        "author": {
-          "@type": "Person",
-          "name": "Manoj Sachwani",
-          "url": "https://manojsachwani.com"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Phantasm"
-        }
+        "author": { "@type": "Person", "name": "Manoj Sachwani", "url": "https://manojsachwani.com" },
+        "publisher": { "@type": "Organization", "name": "Phantasm" }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="shell">
-      <nav class="topnav">
-        <a href="./index.html">Home</a>
-        <a href="./getting-started.html">Getting Started</a>
-        <a href="./configuration.html">Configuration</a>
-        <a href="./commands.html">Commands</a>
-        <a href="./why-phantasm.html">Why Phantasm</a>
-        <a href="./architecture.html">Architecture</a>
-        <a href="./changelog.html">Changelog</a>
-      </nav>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="Phantasm"></a>
+        <div class="nav-links">
+          <a href="./getting-started.html">Getting Started</a>
+          <a href="./configuration.html" class="is-current">Configuration</a>
+          <a href="./commands.html">Commands</a>
+          <a href="./why-phantasm.html">Why Phantasm</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./changelog.html">Changelog</a>
+          <a class="nav-cta" href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </nav>
 
+    <main class="shell">
       <header class="page-header page-header-wide">
         <p class="eyebrow">Configuration</p>
         <h1>Every config option created by bootstrap</h1>
@@ -60,9 +61,10 @@
         </p>
       </header>
 
-      <section class="panel">
-        <h2>Generated layout</h2>
-        <pre><code>.phantasm/
+      <section class="section-first">
+        <div class="panel">
+          <h2>Generated layout</h2>
+          <pre><code>.phantasm/
 ├── phantasm.toml
 ├── clients.toml
 └── state/
@@ -72,43 +74,43 @@
     ├── logs/
     ├── raw/
     └── tmp/</code></pre>
-        <p>
-          Only <code>phantasm.toml</code> and <code>clients.toml</code> are public config files
-          today. The rest of the runtime layout is state, storage, or derived output.
-        </p>
-      </section>
-
-      <section class="panel">
-        <h2><code>phantasm.toml</code></h2>
-        <pre><code>version = "v1"
-default_client = "generic_mcp"</code></pre>
-        <div class="faq-list">
-          <div class="faq-item">
-            <h3><code>version</code></h3>
-            <p>
-              Type: quoted string. Default: <code>"v1"</code>. This is the config schema version.
-              The runtime currently accepts only <code>v1</code>.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>default_client</code></h3>
-            <p>
-              Type: quoted string. Default: <code>"generic_mcp"</code>. This selects the client
-              profile Phantasm should treat as the default when a runtime consumer relies on config
-              rather than hard-coding a profile selection.
-            </p>
-          </div>
+          <p>
+            Only <code>phantasm.toml</code> and <code>clients.toml</code> are public config files
+            today. The rest of the runtime layout is state, storage, or derived output.
+          </p>
         </div>
-        <p class="note">
-          Valid values for <code>default_client</code> are the names present in
-          <code>clients.toml</code>. The shipped built-ins are <code>generic_mcp</code>,
-          <code>codex</code>, and <code>claude_code</code>.
-        </p>
-      </section>
 
-      <section class="panel">
-        <h2><code>clients.toml</code></h2>
-        <pre><code>version = "v1"
+        <div class="panel">
+          <h2><code>phantasm.toml</code></h2>
+          <pre><code>version = "v1"
+default_client = "generic_mcp"</code></pre>
+          <div class="grid-2" style="margin-top: 16px;">
+            <div class="card">
+              <h3><code>version</code></h3>
+              <p>
+                Type: quoted string. Default: <code>"v1"</code>. This is the config schema version.
+                The runtime currently accepts only <code>v1</code>.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>default_client</code></h3>
+              <p>
+                Type: quoted string. Default: <code>"generic_mcp"</code>. This selects the client
+                profile Phantasm should treat as the default when a runtime consumer relies on config
+                rather than hard-coding a profile selection.
+              </p>
+            </div>
+          </div>
+          <p style="margin-top: 16px;">
+            Valid values for <code>default_client</code> are the names present in
+            <code>clients.toml</code>. The shipped built-ins are <code>generic_mcp</code>,
+            <code>codex</code>, and <code>claude_code</code>.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h2><code>clients.toml</code></h2>
+          <pre><code>version = "v1"
 
 # User-defined profiles must inherit from exactly one built-in profile.
 # Built-ins: generic_mcp, codex, claude_code
@@ -118,116 +120,120 @@ default_client = "generic_mcp"</code></pre>
 # inherits = "codex"
 # display_name = "Codex Read Only"
 # allow_authoritative_writes = false</code></pre>
-        <p>
-          The top-level file key is <code>version</code>. Custom profiles live under
-          <code>[profiles.&lt;name&gt;]</code> sections.
-        </p>
-        <div class="faq-list">
-          <div class="faq-item">
-            <h3><code>version</code></h3>
-            <p>
-              Type: quoted string. Default: <code>"v1"</code>. This is the client-profile schema
-              version, and only <code>v1</code> is accepted today.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>inherits</code></h3>
-            <p>
-              Type: quoted string. Required inside every custom profile section. The value must be
-              one built-in profile: <code>generic_mcp</code>, <code>codex</code>, or
-              <code>claude_code</code>.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>display_name</code></h3>
-            <p>
-              Type: quoted string. Optional. If omitted, Phantasm derives a display name from the
-              profile section name by replacing underscores with spaces.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>allow_suggestions</code></h3>
-            <p>
-              Type: boolean. Optional. Overrides whether the profile can create suggestion-shaped
-              mutations. If omitted, the value is inherited from the built-in parent profile.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>allow_authoritative_writes</code></h3>
-            <p>
-              Type: boolean. Optional. Controls whether the profile can perform authoritative
-              runtime writes. Omitted values inherit from the built-in parent.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>allow_sensitive_read</code></h3>
-            <p>
-              Type: boolean. Optional. Controls whether the profile can perform sensitive reads.
-              Omitted values inherit from the built-in parent.
-            </p>
-          </div>
-          <div class="faq-item">
-            <h3><code>allow_sensitive_export</code></h3>
-            <p>
-              Type: boolean. Optional. Controls whether the profile can export sensitive data.
-              Omitted values inherit from the built-in parent.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2>Built-in profiles</h2>
-        <div class="matrix-table" role="table" aria-label="Built-in Phantasm client profiles">
-          <div class="matrix-row matrix-head" role="row">
-            <div role="columnheader">Profile</div>
-            <div role="columnheader">Suggestions</div>
-            <div role="columnheader">Authoritative writes</div>
-            <div role="columnheader">Sensitive read / export</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell"><code>generic_mcp</code></div>
-            <div role="cell">Allowed</div>
-            <div role="cell">Not allowed</div>
-            <div role="cell">Not allowed / Not allowed</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell"><code>codex</code></div>
-            <div role="cell">Allowed</div>
-            <div role="cell">Allowed</div>
-            <div role="cell">Not allowed / Not allowed</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell"><code>claude_code</code></div>
-            <div role="cell">Allowed</div>
-            <div role="cell">Allowed</div>
-            <div role="cell">Not allowed / Not allowed</div>
+          <p>
+            The top-level file key is <code>version</code>. Custom profiles live under
+            <code>[profiles.&lt;name&gt;]</code> sections.
+          </p>
+          <div class="grid-2" style="margin-top: 16px;">
+            <div class="card">
+              <h3><code>version</code></h3>
+              <p>
+                Type: quoted string. Default: <code>"v1"</code>. This is the client-profile schema
+                version, and only <code>v1</code> is accepted today.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>inherits</code></h3>
+              <p>
+                Type: quoted string. Required inside every custom profile section. The value must be
+                one built-in profile: <code>generic_mcp</code>, <code>codex</code>, or
+                <code>claude_code</code>.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>display_name</code></h3>
+              <p>
+                Type: quoted string. Optional. If omitted, Phantasm derives a display name from the
+                profile section name by replacing underscores with spaces.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>allow_suggestions</code></h3>
+              <p>
+                Type: boolean. Optional. Overrides whether the profile can create suggestion-shaped
+                mutations. If omitted, the value is inherited from the built-in parent profile.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>allow_authoritative_writes</code></h3>
+              <p>
+                Type: boolean. Optional. Controls whether the profile can perform authoritative
+                runtime writes. Omitted values inherit from the built-in parent.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>allow_sensitive_read</code></h3>
+              <p>
+                Type: boolean. Optional. Controls whether the profile can perform sensitive reads.
+                Omitted values inherit from the built-in parent.
+              </p>
+            </div>
+            <div class="card">
+              <h3><code>allow_sensitive_export</code></h3>
+              <p>
+                Type: boolean. Optional. Controls whether the profile can export sensitive data.
+                Omitted values inherit from the built-in parent.
+              </p>
+            </div>
           </div>
         </div>
-      </section>
 
-      <section class="panel">
-        <h2>Current limitations</h2>
-        <ul class="compare-list">
-          <li>There is no supported post-bootstrap config key for context length or token budget yet.</li>
-          <li>There is no model-selection key in the generated runtime config files yet.</li>
-          <li>Unknown keys in custom client profile sections are rejected as config errors.</li>
-          <li>Comments are supported, but values must still use the expected quoted-string or boolean format.</li>
-        </ul>
-      </section>
+        <div class="panel">
+          <h2>Built-in profiles</h2>
+          <div class="matrix-table" role="table" aria-label="Built-in Phantasm client profiles">
+            <div class="matrix-row matrix-head" role="row">
+              <div role="columnheader">Profile</div>
+              <div role="columnheader">Suggestions</div>
+              <div role="columnheader">Authoritative writes</div>
+              <div role="columnheader">Sensitive read / export</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell"><code>generic_mcp</code></div>
+              <div role="cell">Allowed</div>
+              <div role="cell">Not allowed</div>
+              <div role="cell">Not allowed / Not allowed</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell"><code>codex</code></div>
+              <div role="cell">Allowed</div>
+              <div role="cell">Allowed</div>
+              <div role="cell">Not allowed / Not allowed</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell"><code>claude_code</code></div>
+              <div role="cell">Allowed</div>
+              <div role="cell">Allowed</div>
+              <div role="cell">Not allowed / Not allowed</div>
+            </div>
+          </div>
+        </div>
 
-      <section class="panel">
-        <h2>Related docs</h2>
-        <p>
-          For the Markdown version of this reference, see
-          <a href="https://github.com/indefiniteloop/phantasm-dist/blob/main/docs/configuration-reference.md?utm_source=phatasm" target="_blank">configuration-reference.md</a>.
-        </p>
+        <div class="panel">
+          <h2>Current limitations</h2>
+          <ul class="list-tight">
+            <li>There is no supported post-bootstrap config key for context length or token budget yet.</li>
+            <li>There is no model-selection key in the generated runtime config files yet.</li>
+            <li>Unknown keys in custom client profile sections are rejected as config errors.</li>
+            <li>Comments are supported, but values must still use the expected quoted-string or boolean format.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h2>Related docs</h2>
+          <p>
+            For the Markdown version of this reference, see
+            <a href="https://github.com/indefiniteloop/phantasm-dist/blob/main/docs/configuration-reference.md?utm_source=phatasm" target="_blank">configuration-reference.md</a>.
+          </p>
+        </div>
       </section>
 
       <footer class="site-footer">
-        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
-        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
-        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        <a class="footer-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="">Phantasm</a>
+        <div class="site-footer-links">
+          <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+          <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+          <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        </div>
       </footer>
     </main>
   </body>

@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Why Phantasm | Compare AI Memory Systems for Coding Agents</title>
-    <meta name="description" content="Compare Phantasm with Mem0, OpenMemory, Zep, Graphiti, Letta, and LangGraph memory to understand why teams choose repository-scoped, local-first memory for coding agents.">
+    <title>Why Phantasm | Compare AI Memory Systems for Agents</title>
+    <meta name="description" content="Compare Phantasm with Mem0, OpenMemory, Zep, Graphiti, Letta, and LangGraph memory to understand why teams choose repository-scoped, local-first memory for AI agents.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="Manoj Sachwani">
-    <meta name="theme-color" content="#120726">
+    <meta name="theme-color" content="#08080b">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Phantasm">
     <meta property="og:title" content="Why Phantasm | Compare AI Memory Systems">
@@ -16,7 +16,7 @@
     <meta property="og:image:alt" content="Why Phantasm comparison page preview">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Why Phantasm | Compare AI Memory Systems">
-    <meta name="twitter:description" content="Compare Phantasm with widely used memory systems for coding agents.">
+    <meta name="twitter:description" content="Compare Phantasm with widely used memory systems for AI agents.">
     <meta name="twitter:image" content="/og/phantasm-og.svg">
     <script type="application/ld+json">
       {
@@ -24,31 +24,32 @@
         "@type": "TechArticle",
         "headline": "Why Phantasm",
         "description": "Comparison page explaining how Phantasm differs from other memory systems for AI agents.",
-        "author": {
-          "@type": "Person",
-          "name": "Manoj Sachwani",
-          "url": "https://manojsachwani.com"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Phantasm"
-        }
+        "author": { "@type": "Person", "name": "Manoj Sachwani", "url": "https://manojsachwani.com" },
+        "publisher": { "@type": "Organization", "name": "Phantasm" }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="shell">
-      <nav class="topnav">
-        <a href="./index.html">Home</a>
-        <a href="./getting-started.html">Getting Started</a>
-        <a href="./configuration.html">Configuration</a>
-        <a href="./commands.html">Commands</a>
-        <a href="./why-phantasm.html">Why Phantasm</a>
-        <a href="./architecture.html">Architecture</a>
-        <a href="./changelog.html">Changelog</a>
-      </nav>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="Phantasm"></a>
+        <div class="nav-links">
+          <a href="./getting-started.html">Getting Started</a>
+          <a href="./configuration.html">Configuration</a>
+          <a href="./commands.html">Commands</a>
+          <a href="./why-phantasm.html" class="is-current">Why Phantasm</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./changelog.html">Changelog</a>
+          <a class="nav-cta" href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </nav>
 
+    <main class="shell">
       <header class="page-header page-header-wide">
         <p class="eyebrow">Why Phantasm</p>
         <h1>Why use Phantasm when other memory systems already exist?</h1>
@@ -59,12 +60,10 @@
         </p>
       </header>
 
-      <section class="compare-hero panel">
-        <div class="compare-intro">
-          <div>
-            <p class="eyebrow">Core thesis</p>
-            <h2>Project-scoped memory beats generic cross-project memory</h2>
-          </div>
+      <section class="section-first">
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">Core thesis</p>
+          <h2>Project-scoped memory beats generic cross-project memory</h2>
           <p>
             If an agent works across multiple repositories, teams, and prompts, memory quality
             degrades when everything lands in one global bucket. Phantasm treats memory as part of
@@ -74,171 +73,166 @@
         </div>
       </section>
 
-      <section class="compare-grid" aria-label="Alternative categories">
-        <article class="compare-card">
-          <p class="card-label">01</p>
-          <h2>Mem0</h2>
-          <p>
-            Mem0 positions itself as a managed memory layer for AI agents, with open-source and
-            hosted options plus broad integrations across agent frameworks.
-          </p>
-          <ul class="compare-list">
-            <li>Strong when you want a general-purpose memory platform with many integrations.</li>
-            <li>More platform-oriented than repository-oriented.</li>
-            <li>Phantasm is better when memory should live as project runtime state, not as a generic service layer.</li>
-          </ul>
-          <p class="source-line">
-            Source:
-            <a href="https://docs.mem0.ai/introduction?utm_source=phatasm" target="_blank">Mem0 docs</a>
-          </p>
-        </article>
+      <section class="section">
+        <div class="grid-2">
+          <article class="card">
+            <p class="card-num">01</p>
+            <h2>Mem0</h2>
+            <p>
+              Mem0 positions itself as a managed memory layer for AI agents, with open-source and
+              hosted options plus broad integrations across agent frameworks.
+            </p>
+            <ul>
+              <li>Strong when you want a general-purpose memory platform with many integrations.</li>
+              <li>More platform-oriented than repository-oriented.</li>
+              <li>Phantasm is better when memory should live as project runtime state, not as a generic service layer.</li>
+            </ul>
+            <p class="source-line">Source: <a href="https://docs.mem0.ai/introduction?utm_source=phatasm" target="_blank">Mem0 docs</a></p>
+          </article>
 
-        <article class="compare-card">
-          <p class="card-label">02</p>
-          <h2>Zep / Graphiti</h2>
-          <p>
-            Zep focuses on context engineering, agent memory, and temporal knowledge graphs.
-            Graphiti is its open-source temporal knowledge graph framework with hybrid search and
-            MCP integration.
-          </p>
-          <ul class="compare-list">
-            <li>Strong when temporal or graph-based retrieval is the core problem.</li>
-            <li>More graph-heavy and operationally ambitious than many teams need.</li>
-            <li>Phantasm is better when the priority is a local-first repo memory runtime with simpler project boundaries.</li>
-          </ul>
-          <p class="source-line">
-            Sources:
-            <a href="https://help.getzep.com/overview?utm_source=phatasm" target="_blank">Zep docs</a>,
-            <a href="https://help.getzep.com/graphiti/getting-started/welcome?utm_source=phatasm" target="_blank">Graphiti docs</a>
-          </p>
-        </article>
+          <article class="card">
+            <p class="card-num">02</p>
+            <h2>Zep / Graphiti</h2>
+            <p>
+              Zep focuses on context engineering, agent memory, and temporal knowledge graphs.
+              Graphiti is its open-source temporal knowledge graph framework with hybrid search and
+              MCP integration.
+            </p>
+            <ul>
+              <li>Strong when temporal or graph-based retrieval is the core problem.</li>
+              <li>More graph-heavy and operationally ambitious than many teams need.</li>
+              <li>Phantasm is better when the priority is a local-first repo memory runtime with simpler project boundaries.</li>
+            </ul>
+            <p class="source-line">
+              Sources: <a href="https://help.getzep.com/overview?utm_source=phatasm" target="_blank">Zep docs</a>,
+              <a href="https://help.getzep.com/graphiti/getting-started/welcome?utm_source=phatasm" target="_blank">Graphiti docs</a>
+            </p>
+          </article>
 
-        <article class="compare-card">
-          <p class="card-label">03</p>
-          <h2>Letta</h2>
-          <p>
-            Letta is built around stateful agents and editable memory blocks that can be attached to
-            agents, shared, and kept in-context.
-          </p>
-          <ul class="compare-list">
-            <li>Strong when you want agent-centric state and persistent agent operation.</li>
-            <li>Its memory model is centered on agents and memory blocks, not specifically on repository runtimes.</li>
-            <li>Phantasm is better when the repository is the unit of truth and agent guidance should ship with the codebase.</li>
-          </ul>
-          <p class="source-line">
-            Source:
-            <a href="https://docs.letta.com/guides/core-concepts/stateful-agents?utm_source=phatasm" target="_blank">Letta docs</a>
-          </p>
-        </article>
+          <article class="card">
+            <p class="card-num">03</p>
+            <h2>Letta</h2>
+            <p>
+              Letta is built around stateful agents and editable memory blocks that can be attached to
+              agents, shared, and kept in-context.
+            </p>
+            <ul>
+              <li>Strong when you want agent-centric state and persistent agent operation.</li>
+              <li>Its memory model is centered on agents and memory blocks, not specifically on repository runtimes.</li>
+              <li>Phantasm is better when the repository is the unit of truth and agent guidance should ship with the codebase.</li>
+            </ul>
+            <p class="source-line">Source: <a href="https://docs.letta.com/guides/core-concepts/stateful-agents?utm_source=phatasm" target="_blank">Letta docs</a></p>
+          </article>
 
-        <article class="compare-card">
-          <p class="card-label">04</p>
-          <h2>LangGraph Memory</h2>
-          <p>
-            LangGraph documents both short-term thread persistence and long-term user or
-            application-level memory, backed by stores like Postgres or MongoDB.
-          </p>
-          <ul class="compare-list">
-            <li>Strong when you are already building directly inside the LangGraph stack.</li>
-            <li>Gives persistence primitives, but not a complete repo-scoped memory product opinion.</li>
-            <li>Phantasm is better when you want a standalone project memory workflow rather than assembling one inside a framework.</li>
-          </ul>
-          <p class="source-line">
-            Source:
-            <a href="https://docs.langchain.com/oss/javascript/langgraph/add-memory?utm_source=phatasm" target="_blank">LangGraph memory docs</a>
-          </p>
-        </article>
+          <article class="card">
+            <p class="card-num">04</p>
+            <h2>LangGraph Memory</h2>
+            <p>
+              LangGraph documents both short-term thread persistence and long-term user or
+              application-level memory, backed by stores like Postgres or MongoDB.
+            </p>
+            <ul>
+              <li>Strong when you are already building directly inside the LangGraph stack.</li>
+              <li>Gives persistence primitives, but not a complete repo-scoped memory product opinion.</li>
+              <li>Phantasm is better when you want a standalone project memory workflow rather than assembling one inside a framework.</li>
+            </ul>
+            <p class="source-line">Source: <a href="https://docs.langchain.com/oss/javascript/langgraph/add-memory?utm_source=phatasm" target="_blank">LangGraph memory docs</a></p>
+          </article>
 
-        <article class="compare-card">
-          <p class="card-label">05</p>
-          <h2>OpenMemory</h2>
-          <p>
-            OpenMemory is presented as a persistent MCP memory layer that works across Cursor, VS
-            Code, Claude, and other MCP-compatible coding agents.
-          </p>
-          <ul class="compare-list">
-            <li>Strong when you want one shared memory layer across multiple MCP-compatible tools.</li>
-            <li>Optimizes for cross-tool continuity more than repository-owned runtime state.</li>
-            <li>Phantasm is better when each repository should own its own memory lifecycle and agent instructions.</li>
-          </ul>
-          <p class="source-line">
-            Source:
-            <a href="https://mem0.ai/openmemory?utm_source=phatasm" target="_blank">OpenMemory page</a>
-          </p>
-        </article>
+          <article class="card" style="grid-column: span 2;">
+            <p class="card-num">05</p>
+            <h2>OpenMemory</h2>
+            <p>
+              OpenMemory is presented as a persistent MCP memory layer that works across Cursor, VS
+              Code, Claude, and other MCP-compatible agents.
+            </p>
+            <ul>
+              <li>Strong when you want one shared memory layer across multiple MCP-compatible tools.</li>
+              <li>Optimizes for cross-tool continuity more than repository-owned runtime state.</li>
+              <li>Phantasm is better when each repository should own its own memory lifecycle and agent instructions.</li>
+            </ul>
+            <p class="source-line">Source: <a href="https://mem0.ai/openmemory?utm_source=phatasm" target="_blank">OpenMemory page</a></p>
+          </article>
+        </div>
       </section>
 
-      <section class="matrix-panel panel">
-        <p class="eyebrow">Comparison matrix</p>
-        <h2>Where Phantasm is different</h2>
-        <div class="matrix-table" role="table" aria-label="Phantasm comparison table">
-          <div class="matrix-row matrix-head" role="row">
-            <div role="columnheader">Capability</div>
-            <div role="columnheader">Mem0 / OpenMemory</div>
-            <div role="columnheader">Zep / Letta / LangGraph</div>
-            <div role="columnheader">Phantasm</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Repository-scoped by default</div>
-            <div role="cell">Usually no</div>
-            <div role="cell">Possible, but not the default product boundary</div>
-            <div role="cell">Yes</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Local-first setup</div>
-            <div role="cell">Mixed: hosted-first or shared-layer patterns are common</div>
-            <div role="cell">Framework or graph setups often need extra storage decisions</div>
-            <div role="cell">Yes</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Managed agent guidance</div>
-            <div role="cell">Usually separate from the memory layer</div>
-            <div role="cell">Often something you build around the framework</div>
-            <div role="cell">Built into bootstrap flow</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Operational lifecycle</div>
-            <div role="cell">Platform APIs or shared memory semantics</div>
-            <div role="cell">Framework- or graph-level primitives</div>
-            <div role="cell">Structured runtime operations</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Fits git-oriented workflows</div>
-            <div role="cell">Not as a primary abstraction</div>
-            <div role="cell">Possible, but not central</div>
-            <div role="cell">Yes</div>
+      <section class="section">
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">Comparison matrix</p>
+          <h2>Where Phantasm is different</h2>
+          <div class="matrix-table" role="table" aria-label="Phantasm comparison table">
+            <div class="matrix-row matrix-head" role="row">
+              <div role="columnheader">Capability</div>
+              <div role="columnheader">Mem0 / OpenMemory</div>
+              <div role="columnheader">Zep / Letta / LangGraph</div>
+              <div role="columnheader">Phantasm</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Repository-scoped by default</div>
+              <div role="cell">Usually no</div>
+              <div role="cell">Possible, but not the default product boundary</div>
+              <div role="cell">Yes</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Local-first setup</div>
+              <div role="cell">Mixed: hosted-first or shared-layer patterns are common</div>
+              <div role="cell">Framework or graph setups often need extra storage decisions</div>
+              <div role="cell">Yes</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Managed agent guidance</div>
+              <div role="cell">Usually separate from the memory layer</div>
+              <div role="cell">Often something you build around the framework</div>
+              <div role="cell">Built into bootstrap flow</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Operational lifecycle</div>
+              <div role="cell">Platform APIs or shared memory semantics</div>
+              <div role="cell">Framework- or graph-level primitives</div>
+              <div role="cell">Structured runtime operations</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Fits git-oriented workflows</div>
+              <div role="cell">Not as a primary abstraction</div>
+              <div role="cell">Possible, but not central</div>
+              <div role="cell">Yes</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="reasons-grid" aria-label="Why users choose Phantasm">
-        <article class="reason-panel panel">
-          <p class="card-label">Why teams pick it</p>
-          <h2>Clear reasons to choose Phantasm</h2>
-          <ul class="compare-list">
-            <li>Your agents work across multiple repositories and need hard context boundaries.</li>
-            <li>You want memory to live with the project instead of in a generic agent memory platform.</li>
-            <li>You want bootstrap, runtime behavior, and agent guidance in one repo-owned flow.</li>
-            <li>You care more about project-local clarity and operational control than about cross-tool shared memory.</li>
-            <li>You want a memory system that fits git-oriented engineering workflows rather than abstract agent state alone.</li>
-          </ul>
-        </article>
-
-        <article class="reason-panel panel">
-          <p class="card-label">When not to use it</p>
-          <h2>Cases where simpler options may be enough</h2>
-          <ul class="compare-list">
-            <li>You only need lightweight personal recall across chats, not repository runtime state.</li>
-            <li>You already have a mature external memory platform and do not care about local-first operation.</li>
-            <li>Your agents do not need structured project guidance or project-specific memory review.</li>
-          </ul>
-        </article>
+      <section class="section">
+        <div class="grid-2">
+          <article class="card">
+            <p class="card-num">Why teams pick it</p>
+            <h2>Clear reasons to choose Phantasm</h2>
+            <ul>
+              <li>Your agents work across multiple repositories and need hard context boundaries.</li>
+              <li>You want memory to live with the project instead of in a generic agent memory platform.</li>
+              <li>You want bootstrap, runtime behavior, and agent guidance in one repo-owned flow.</li>
+              <li>You care more about project-local clarity and operational control than about cross-tool shared memory.</li>
+              <li>You want a memory system that fits git-oriented engineering workflows rather than abstract agent state alone.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <p class="card-num">When not to use it</p>
+            <h2>Cases where simpler options may be enough</h2>
+            <ul>
+              <li>You only need lightweight personal recall across chats, not repository runtime state.</li>
+              <li>You already have a mature external memory platform and do not care about local-first operation.</li>
+              <li>Your agents do not need structured project guidance or project-specific memory review.</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
       <footer class="site-footer">
-        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
-        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
-        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        <a class="footer-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="">Phantasm</a>
+        <div class="site-footer-links">
+          <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+          <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+          <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        </div>
       </footer>
     </main>
   </body>

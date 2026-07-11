@@ -7,7 +7,7 @@
     <meta name="description" content="Reference for the Phantasm CLI, including bootstrap, handle-request, agent guidance options, and the current MVP runtime operation surface.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="Manoj Sachwani">
-    <meta name="theme-color" content="#120726">
+    <meta name="theme-color" content="#08080b">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Phantasm">
     <meta property="og:title" content="Phantasm CLI Commands">
@@ -24,38 +24,40 @@
         "@type": "TechArticle",
         "headline": "Phantasm CLI Commands",
         "description": "Command reference for the Phantasm bootstrap flow and request runtime.",
-        "author": {
-          "@type": "Person",
-          "name": "Manoj Sachwani",
-          "url": "https://manojsachwani.com"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Phantasm"
-        }
+        "author": { "@type": "Person", "name": "Manoj Sachwani", "url": "https://manojsachwani.com" },
+        "publisher": { "@type": "Organization", "name": "Phantasm" }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="shell">
-      <nav class="topnav">
-        <a href="./index.html">Home</a>
-        <a href="./getting-started.html">Getting Started</a>
-        <a href="./configuration.html">Configuration</a>
-        <a href="./commands.html">Commands</a>
-        <a href="./why-phantasm.html">Why Phantasm</a>
-        <a href="./architecture.html">Architecture</a>
-        <a href="./changelog.html">Changelog</a>
-      </nav>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="Phantasm"></a>
+        <div class="nav-links">
+          <a href="./getting-started.html">Getting Started</a>
+          <a href="./configuration.html">Configuration</a>
+          <a href="./commands.html" class="is-current">Commands</a>
+          <a href="./why-phantasm.html">Why Phantasm</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./changelog.html">Changelog</a>
+          <a class="nav-cta" href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </nav>
 
+    <main class="shell">
       <header class="page-header">
         <p class="eyebrow">Commands</p>
         <h1>Phantasm CLI reference</h1>
       </header>
 
-      <section class="panel">
-        <pre><code>phantasm --help
+      <section class="section-first">
+        <div class="panel">
+          <pre><code>phantasm --help
 phm --help
 phantasm --version
 phm --version
@@ -70,31 +72,31 @@ phantasm status
 phantasm handle-request '&lt;json request envelope&gt;'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json</code></pre>
-        <p><code>phm</code> is the shorthand alias for the same CLI. <code>phantasm --help</code> prints a command index. Use <code>phantasm agents --help</code> or <code>phantasm help agents</code> for command-specific options.</p>
-      </section>
+          <p><code>phm</code> is the shorthand alias for the same CLI. <code>phantasm --help</code> prints a command index. Use <code>phantasm agents --help</code> or <code>phantasm help agents</code> for command-specific options.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Common command</h2>
-        <p><code>phantasm bootstrap</code> is the standard setup command for a project.</p>
-        <pre><code>phantasm bootstrap
+        <div class="panel">
+          <h2>Common command</h2>
+          <p><code>phantasm bootstrap</code> is the standard setup command for a project.</p>
+          <pre><code>phantasm bootstrap
 phantasm bootstrap .
 phantasm bootstrap /path/to/project</code></pre>
-      </section>
+        </div>
 
-      <section class="panel">
-        <h2>Agent guidance options</h2>
-        <pre><code>phantasm bootstrap --agent-guidance
+        <div class="panel">
+          <h2>Agent guidance options</h2>
+          <pre><code>phantasm bootstrap --agent-guidance
 phantasm bootstrap --agent-file AGENTS.md
 phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md
 phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-        <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. After updating Phantasm, rerun the command to replace the managed block in place; do not delete and re-add it manually. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup, preserves text outside the managed markers, and prompts for confirmation with a <code>y/N</code> question.</p>
-      </section>
+          <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. After updating Phantasm, rerun the command to replace the managed block in place; do not delete and re-add it manually. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup, preserves text outside the managed markers, and prompts for confirmation with a <code>y/N</code> question.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Human memory commands</h2>
-        <p>These commands wrap the same project runtime used by <code>handle-request</code>, but avoid hand-written JSON for routine inspection and simple memory creation.</p>
-        <pre><code>phantasm list
+        <div class="panel">
+          <h2>Human memory commands</h2>
+          <p>These commands wrap the same project runtime used by <code>handle-request</code>, but avoid hand-written JSON for routine inspection and simple memory creation.</p>
+          <pre><code>phantasm list
 phantasm list --kind decision
 phantasm list --settled
 phantasm show rec_example
@@ -103,120 +105,131 @@ phantasm add --kind decision --subject release-process
 phantasm add --kind decision --subject release-process --text "Release from main after tests pass." --review
 phantasm stats
 phantasm status</code></pre>
-        <p><code>list</code> and <code>search</code> print compact rows with record id, kind, lifecycle state, subject, and payload summary. <code>show</code> expands one object id. <code>stats</code> prints record counts, lifecycle state counts, scope counts, review queue size, and timestamps. <code>status</code> combines health, counts, schema version, and recommended maintenance. <code>add</code> creates a memory record; use <code>--review</code> when the write should enter review instead of becoming authoritative immediately.</p>
-      </section>
+          <p><code>list</code> and <code>search</code> print compact rows with record id, kind, lifecycle state, subject, and payload summary. <code>show</code> expands one object id. <code>stats</code> prints record counts, lifecycle state counts, scope counts, review queue size, and timestamps. <code>status</code> combines health, counts, schema version, and recommended maintenance. <code>add</code> creates a memory record; use <code>--review</code> when the write should enter review instead of becoming authoritative immediately.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Full MVP runtime operations</h2>
-        <p>
-          The current <code>handle-request</code> surface is the stable operation layer
-          used by agents and wrappers. Run these requests from the bootstrapped
-          project root so Phantasm resolves the correct <code>.phantasm/</code> runtime.
-          Requests can be passed as one argv JSON string, through <code>--stdin</code>,
-          or from a UTF-8 file with <code>--file &lt;path&gt;</code>.
-        </p>
-        <p>
-          Every request includes <code>api_version</code>, <code>operation</code>,
-          <code>request_id</code>, <code>client.profile</code>, and <code>params</code>.
-          Mutating operations also require <code>idempotency_key</code> unless the request is a
-          preview-only <code>params.dry_run=true</code> call. <code>resolve_conflict</code>,
-          snapshot import, backup restore, and maintenance run require structured
-          <code>confirmations</code> with <code>approved_by</code>, <code>reason</code>,
-          <code>operation</code>, and a <code>target</code> matching the requested mutation.
-          Dry-run previews skip confirmations because they do not mutate runtime state.
-          The <code>describe</code> operation is the machine-readable discovery surface
-          and can be called in short form when an agent does not know the full
-          envelope yet.
-          JSON strings preserve printable Unicode and accept standard
-          <code>\uXXXX</code> escapes.
-          Complete <code>describe</code> targets also return this CLI and
-          transport contract as machine-readable metadata.
-          Every response includes <code>notices</code>; after an update, the
-          first successful request per project/client profile receives a
-          structured <code>release_update</code> notice.
-        </p>
-        <pre><code>{
+        <div class="panel">
+          <h2>Full MVP runtime operations</h2>
+          <p>
+            The current <code>handle-request</code> surface is the stable operation layer
+            used by agents and wrappers. Run these requests from the bootstrapped
+            project root so Phantasm resolves the correct <code>.phantasm/</code> runtime.
+            Requests can be passed as one argv JSON string, through <code>--stdin</code>,
+            or from a UTF-8 file with <code>--file &lt;path&gt;</code>.
+          </p>
+          <p>
+            Every request includes <code>api_version</code>, <code>operation</code>,
+            <code>request_id</code>, <code>client.profile</code>, and <code>params</code>.
+            Mutating operations also require <code>idempotency_key</code> unless the request is a
+            preview-only <code>params.dry_run=true</code> call. <code>resolve_conflict</code>,
+            snapshot import, backup restore, and maintenance run require structured
+            <code>confirmations</code> with <code>approved_by</code>, <code>reason</code>,
+            <code>operation</code>, and a <code>target</code> matching the requested mutation.
+            Dry-run previews skip confirmations because they do not mutate runtime state.
+            The <code>describe</code> operation is the machine-readable discovery surface
+            and can be called in short form when an agent does not know the full
+            envelope yet.
+            JSON strings preserve printable Unicode and accept standard
+            <code>\uXXXX</code> escapes.
+            Complete <code>describe</code> targets also return this CLI and
+            transport contract as machine-readable metadata.
+            Every response includes <code>notices</code>; after an update, the
+            first successful request per project/client profile receives a
+            structured <code>release_update</code> notice.
+          </p>
+          <pre><code>{
   "api_version": "v1",
   "operation": "health",
   "request_id": "health-1",
   "client": { "profile": "codex" },
   "params": {}
 }</code></pre>
-      </section>
+        </div>
 
-      <section class="panel">
-        <h2>Advanced runtime examples</h2>
-        <p><code>handle-request</code> runs one JSON request against the current project runtime. These examples are intentionally single-line so agents and humans can paste them into a terminal.</p>
-        <pre><code>printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin</code></pre>
-        <pre><code>phantasm handle-request --file request.json</code></pre>
-        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</code></pre>
-        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code></pre>
-        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"templates","request_id":"templates-1","client":{"profile":"codex"},"params":{}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"search","request_id":"search-auth-timeout","client":{"profile":"codex"},"params":{"query":"auth timeout","filters":{"include_conflicts":true,"review_augmented_view":true}}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"],"explain":true}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"provenance":{"source":"agent","reason":"captured during implementation"}}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-review-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-review-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"review_required":true}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest_many","request_id":"ingest-auth-batch","client":{"profile":"codex"},"idempotency_key":"ingest-auth-batch-v1","params":{"items":[{"idempotency_key":"ingest-auth-timeout-v1","record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."}},{"idempotency_key":"ingest-auth-issuer-v1","record_kind":"constraint","subject_key":"auth.issuer","payload":{"text":"Issuer validation is required."}}]}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout-preview","client":{"profile":"codex"},"params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"dry_run":true}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-summary","client":{"profile":"codex"},"params":{}}'</code></pre>
-        <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-1","client":{"profile":"codex"},"params":{"record_id":"rec_example"}}'</code></pre>
-      </section>
+        <div class="panel">
+          <h2>Advanced runtime examples</h2>
+          <p><code>handle-request</code> runs one JSON request against the current project runtime. These examples are intentionally single-line so agents and humans can paste them into a terminal.</p>
+          <pre><code>printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin</code></pre>
+          <pre><code>phantasm handle-request --file request.json</code></pre>
+          <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</code></pre>
+          <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'</code></pre>
+          <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"templates","request_id":"templates-1","client":{"profile":"codex"},"params":{}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"health","request_id":"health-1","client":{"profile":"codex"},"params":{}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"search","request_id":"search-auth-timeout","client":{"profile":"codex"},"params":{"query":"auth timeout","filters":{"include_conflicts":true,"review_augmented_view":true}}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"compile","request_id":"compile-auth-timeout","client":{"profile":"codex"},"params":{"token_budget":1200,"focus_subjects":["auth.timeout"],"explain":true}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"provenance":{"source":"agent","reason":"captured during implementation"}}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-review-auth-timeout","client":{"profile":"codex"},"idempotency_key":"ingest-review-auth-timeout-v1","params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"review_required":true}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest_many","request_id":"ingest-auth-batch","client":{"profile":"codex"},"idempotency_key":"ingest-auth-batch-v1","params":{"items":[{"idempotency_key":"ingest-auth-timeout-v1","record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."}},{"idempotency_key":"ingest-auth-issuer-v1","record_kind":"constraint","subject_key":"auth.issuer","payload":{"text":"Issuer validation is required."}}]}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"ingest","request_id":"ingest-auth-timeout-preview","client":{"profile":"codex"},"params":{"record_kind":"decision","subject_key":"auth.timeout","payload":{"text":"Auth tokens expire after 15 minutes."},"dry_run":true}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-summary","client":{"profile":"codex"},"params":{}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"inspect","request_id":"inspect-1","client":{"profile":"codex"},"params":{"record_id":"rec_example"}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"stale_review","request_id":"stale-1","client":{"profile":"codex"},"params":{"max_age_days":30,"changed_files":["src/api.rs"]}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"duplicate_review","request_id":"dupes-1","client":{"profile":"codex"},"params":{"min_similarity":60}}'</code></pre>
+          <pre><code>phantasm handle-request '{"api_version":"v1","operation":"memory_export","request_id":"memory-export-1","client":{"profile":"codex"},"idempotency_key":"memory-export-1","params":{"path":"memory/phantasm.json","format":"json"}}'</code></pre>
+        </div>
 
-      <section class="panel">
-        <h2>Operation reference</h2>
-        <p><strong><code>describe</code></strong> is the important agent discovery operation. It returns machine-readable API schema, response schema, operation params, safety rules, and runnable examples. Optional param: <code>target</code>; use <code>all</code>, <code>*</code>, <code>api</code>, or an operation name such as <code>ingest</code>. <code>all</code>, <code>*</code>, and <code>api</code> return the complete catalog/schema plus <code>cli</code>, <code>request_transport</code>, and <code>notices</code> metadata. Short form is supported: <code>{"operation":"describe","params":{"target":"ingest"}}</code>.</p>
-        <p><strong><code>bootstrap</code></strong> initializes or verifies <code>.phantasm/</code>. Humans usually use the top-level <code>phantasm bootstrap</code> command. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>templates</code></strong> returns built-in templates for common memory record kinds such as project identity, architectural decision, operational constraint, known issue, release procedure, environment setup, and deferred task. Optional param: <code>template_id</code>. It is read-only and does not require a bootstrapped runtime.</p>
-        <p><strong><code>ingest</code></strong> creates new memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Trusted callers can set <code>review_required=true</code> to force suggestion/review behavior. Use <code>revise</code>, not <code>ingest</code>, to update an existing record; duplicate <code>subject_key</code> ingests are refused while a live record exists and return the existing record id. Required params: <code>record_kind</code>, <code>payload</code>. Common optional params include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>sensitivity</code>, <code>raw_evidence</code>, <code>dry_run</code>, and <code>review_required</code>. Dry runs return no-write preview output including <code>write_mode</code>, <code>would_create</code>, or <code>would_update</code>.</p>
-        <p><strong><code>ingest_many</code></strong> creates multiple memory records in one request. Required param: <code>items</code>. Each <code>items[]</code> entry requires <code>idempotency_key</code>, <code>record_kind</code>, and <code>payload</code>, and may include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>sensitivity</code>, <code>raw_evidence</code>, <code>dry_run</code>, and <code>review_required</code>. Successful items are not rolled back when another item fails, and the batch response reports <code>results</code>, <code>ok_count</code>, <code>error_count</code>, and <code>replayed_count</code>.</p>
-        <p><strong><code>revise</code></strong> creates a successor and supersedes a target record. Required params: <code>target_record_id</code>, <code>payload</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>tombstone</code></strong> retires invalid truth. Required params: <code>record_id</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>tombstone_many</code></strong> retires multiple records in one request. Required param: <code>items</code>. Each <code>items[]</code> entry requires <code>idempotency_key</code> and <code>record_id</code>, and may include <code>reason</code> and <code>dry_run</code>. Successful items are not rolled back when another item fails, and replay safety is tracked per item.</p>
-        <p><strong><code>archive</code></strong> keeps memory for audit while excluding it from ordinary search and compile. Required params: <code>record_id</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>promote</code></strong> promotes scoped memory into project truth. Required params: <code>source_record_id</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>resolve_conflict</code></strong> chooses a winning record and retires losers. Required params: <code>winner_record_id</code>, <code>loser_record_ids</code>. Optional <code>loser_state</code> defaults to <code>superseded</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the winner, losers, and resolved loser state. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
-        <p><strong><code>accept_suggestion</code></strong> converts a suggestion into authoritative memory. Required params: <code>suggestion_id</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>reject_suggestion</code></strong> rejects a suggestion without creating authoritative memory. Required params: <code>suggestion_id</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>defer_review</code></strong> defers a review item. Required params: <code>review_item_id</code>, <code>wake_condition</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>resolve_review</code></strong> marks a review item resolved. Required params: <code>review_item_id</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>search</code></strong> finds records by optional <code>query</code>, optional <code>match_mode</code> (<code>tokens</code> default, <code>exact</code>, or <code>fuzzy</code>), optional <code>rank_by</code> (<code>deterministic</code> or <code>relevance</code>), optional <code>group_by=record_kind</code>, and filters. Supported filters include <code>scope</code>, <code>include_superseded</code>, <code>include_archived</code>, <code>include_tombstoned</code>, <code>include_conflicts</code>, <code>include_sensitive</code>, <code>review_augmented_view</code>, <code>include_raw_evidence</code>, <code>branch_name</code>, <code>worktree_id</code>, <code>subject_key</code>, <code>record_kind</code>, <code>created_after</code>, <code>created_before</code>, <code>payload_contains</code>, and <code>payload_matches</code>.</p>
-        <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, <code>explain</code>, and search-style filters. When <code>explain=true</code>, the response includes <code>selection_diagnostics</code> for selected and omitted candidates.</p>
-        <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>. With empty params, it returns a default memory summary with live records, scopes, lifecycle states, conflicts, and timestamps.</p>
-        <p><strong><code>audit</code></strong> lists operation history and effects. Params: optional <code>actor</code>, <code>object_id</code>, <code>operation_name</code>, <code>limit</code>.</p>
-        <p><strong><code>review_queue</code></strong> lists open and deferred review items.</p>
-        <p><strong><code>health</code></strong> reports runtime health, conflicts, review count, failed maintenance, diagnostics, recommendations, and first-call release notices after binary updates.</p>
-        <p><strong><code>snapshot_export</code></strong> writes a full runtime snapshot bundle. Param: optional <code>export_name</code>. Optional preview param: <code>dry_run</code>.</p>
-        <p><strong><code>snapshot_import</code></strong> restores a snapshot bundle after creating a safety backup. Required param: <code>bundle_path</code>. Optional <code>mode</code> is <code>replace</code> or <code>merge</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the bundle path and resolved mode. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
-        <p><strong><code>backup_list</code></strong> lists registered backups and manifests.</p>
-        <p><strong><code>backup_restore</code></strong> restores a registered backup by ID after creating a safety backup. Required param: <code>backup_id</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the backup ID. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
-        <p><strong><code>maintenance_plan</code></strong> dry-runs recommended maintenance and required backup actions.</p>
-        <p><strong><code>maintenance_run</code></strong> executes explicit maintenance operations. Optional <code>operations</code> defaults to <code>["reparse_client_profiles"]</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the resolved operations list. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
-      </section>
+        <div class="panel">
+          <h2>Operation reference</h2>
+          <p><strong><code>describe</code></strong> is the important agent discovery operation. It returns machine-readable API schema, response schema, operation params, safety rules, and runnable examples. Optional param: <code>target</code>; use <code>all</code>, <code>*</code>, <code>api</code>, or an operation name such as <code>ingest</code>. <code>all</code>, <code>*</code>, and <code>api</code> return the complete catalog/schema plus <code>cli</code>, <code>request_transport</code>, and <code>notices</code> metadata. Short form is supported: <code>{"operation":"describe","params":{"target":"ingest"}}</code>.</p>
+          <p><strong><code>bootstrap</code></strong> initializes or verifies <code>.phantasm/</code>. Humans usually use the top-level <code>phantasm bootstrap</code> command. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>templates</code></strong> returns built-in templates for common memory record kinds such as project identity, architectural decision, operational constraint, known issue, release procedure, environment setup, and deferred task. Optional param: <code>template_id</code>. It is read-only and does not require a bootstrapped runtime.</p>
+          <p><strong><code>ingest</code></strong> creates new memory. Trusted profiles create authoritative records; untrusted profiles create suggestions and review items. Trusted callers can set <code>review_required=true</code> to force suggestion/review behavior. Use <code>revise</code>, not <code>ingest</code>, to update an existing record; duplicate <code>subject_key</code> ingests are refused while a live record exists and return the existing record id. Required params: <code>record_kind</code>, <code>payload</code>. Common optional params include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>quality</code>, <code>sensitivity</code>, <code>raw_evidence</code>, <code>dry_run</code>, and <code>review_required</code>. Quality carries confidence, source, verification, expiration, revalidation, and author metadata. Dry runs return no-write preview output including <code>write_mode</code>, <code>would_create</code>, or <code>would_update</code>.</p>
+          <p><strong><code>ingest_many</code></strong> creates multiple memory records in one request. Required param: <code>items</code>. Each <code>items[]</code> entry requires <code>idempotency_key</code>, <code>record_kind</code>, and <code>payload</code>, and may include <code>scope</code>, <code>subject_key</code>, <code>provenance</code>, <code>sensitivity</code>, <code>raw_evidence</code>, <code>dry_run</code>, and <code>review_required</code>. Successful items are not rolled back when another item fails, and the batch response reports <code>results</code>, <code>ok_count</code>, <code>error_count</code>, and <code>replayed_count</code>.</p>
+          <p><strong><code>revise</code></strong> creates a successor and supersedes a target record. Required params: <code>target_record_id</code>, <code>payload</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>tombstone</code></strong> retires invalid truth. Required params: <code>record_id</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>tombstone_many</code></strong> retires multiple records in one request. Required param: <code>items</code>. Each <code>items[]</code> entry requires <code>idempotency_key</code> and <code>record_id</code>, and may include <code>reason</code> and <code>dry_run</code>. Successful items are not rolled back when another item fails, and replay safety is tracked per item.</p>
+          <p><strong><code>archive</code></strong> keeps memory for audit while excluding it from ordinary search and compile. Required params: <code>record_id</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>promote</code></strong> promotes scoped memory into project truth. Required params: <code>source_record_id</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>resolve_conflict</code></strong> chooses a winning record and retires losers. Required params: <code>winner_record_id</code>, <code>loser_record_ids</code>. Optional <code>loser_state</code> defaults to <code>superseded</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the winner, losers, and resolved loser state. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
+          <p><strong><code>accept_suggestion</code></strong> converts a suggestion into authoritative memory. Required params: <code>suggestion_id</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>reject_suggestion</code></strong> rejects a suggestion without creating authoritative memory. Required params: <code>suggestion_id</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>defer_review</code></strong> defers a review item. Required params: <code>review_item_id</code>, <code>wake_condition</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>resolve_review</code></strong> marks a review item resolved. Required params: <code>review_item_id</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>search</code></strong> finds records by optional <code>query</code>, optional <code>match_mode</code> (<code>tokens</code> default, <code>exact</code>, or <code>fuzzy</code>), optional <code>rank_by</code> (<code>deterministic</code> or <code>relevance</code>), optional <code>group_by=record_kind</code>, and filters. Supported filters include lifecycle, scope, payload, and quality fields: <code>quality_confidence</code>, <code>quality_source_type</code>, verification and expiration bounds, and <code>quality_author</code>.</p>
+          <p><strong><code>compile</code></strong> builds deterministic context using optional <code>token_budget</code>, <code>focus_subjects</code>, <code>explain</code>, and search-style filters. When <code>explain=true</code>, the response includes <code>selection_diagnostics</code> for selected and omitted candidates.</p>
+          <p><strong><code>duplicate_review</code></strong> is read-only semantic-overlap review. Optional <code>min_similarity</code>, <code>limit</code>, <code>include_cross_kind</code>, and filters control duplicate groups; each group includes a preferred canonical record and consolidation actions.</p>
+          <p><strong><code>inspect</code></strong> expands IDs returned by other operations. Params can include <code>record_id(s)</code>, <code>suggestion_id(s)</code>, <code>review_item_id(s)</code>, <code>operation_id(s)</code>, or <code>evidence_id(s)</code>. With empty params, it returns a default memory summary with live records, scopes, lifecycle states, conflicts, and timestamps.</p>
+          <p><strong><code>audit</code></strong> lists operation history and effects. Params: optional <code>actor</code>, <code>object_id</code>, <code>operation_name</code>, <code>limit</code>.</p>
+          <p><strong><code>review_queue</code></strong> lists open and deferred review items.</p>
+          <p><strong><code>stale_review</code></strong> is read-only freshness and changed-file impact review. It accepts optional <code>max_age_days</code>, <code>as_of</code>, <code>changed_files</code>, <code>include_missing_verified_at</code>, and filters, then returns reasons and suggested actions.</p>
+          <p><strong><code>health</code></strong> reports runtime health, conflicts, review count, failed maintenance, diagnostics, recommendations, and first-call release notices after binary updates.</p>
+          <p><strong><code>snapshot_export</code></strong> writes a full runtime snapshot bundle. Param: optional <code>export_name</code>. Optional preview param: <code>dry_run</code>.</p>
+          <p><strong><code>snapshot_import</code></strong> restores a snapshot bundle after creating a safety backup. Required param: <code>bundle_path</code>. Optional <code>mode</code> is <code>replace</code> or <code>merge</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the bundle path and resolved mode. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
+          <p><strong><code>memory_export</code></strong> writes Git-reviewable memory to a relative project <code>path</code>. Canonical <code>json</code> is importable; <code>markdown</code> is review-only. Sensitive records need explicit inclusion plus an export-capable profile.</p>
+          <p><strong><code>memory_import</code></strong> additively reads a reviewed canonical <code>phantasm.memory.v1</code> JSON file from a relative project <code>path</code>. Markdown is intentionally not importable, and duplicate live subject keys retain normal revise guidance.</p>
+          <p><strong><code>backup_list</code></strong> lists registered backups and manifests.</p>
+          <p><strong><code>backup_restore</code></strong> restores a registered backup by ID after creating a safety backup. Required param: <code>backup_id</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the backup ID. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
+          <p><strong><code>maintenance_plan</code></strong> dry-runs recommended maintenance and required backup actions.</p>
+          <p><strong><code>maintenance_run</code></strong> executes explicit maintenance operations. Optional <code>operations</code> defaults to <code>["reparse_client_profiles"]</code>. Requires structured <code>confirmations</code> whose <code>target</code> matches the resolved operations list. Optional preview param: <code>dry_run</code>; dry-run previews do not require confirmations.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Configuration files after bootstrap</h2>
-        <p>
-          For the current post-bootstrap config surface, including every key in
-          <code>phantasm.toml</code> and <code>clients.toml</code>, see
-          <a href="./configuration.html">configuration.html</a>.
-        </p>
-      </section>
+        <div class="panel">
+          <h2>Configuration files after bootstrap</h2>
+          <p>
+            For the current post-bootstrap config surface, including every key in
+            <code>phantasm.toml</code> and <code>clients.toml</code>, see
+            <a href="./configuration.html">configuration.html</a>.
+          </p>
+        </div>
 
-      <section class="panel">
-        <h2>More detail</h2>
-        <p>
-          For the repository docs version of this reference, see
-          <a href="https://github.com/indefiniteloop/phantasm-dist/blob/main/docs/commands-and-usage.md?utm_source=phatasm" target="_blank">docs/commands-and-usage.md</a>.
-        </p>
+        <div class="panel">
+          <h2>More detail</h2>
+          <p>
+            For the repository docs version of this reference, see
+            <a href="https://github.com/indefiniteloop/phantasm-dist/blob/main/docs/commands-and-usage.md?utm_source=phatasm" target="_blank">docs/commands-and-usage.md</a>.
+          </p>
+        </div>
       </section>
 
       <footer class="site-footer">
-        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
-        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
-        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        <a class="footer-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="">Phantasm</a>
+        <div class="site-footer-links">
+          <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+          <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+          <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        </div>
       </footer>
     </main>
   </body>
-  </html>
+</html>

@@ -7,7 +7,7 @@
     <meta name="description" content="Release-based changelog for Phantasm, including CLI, runtime API, documentation, and bug fix changes by version.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="Manoj Sachwani">
-    <meta name="theme-color" content="#120726">
+    <meta name="theme-color" content="#08080b">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Phantasm">
     <meta property="og:title" content="Phantasm Changelog">
@@ -24,31 +24,32 @@
         "@type": "TechArticle",
         "headline": "Phantasm Changelog",
         "description": "Release-based changelog for Phantasm.",
-        "author": {
-          "@type": "Person",
-          "name": "Manoj Sachwani",
-          "url": "https://manojsachwani.com"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Phantasm"
-        }
+        "author": { "@type": "Person", "name": "Manoj Sachwani", "url": "https://manojsachwani.com" },
+        "publisher": { "@type": "Organization", "name": "Phantasm" }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="shell">
-      <nav class="topnav">
-        <a href="./index.html">Home</a>
-        <a href="./getting-started.html">Getting Started</a>
-        <a href="./configuration.html">Configuration</a>
-        <a href="./commands.html">Commands</a>
-        <a href="./why-phantasm.html">Why Phantasm</a>
-        <a href="./architecture.html">Architecture</a>
-        <a href="./changelog.html">Changelog</a>
-      </nav>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="Phantasm"></a>
+        <div class="nav-links">
+          <a href="./getting-started.html">Getting Started</a>
+          <a href="./configuration.html">Configuration</a>
+          <a href="./commands.html">Commands</a>
+          <a href="./why-phantasm.html">Why Phantasm</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./changelog.html" class="is-current">Changelog</a>
+          <a class="nav-cta" href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </nav>
 
+    <main class="shell">
       <header class="page-header page-header-wide">
         <p class="eyebrow">Changelog</p>
         <h1>Release notes by version</h1>
@@ -58,121 +59,129 @@
         </p>
       </header>
 
-      <section class="panel">
-        <h2>v0.2.2</h2>
-        <p>
-          These changes ship in the Phantasm v0.2.2 release.
-        </p>
+      <section class="section-first">
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.3</p>
+          <h2 style="margin-bottom: 0;">Current release</h2>
+          <p style="margin-top: 10px;">These changes ship in the Phantasm v0.2.3 release.</p>
+          <h3>Added</h3>
+          <ul class="list-tight">
+            <li>First-class <code>quality</code> metadata for record confidence, source, verification, expiration, revalidation, and authorship, including search and compile filters.</li>
+            <li>Read-only <code>stale_review</code> for freshness and changed-file impact, plus <code>duplicate_review</code> for semantic overlaps and consolidation guidance.</li>
+            <li><code>memory_export</code> for canonical importable JSON and review-only Markdown, plus additive <code>memory_import</code> for reviewed canonical JSON.</li>
+          </ul>
+          <h3>Changed</h3>
+          <ul class="list-tight">
+            <li>Updated API discovery, CLI help, managed guidance, public docs, site pages, and release notices for the v0.2.3 runtime surface.</li>
+            <li>Sensitive memory exports now require explicit inclusion and an export-capable client profile.</li>
+          </ul>
+        </div>
 
-        <h3>Added</h3>
-        <ul class="list-tight">
-          <li>Added human-friendly memory CLI commands for routine workflows: <code>phantasm list</code>, <code>phantasm show &lt;id&gt;</code>, <code>phantasm search "query"</code>, <code>phantasm add --kind &lt;kind&gt; --subject &lt;key&gt;</code>, <code>phantasm stats</code>, and <code>phantasm status</code>.</li>
-          <li>Added a default <code>inspect</code> summary when called without object IDs, including record counts, live/conflict counts, lifecycle state counts, scope counts, review item count, timestamp bounds, and compact live and conflict record lists.</li>
-          <li>Added opt-in <code>compile.params.explain=true</code> diagnostics so callers can see why compile candidates were selected or omitted, including candidate rank, selection rank, token estimates, focus-subject influence, lifecycle state, and token-budget omission reasons.</li>
-          <li>Added <code>ingest.params.review_required=true</code> so trusted callers can intentionally create suggestions and review items instead of direct authoritative memory for automatic or uncertain writes.</li>
-          <li>Added <code>write_mode</code> to ingest dry-run responses so callers can confirm whether a request would write authoritative memory or queue a suggestion.</li>
-          <li>Added a read-only <code>templates</code> operation with built-in templates for project identity, architectural decision, operational constraint, known issue, release procedure, environment setup, and deferred task records.</li>
-          <li>Added <code>scripts/scale_test.sh</code>, a configurable scale harness covering sequential ingest, concurrent writers, search, compile, snapshot restore, and corrupt-snapshot recovery checks.</li>
-        </ul>
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.2</p>
+          <p>These changes ship in the Phantasm v0.2.2 release.</p>
+          <h3>Added</h3>
+          <ul class="list-tight">
+            <li>Added human-friendly memory CLI commands for routine workflows: <code>phantasm list</code>, <code>phantasm show &lt;id&gt;</code>, <code>phantasm search "query"</code>, <code>phantasm add --kind &lt;kind&gt; --subject &lt;key&gt;</code>, <code>phantasm stats</code>, and <code>phantasm status</code>.</li>
+            <li>Added a default <code>inspect</code> summary when called without object IDs, including record counts, live/conflict counts, lifecycle state counts, scope counts, review item count, timestamp bounds, and compact live and conflict record lists.</li>
+            <li>Added opt-in <code>compile.params.explain=true</code> diagnostics so callers can see why compile candidates were selected or omitted, including candidate rank, selection rank, token estimates, focus-subject influence, lifecycle state, and token-budget omission reasons.</li>
+            <li>Added <code>ingest.params.review_required=true</code> so trusted callers can intentionally create suggestions and review items instead of direct authoritative memory for automatic or uncertain writes.</li>
+            <li>Added <code>write_mode</code> to ingest dry-run responses so callers can confirm whether a request would write authoritative memory or queue a suggestion.</li>
+            <li>Added a read-only <code>templates</code> operation with built-in templates for project identity, architectural decision, operational constraint, known issue, release procedure, environment setup, and deferred task records.</li>
+            <li>Added <code>scripts/scale_test.sh</code>, a configurable scale harness covering sequential ingest, concurrent writers, search, compile, snapshot restore, and corrupt-snapshot recovery checks.</li>
+          </ul>
+          <h3>Changed</h3>
+          <ul class="list-tight">
+            <li>Updated <code>describe</code>, built-in help, managed agent guidance, public command docs, and the public site to document <code>review_required</code>, <code>compile.explain</code>, <code>templates</code>, the default <code>inspect</code> summary, and human-friendly memory commands.</li>
+            <li>Updated internal operator documentation with quick and default scale test commands and guidance on when to run scale/recovery checks.</li>
+          </ul>
+        </div>
 
-        <h3>Changed</h3>
-        <ul class="list-tight">
-          <li>Updated <code>describe</code>, built-in help, managed agent guidance, public command docs, and the public site to document <code>review_required</code>, <code>compile.explain</code>, <code>templates</code>, the default <code>inspect</code> summary, and human-friendly memory commands.</li>
-          <li>Updated internal operator documentation with quick and default scale test commands and guidance on when to run scale/recovery checks.</li>
-        </ul>
-      </section>
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.1</p>
+          <p>These changes shipped in the Phantasm v0.2.1 release.</p>
+          <h3>Added</h3>
+          <ul class="list-tight">
+            <li>Added operation-specific CLI help for <code>handle-request</code> so callers can print a single operation schema and runnable example without sending a runtime request first.</li>
+            <li>Added <code>params.dry_run</code> preview support for mutating operations. This lets callers inspect no-write outcomes such as <code>ingest</code> <code>would_create</code>/<code>would_update</code> results before risking collisions or writes to the wrong scope.</li>
+            <li>Added payload fidelity metadata on write responses so callers can compare request bytes and hashes with the stored payload.</li>
+            <li>Added mojibake detection warnings on write responses so UTF-8 transport corruption is surfaced immediately instead of being silently persisted.</li>
+          </ul>
+          <h3>Changed</h3>
+          <ul class="list-tight">
+            <li>Updated unsupported operation validation errors to list all valid operation names and point callers to <code>describe target=all</code> or <code>target=*</code> for the full operation catalog.</li>
+            <li>Updated required-field validation errors to be operation aware. They now include the missing or invalid <code>params.&lt;field&gt;</code>, the expected type, the required param set for that operation, the field description, a runnable example request, and a <code>describe target=&lt;operation&gt;</code> recovery hint.</li>
+            <li>Updated <code>health</code> to expose grouped <code>live_conflict_subjects</code> alongside <code>live_conflict_count</code> so agents can identify affected <code>record_kind</code>/<code>subject_key</code> pairs without scanning audit history.</li>
+            <li>Updated <code>live_conflict</code> lifecycle effect payloads to include the affected <code>record_id</code>, <code>record_kind</code>, and <code>subject_key</code> for faster recovery through the audit surface.</li>
+            <li>Updated built-in help, operation schemas, and public/internal command references to document <code>dry_run</code> previews and the newer operation-specific help surface.</li>
+          </ul>
+          <h3>Fixed</h3>
+          <ul class="list-tight">
+            <li>Fixed snapshot bundle export to capture SQLite WAL-backed state atomically instead of risking inconsistent snapshot contents.</li>
+            <li>Fixed raw-evidence attachment persistence to behave more defensively around write-time evidence storage.</li>
+          </ul>
+        </div>
 
-      <section class="panel">
-        <h2>v0.2.1</h2>
-        <p>
-          These changes shipped in the Phantasm v0.2.1 release.
-        </p>
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.0</p>
+          <p>These changes shipped in the Phantasm v0.2.0 release.</p>
+          <h3>Added</h3>
+          <ul class="list-tight">
+            <li>Added <code>search.params.match_mode</code> values <code>tokens</code>, <code>exact</code>, and <code>fuzzy</code>, with token matching as the default for natural multi-term queries.</li>
+            <li>Added <code>search.params.rank_by</code> with <code>deterministic</code> and <code>relevance</code> ordering modes.</li>
+            <li>Added <code>search</code> match diagnostics with per-result scores, matched fields, and matched terms.</li>
+            <li>Added <code>search.params.group_by=record_kind</code> aggregations with grouped counts and sample record IDs.</li>
+            <li>Added <code>search.filters.payload_contains</code> and <code>search.filters.payload_matches</code> for payload substring and regex filtering.</li>
+            <li>Added <code>search.filters.subject_key</code>, <code>record_kind</code>, <code>created_after</code>, and <code>created_before</code> for practical metadata filtering.</li>
+            <li>Added <code>phm</code> as a shorthand CLI binary for the same command surface as <code>phantasm</code>.</li>
+            <li>Added <code>phantasm handle-request --stdin</code> for request envelopes supplied through standard input.</li>
+            <li>Added <code>phantasm handle-request --file &lt;path&gt;</code> for UTF-8 request envelope files.</li>
+            <li>Added machine-readable <code>cli</code> and <code>request_transport</code> metadata to complete <code>describe</code> targets.</li>
+            <li>Added top-level response <code>notices</code> metadata for all successful <code>handle-request</code> responses.</li>
+            <li>Added first-call <code>release_update</code> notices after binary upgrades, scoped per bootstrapped project and client profile.</li>
+            <li>Added project-local release notice seen state using <code>release_notice_seen.&lt;client_profile&gt;</code>.</li>
+            <li>Added structured confirmation validation for high-impact operations. <code>resolve_conflict</code>, <code>snapshot_import</code>, <code>backup_restore</code>, and <code>maintenance_run</code> now require <code>approved_by</code>, <code>reason</code>, <code>operation</code>, and a <code>target</code> object matching the mutation request.</li>
+            <li>Added duplicate <code>subject_key</code> ingest refusal so callers get the existing record id and clear <code>revise</code> guidance instead of accidentally creating conflicting truth.</li>
+            <li>Added public and internal documentation for the <code>phm</code> alias, request input modes, response notices, release update notices, structured confirmations, ingest create-vs-update semantics, and release metadata maintenance.</li>
+          </ul>
+          <h3>Changed</h3>
+          <ul class="list-tight">
+            <li>Updated <code>describe</code> schemas, built-in help, public docs, and site docs to document search match modes, ranking, aggregations, and expanded filters.</li>
+            <li>Updated <code>describe target=all|*|api</code> to document response metadata, <code>notices</code>, release update notice shape, CLI aliasing, and request transport options.</li>
+            <li>Updated <code>health</code> guidance to make it a good first call after agent startup because it can surface one-time release notices.</li>
+            <li>Updated built-in <code>help handle-request</code> with the <code>--stdin</code>, <code>--file &lt;path&gt;</code>, and <code>notices</code> behavior.</li>
+            <li>Updated public install and usage docs to verify both <code>phantasm</code> and <code>phm</code>.</li>
+            <li>Updated <code>ingest</code> schema, built-in help, public docs, site docs, and managed agent guidance to make it explicit that <code>ingest</code> creates new memory and <code>revise</code> updates existing memory.</li>
+            <li>Updated conflict resolution examples to include the required structured confirmation payload.</li>
+            <li>Updated release documentation to require reviewing embedded release notice metadata before tagging.</li>
+          </ul>
+          <h3>Fixed</h3>
+          <ul class="list-tight">
+            <li>Fixed JSON parsing for printable UTF-8 strings so non-ASCII text is preserved correctly.</li>
+            <li>Fixed JSON <code>\uXXXX</code> escape handling, including valid surrogate pairs and invalid surrogate rejection.</li>
+            <li>Fixed JSON string output so printable Unicode remains readable while control characters are still escaped.</li>
+          </ul>
+        </div>
 
-        <h3>Added</h3>
-        <ul class="list-tight">
-          <li>Added operation-specific CLI help for <code>handle-request</code> so callers can print a single operation schema and runnable example without sending a runtime request first.</li>
-          <li>Added <code>params.dry_run</code> preview support for mutating operations. This lets callers inspect no-write outcomes such as <code>ingest</code> <code>would_create</code>/<code>would_update</code> results before risking collisions or writes to the wrong scope.</li>
-          <li>Added payload fidelity metadata on write responses so callers can compare request bytes and hashes with the stored payload.</li>
-          <li>Added mojibake detection warnings on write responses so UTF-8 transport corruption is surfaced immediately instead of being silently persisted.</li>
-        </ul>
-
-        <h3>Changed</h3>
-        <ul class="list-tight">
-          <li>Updated unsupported operation validation errors to list all valid operation names and point callers to <code>describe target=all</code> or <code>target=*</code> for the full operation catalog.</li>
-          <li>Updated required-field validation errors to be operation aware. They now include the missing or invalid <code>params.&lt;field&gt;</code>, the expected type, the required param set for that operation, the field description, a runnable example request, and a <code>describe target=&lt;operation&gt;</code> recovery hint.</li>
-          <li>Updated <code>health</code> to expose grouped <code>live_conflict_subjects</code> alongside <code>live_conflict_count</code> so agents can identify affected <code>record_kind</code>/<code>subject_key</code> pairs without scanning audit history.</li>
-          <li>Updated <code>live_conflict</code> lifecycle effect payloads to include the affected <code>record_id</code>, <code>record_kind</code>, and <code>subject_key</code> for faster recovery through the audit surface.</li>
-          <li>Updated built-in help, operation schemas, and public/internal command references to document <code>dry_run</code> previews and the newer operation-specific help surface.</li>
-        </ul>
-
-        <h3>Fixed</h3>
-        <ul class="list-tight">
-          <li>Fixed snapshot bundle export to capture SQLite WAL-backed state atomically instead of risking inconsistent snapshot contents.</li>
-          <li>Fixed raw-evidence attachment persistence to behave more defensively around write-time evidence storage.</li>
-        </ul>
-      </section>
-
-      <section class="panel">
-        <h2>v0.2.0</h2>
-        <p>
-          These changes shipped in the Phantasm v0.2.0 release.
-        </p>
-
-        <h3>Added</h3>
-        <ul class="list-tight">
-          <li>Added <code>search.params.match_mode</code> values <code>tokens</code>, <code>exact</code>, and <code>fuzzy</code>, with token matching as the default for natural multi-term queries.</li>
-          <li>Added <code>search.params.rank_by</code> with <code>deterministic</code> and <code>relevance</code> ordering modes.</li>
-          <li>Added <code>search</code> match diagnostics with per-result scores, matched fields, and matched terms.</li>
-          <li>Added <code>search.params.group_by=record_kind</code> aggregations with grouped counts and sample record IDs.</li>
-          <li>Added <code>search.filters.payload_contains</code> and <code>search.filters.payload_matches</code> for payload substring and regex filtering.</li>
-          <li>Added <code>search.filters.subject_key</code>, <code>record_kind</code>, <code>created_after</code>, and <code>created_before</code> for practical metadata filtering.</li>
-          <li>Added <code>phm</code> as a shorthand CLI binary for the same command surface as <code>phantasm</code>.</li>
-          <li>Added <code>phantasm handle-request --stdin</code> for request envelopes supplied through standard input.</li>
-          <li>Added <code>phantasm handle-request --file &lt;path&gt;</code> for UTF-8 request envelope files.</li>
-          <li>Added machine-readable <code>cli</code> and <code>request_transport</code> metadata to complete <code>describe</code> targets.</li>
-          <li>Added top-level response <code>notices</code> metadata for all successful <code>handle-request</code> responses.</li>
-          <li>Added first-call <code>release_update</code> notices after binary upgrades, scoped per bootstrapped project and client profile.</li>
-          <li>Added project-local release notice seen state using <code>release_notice_seen.&lt;client_profile&gt;</code>.</li>
-          <li>Added structured confirmation validation for high-impact operations. <code>resolve_conflict</code>, <code>snapshot_import</code>, <code>backup_restore</code>, and <code>maintenance_run</code> now require <code>approved_by</code>, <code>reason</code>, <code>operation</code>, and a <code>target</code> object matching the mutation request.</li>
-          <li>Added duplicate <code>subject_key</code> ingest refusal so callers get the existing record id and clear <code>revise</code> guidance instead of accidentally creating conflicting truth.</li>
-          <li>Added public and internal documentation for the <code>phm</code> alias, request input modes, response notices, release update notices, structured confirmations, ingest create-vs-update semantics, and release metadata maintenance.</li>
-        </ul>
-
-        <h3>Changed</h3>
-        <ul class="list-tight">
-          <li>Updated <code>describe</code> schemas, built-in help, public docs, and site docs to document search match modes, ranking, aggregations, and expanded filters.</li>
-          <li>Updated <code>describe target=all|*|api</code> to document response metadata, <code>notices</code>, release update notice shape, CLI aliasing, and request transport options.</li>
-          <li>Updated <code>health</code> guidance to make it a good first call after agent startup because it can surface one-time release notices.</li>
-          <li>Updated built-in <code>help handle-request</code> with the <code>--stdin</code>, <code>--file &lt;path&gt;</code>, and <code>notices</code> behavior.</li>
-          <li>Updated public install and usage docs to verify both <code>phantasm</code> and <code>phm</code>.</li>
-          <li>Updated <code>ingest</code> schema, built-in help, public docs, site docs, and managed agent guidance to make it explicit that <code>ingest</code> creates new memory and <code>revise</code> updates existing memory.</li>
-          <li>Updated conflict resolution examples to include the required structured confirmation payload.</li>
-          <li>Updated release documentation to require reviewing embedded release notice metadata before tagging.</li>
-        </ul>
-
-        <h3>Fixed</h3>
-        <ul class="list-tight">
-          <li>Fixed JSON parsing for printable UTF-8 strings so non-ASCII text is preserved correctly.</li>
-          <li>Fixed JSON <code>\uXXXX</code> escape handling, including valid surrogate pairs and invalid surrogate rejection.</li>
-          <li>Fixed JSON string output so printable Unicode remains readable while control characters are still escaped.</li>
-        </ul>
-      </section>
-
-      <section class="panel">
-        <h2>Earlier releases</h2>
-        <p>
-          Earlier public releases established the initial local project memory runtime, bootstrap
-          flow, agent guidance management, JSON <code>handle-request</code> API, operation catalog,
-          SQLite-backed project state, snapshots, backups, maintenance operations, and public
-          install paths.
-        </p>
+        <div class="panel">
+          <h2>Earlier releases</h2>
+          <p>
+            Earlier public releases established the initial local project memory runtime, bootstrap
+            flow, agent guidance management, JSON <code>handle-request</code> API, operation catalog,
+            SQLite-backed project state, snapshots, backups, maintenance operations, and public
+            install paths.
+          </p>
+        </div>
       </section>
 
       <footer class="site-footer">
-        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
-        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
-        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        <a class="footer-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="">Phantasm</a>
+        <div class="site-footer-links">
+          <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+          <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+          <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        </div>
       </footer>
     </main>
   </body>
-  </html>
+</html>

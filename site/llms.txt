@@ -1,6 +1,6 @@
 # Phantasm
 
-Phantasm is a local, project-scoped memory runtime for AI coding agents.
+Phantasm is a local, project-scoped memory runtime for AI agents. It is task-independent — any agent can use it for any kind of work, not only coding.
 It bootstraps into each repository, stores durable runtime state under `.phantasm/`,
 and exposes explicit operations for ingesting, searching, compiling, inspecting,
 auditing, snapshotting, and maintaining project memory.
@@ -36,6 +36,9 @@ auditing, snapshotting, and maintaining project memory.
 - Ingest creates new memory; use revise to update existing records. Duplicate subject_key ingests are refused while a live record exists and return the existing record id with revise guidance.
 - Trusted ingest callers can set `review_required=true` to create a suggestion and review item instead of authoritative memory.
 - Batch mutations `ingest_many` and `tombstone_many` process multiple items in one request using per-item idempotency keys and per-item result status.
+- Records and suggestions support first-class `quality` metadata for confidence, source, verification, expiry, revalidation, and authorship. Search and compile filters can target that metadata.
+- `stale_review` is read-only freshness and changed-file impact review; `duplicate_review` is read-only semantic-overlap review with consolidation guidance.
+- `memory_export` writes Git-reviewable canonical JSON or review-only Markdown to a project-relative path. `memory_import` additively loads reviewed canonical JSON; sensitive export requires explicit inclusion and an export-capable profile.
 
 ## Core CLI
 
@@ -95,13 +98,17 @@ phantasm agents --add
 - defer_review
 - resolve_review
 - search
+- duplicate_review
 - compile
 - inspect
 - audit
 - review_queue
+- stale_review
 - health
 - snapshot_export
 - snapshot_import
+- memory_export
+- memory_import
 - backup_list
 - backup_restore
 - maintenance_plan

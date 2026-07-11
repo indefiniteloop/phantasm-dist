@@ -4,19 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Getting Started with Phantasm | Install and Bootstrap Project Memory</title>
-    <meta name="description" content="Install Phantasm on macOS, Linux, or Windows and bootstrap project-scoped memory for AI coding agents with the Phantasm CLI.">
+    <meta name="description" content="Install Phantasm on macOS, Linux, or Windows and bootstrap project-scoped memory for AI agents with the Phantasm CLI.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="Manoj Sachwani">
-    <meta name="theme-color" content="#120726">
+    <meta name="theme-color" content="#08080b">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Phantasm">
     <meta property="og:title" content="Getting Started with Phantasm">
-    <meta property="og:description" content="Install Phantasm and bootstrap a local, repository-scoped memory runtime for AI coding agents.">
+    <meta property="og:description" content="Install Phantasm and bootstrap a local, repository-scoped memory runtime for AI agents.">
     <meta property="og:image" content="/og/phantasm-og.svg">
     <meta property="og:image:alt" content="Phantasm getting started page preview">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Getting Started with Phantasm">
-    <meta name="twitter:description" content="Install Phantasm and bootstrap a local memory runtime for coding agents.">
+    <meta name="twitter:description" content="Install Phantasm and bootstrap a local memory runtime for AI agents.">
     <meta name="twitter:image" content="/og/phantasm-og.svg">
     <script type="application/ld+json">
       {
@@ -24,115 +24,122 @@
         "@type": "TechArticle",
         "headline": "Getting Started with Phantasm",
         "description": "Installation and setup guide for bootstrapping Phantasm into a repository.",
-        "author": {
-          "@type": "Person",
-          "name": "Manoj Sachwani",
-          "url": "https://manojsachwani.com"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Phantasm"
-        }
+        "author": { "@type": "Person", "name": "Manoj Sachwani", "url": "https://manojsachwani.com" },
+        "publisher": { "@type": "Organization", "name": "Phantasm" }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="shell">
-      <nav class="topnav">
-        <a href="./index.html">Home</a>
-        <a href="./getting-started.html">Getting Started</a>
-        <a href="./configuration.html">Configuration</a>
-        <a href="./commands.html">Commands</a>
-        <a href="./why-phantasm.html">Why Phantasm</a>
-        <a href="./architecture.html">Architecture</a>
-        <a href="./changelog.html">Changelog</a>
-      </nav>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="Phantasm"></a>
+        <div class="nav-links">
+          <a href="./getting-started.html" class="is-current">Getting Started</a>
+          <a href="./configuration.html">Configuration</a>
+          <a href="./commands.html">Commands</a>
+          <a href="./why-phantasm.html">Why Phantasm</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./changelog.html">Changelog</a>
+          <a class="nav-cta" href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </nav>
 
+    <main class="shell">
       <header class="page-header">
         <p class="eyebrow">Getting Started</p>
         <h1>Set up Phantasm without building from source</h1>
       </header>
 
-      <section class="panel">
-        <h2>macOS and Linux</h2>
-        <pre><code>brew install indefiniteloop/tap/phantasm
+      <section class="section-first">
+        <div class="panel">
+          <h2>macOS and Linux</h2>
+          <pre><code>brew install indefiniteloop/tap/phantasm
 # or
 curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/scripts/install.sh | sh
 phantasm --version
 phm --version</code></pre>
-        <p>Use Homebrew if it is already part of your workflow. The shell installer remains the fallback path for Unix systems without Brew.</p>
-      </section>
+          <p>Use Homebrew if it is already part of your workflow. The shell installer remains the fallback path for Unix systems without Brew.</p>
+        </div>
 
-      <section class="panel">
-        <h2>New to Homebrew?</h2>
-        <p>Start by checking whether Homebrew is already installed.</p>
-        <pre><code>brew --version</code></pre>
-        <p>If that says <code>brew: command not found</code>, install Homebrew first:</p>
-        <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
-        <p>Then reopen your terminal if prompted, run <code>brew --version</code> again, and install Phantasm with <code>brew install indefiniteloop/tap/phantasm</code>.</p>
-      </section>
+        <div class="panel">
+          <h2>New to Homebrew?</h2>
+          <p>Start by checking whether Homebrew is already installed.</p>
+          <pre><code>brew --version</code></pre>
+          <p>If that says <code>brew: command not found</code>, install Homebrew first:</p>
+          <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+          <p>Then reopen your terminal if prompted, run <code>brew --version</code> again, and install Phantasm with <code>brew install indefiniteloop/tap/phantasm</code>.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Windows</h2>
-        <p>Use the published Windows release asset or run <code>scripts/install.ps1</code> from the public distribution repo.</p>
-      </section>
+        <div class="panel">
+          <h2>Windows</h2>
+          <p>Use the published Windows release asset or run <code>scripts/install.ps1</code> from the public distribution repo.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Turn it on for a project</h2>
-        <pre><code>cd /path/to/project
+        <div class="panel">
+          <h2>Turn it on for a project</h2>
+          <pre><code>cd /path/to/project
 phantasm bootstrap</code></pre>
-        <p>This creates the local <code>.phantasm/</code> runtime for that project.</p>
-      </section>
+          <p>This creates the local <code>.phantasm/</code> runtime for that project.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Add agent guidance</h2>
-        <pre><code>phantasm agents --add
+        <div class="panel">
+          <h2>Add agent guidance</h2>
+          <pre><code>phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-        <p>This adds or refreshes a managed Phantasm instruction block in common agent files. After updating Phantasm, rerun <code>phantasm agents --add</code> to replace the managed block in place; you do not need to remove it first. Phantasm asks for confirmation before it writes the file, backs up existing files before changing them, and preserves text outside the managed markers.</p>
-      </section>
+          <p>This adds or refreshes a managed Phantasm instruction block in common agent files. After updating Phantasm, rerun <code>phantasm agents --add</code> to replace the managed block in place; you do not need to remove it first. Phantasm asks for confirmation before it writes the file, backs up existing files before changing them, and preserves text outside the managed markers.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Inspect the generated config files</h2>
-        <p>
-          After bootstrap, review <code>.phantasm/phantasm.toml</code> and
-          <code>.phantasm/clients.toml</code> using the
-          <a href="./configuration.html">configuration reference</a>.
-          It documents every current key, default, and limitation in the shipped runtime.
-        </p>
-      </section>
+        <div class="panel">
+          <h2>Inspect the generated config files</h2>
+          <p>
+            After bootstrap, review <code>.phantasm/phantasm.toml</code> and
+            <code>.phantasm/clients.toml</code> using the
+            <a href="./configuration.html">configuration reference</a>.
+            It documents every current key, default, and limitation in the shipped runtime.
+          </p>
+        </div>
 
-      <section class="panel">
-        <h2>Inspect the full command surface</h2>
-        <pre><code>phantasm --help
+        <div class="panel">
+          <h2>Inspect the full command surface</h2>
+          <pre><code>phantasm --help
 phm --help
 phantasm agents --help
 phantasm help bootstrap
 phantasm help handle-request</code></pre>
-        <p><code>phm</code> is the shorthand alias for the same CLI. The top-level help lists commands. Command-specific help shows the available options for each workflow. Agents and wrappers can also call <code>describe</code> for machine-readable operation schemas and examples.</p>
-        <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
+          <p><code>phm</code> is the shorthand alias for the same CLI. The top-level help lists commands. Command-specific help shows the available options for each workflow. Agents and wrappers can also call <code>describe</code> for machine-readable operation schemas and examples.</p>
+          <pre><code>phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 phantasm handle-request '{"operation":"describe","params":{"target":"ingest"}}'
 printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm handle-request --stdin
 phantasm handle-request --file request.json</code></pre>
-        <p><code>handle-request</code> input must be valid UTF-8. JSON strings preserve printable Unicode and accept standard <code>\uXXXX</code> escapes.</p>
-        <p>Every response includes <code>notices</code>. After a binary update, the first successful request from each client profile in a bootstrapped project includes a structured <code>release_update</code> notice; later calls suppress it until the installed version changes again.</p>
-      </section>
+          <p><code>handle-request</code> input must be valid UTF-8. JSON strings preserve printable Unicode and accept standard <code>\uXXXX</code> escapes.</p>
+          <p>Every response includes <code>notices</code>. After a binary update, the first successful request from each client profile in a bootstrapped project includes a structured <code>release_update</code> notice; later calls suppress it until the installed version changes again.</p>
+          <p>After upgrading to v0.2.3, call <code>describe</code> again. The current discovery surface includes quality metadata, <code>stale_review</code>, <code>duplicate_review</code>, and Git-reviewable <code>memory_export</code>/<code>memory_import</code> workflows.</p>
+        </div>
 
-      <section class="panel">
-        <h2>Important limitation</h2>
-        <p>
-          The current binary does not yet expose a first-class end-user MCP <code>serve</code>
-          command. Today the public setup flow is <code>bootstrap</code>, and the advanced runtime
-          flow is <code>handle-request</code>.
-        </p>
+        <div class="panel">
+          <h2>Important limitation</h2>
+          <p>
+            The current binary does not yet expose a first-class end-user MCP <code>serve</code>
+            command. Today the public setup flow is <code>bootstrap</code>, and the advanced runtime
+            flow is <code>handle-request</code>.
+          </p>
+        </div>
       </section>
 
       <footer class="site-footer">
-        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
-        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
-        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        <a class="footer-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="">Phantasm</a>
+        <div class="site-footer-links">
+          <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+          <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+          <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        </div>
       </footer>
     </main>
   </body>
-  </html>
+</html>

@@ -7,7 +7,7 @@
     <meta name="description" content="High-level overview of the Phantasm architecture, including bootstrap flow, request contract, SQLite-backed runtime, memory model, and comparisons with competing memory systems.">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="author" content="Manoj Sachwani">
-    <meta name="theme-color" content="#120726">
+    <meta name="theme-color" content="#08080b">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Phantasm">
     <meta property="og:title" content="Phantasm Architecture | Design and Implementation Overview">
@@ -24,105 +24,104 @@
         "@type": "TechArticle",
         "headline": "Phantasm Architecture",
         "description": "High-level architecture, design, and implementation overview for the Phantasm project memory runtime.",
-        "author": {
-          "@type": "Person",
-          "name": "Manoj Sachwani",
-          "url": "https://manojsachwani.com"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Phantasm"
-        }
+        "author": { "@type": "Person", "name": "Manoj Sachwani", "url": "https://manojsachwani.com" },
+        "publisher": { "@type": "Organization", "name": "Phantasm" }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <main class="shell">
-      <nav class="topnav">
-        <a href="./index.html">Home</a>
-        <a href="./getting-started.html">Getting Started</a>
-        <a href="./configuration.html">Configuration</a>
-        <a href="./commands.html">Commands</a>
-        <a href="./why-phantasm.html">Why Phantasm</a>
-        <a href="./architecture.html">Architecture</a>
-        <a href="./changelog.html">Changelog</a>
-      </nav>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="Phantasm"></a>
+        <div class="nav-links">
+          <a href="./getting-started.html">Getting Started</a>
+          <a href="./configuration.html">Configuration</a>
+          <a href="./commands.html">Commands</a>
+          <a href="./why-phantasm.html">Why Phantasm</a>
+          <a href="./architecture.html" class="is-current">Architecture</a>
+          <a href="./changelog.html">Changelog</a>
+          <a class="nav-cta" href="https://github.com/indefiniteloop/phantasm-dist?utm_source=phatasm" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </nav>
 
+    <main class="shell">
       <header class="page-header page-header-wide">
         <p class="eyebrow">Architecture</p>
         <h1>How Phantasm is designed and implemented</h1>
         <p class="page-lede">
-          Phantasm is a project-scoped memory runtime for coding agents. At a high level, it is a
+          Phantasm is a project-scoped memory runtime for AI agents, task-independent by design. At a high level, it is a
           local system that bootstraps into a repository, stores durable memory in a single
           authoritative runtime, and answers explicit operations like <code>ingest</code>,
           <code>search</code>, and <code>compile</code> through a deterministic request contract.
         </p>
       </header>
 
-      <section class="compare-hero panel">
-        <div class="compare-intro">
-          <div>
-            <p class="eyebrow">Design idea</p>
-            <h2>Treat memory as project runtime, not just retrieval infrastructure</h2>
-          </div>
+      <section class="section-first">
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">Design idea</p>
+          <h2>Treat memory as project runtime, not just retrieval infrastructure</h2>
           <p>
             Many competing systems optimize for cross-session recall, graph retrieval, or generic
-            agent state. Phantasm’s design is narrower and more opinionated: memory belongs to the
+            agent state. Phantasm's design is narrower and more opinionated: memory belongs to the
             repository, should be bootstrapped locally, and should expose explicit operational
             semantics instead of behaving like a hidden background layer.
           </p>
         </div>
       </section>
 
-      <section class="stack-grid" aria-label="Architecture layers">
-        <article class="stack-card">
-          <p class="card-label">01</p>
-          <h2>Bootstrap layer</h2>
-          <p>
-            The runtime is installed into each repository with <code>phantasm bootstrap</code>.
-            That creates the local <code>.phantasm/</code> layout, tracked config files, and the
-            state directory that holds the live runtime.
-          </p>
-        </article>
-
-        <article class="stack-card">
-          <p class="card-label">02</p>
-          <h2>Request layer</h2>
-          <p>
-            Phantasm exposes one explicit JSON request/response contract through
-            <code>handle-request</code>. Operations are versioned, auditable, and separated into
-            mutations, reads, snapshots, and maintenance flows.
-            The read-only <code>describe</code> operation returns the complete machine-readable
-            API schema, operation params, safety rules, and runnable examples for agents.
-          </p>
-        </article>
-
-        <article class="stack-card">
-          <p class="card-label">03</p>
-          <h2>Persistence layer</h2>
-          <p>
-            The source of truth is one authoritative SQLite store per project under
-            <code>.phantasm/state/store.sqlite</code>. Runtime caches may exist, but durable memory
-            truth lives in local state, not in prompt text or transient agent memory.
-          </p>
-        </article>
-
-        <article class="stack-card">
-          <p class="card-label">04</p>
-          <h2>Memory domain layer</h2>
-          <p>
-            The runtime stores authoritative records, suggestions, review items, raw evidence,
-            operations, idempotency receipts, trust decisions, and backup metadata. The system is
-            designed to preserve lifecycle and auditability, not just similarity search hits.
-          </p>
-        </article>
+      <section class="section">
+        <div class="grid-2">
+          <article class="card">
+            <p class="card-num">01</p>
+            <h2>Bootstrap layer</h2>
+            <p>
+              The runtime is installed into each repository with <code>phantasm bootstrap</code>.
+              That creates the local <code>.phantasm/</code> layout, tracked config files, and the
+              state directory that holds the live runtime.
+            </p>
+          </article>
+          <article class="card">
+            <p class="card-num">02</p>
+            <h2>Request layer</h2>
+            <p>
+              Phantasm exposes one explicit JSON request/response contract through
+              <code>handle-request</code>. Operations are versioned, auditable, and separated into
+              mutations, reads, snapshots, and maintenance flows.
+              The read-only <code>describe</code> operation returns the complete machine-readable
+              API schema, operation params, safety rules, and runnable examples for agents.
+            </p>
+          </article>
+          <article class="card">
+            <p class="card-num">03</p>
+            <h2>Persistence layer</h2>
+            <p>
+              The source of truth is one authoritative SQLite store per project under
+              <code>.phantasm/state/store.sqlite</code>. Runtime caches may exist, but durable memory
+              truth lives in local state, not in prompt text or transient agent memory.
+            </p>
+          </article>
+          <article class="card">
+            <p class="card-num">04</p>
+            <h2>Memory domain layer</h2>
+            <p>
+              The runtime stores authoritative records, suggestions, review items, raw evidence,
+              operations, idempotency receipts, trust decisions, and backup metadata. The system is
+              designed to preserve lifecycle and auditability, not just similarity search hits.
+            </p>
+          </article>
+        </div>
       </section>
 
-      <section class="panel architecture-panel">
-        <p class="eyebrow">Runtime layout</p>
-        <h2>What gets created inside a project</h2>
-        <pre><code>.phantasm/
+      <section class="section">
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">Runtime layout</p>
+          <h2>What gets created inside a project</h2>
+          <pre><code>.phantasm/
 ├── phantasm.toml
 ├── clients.toml
 └── state/
@@ -132,120 +131,127 @@
     ├── logs/
     ├── raw/
     └── tmp/</code></pre>
-        <p class="note">
-          The important split is declarative config versus mutable local state. Config drives
-          behavior; the SQLite-backed runtime holds the memory truth.
-        </p>
-        <p class="note">
-          For the exact supported config keys today, use the
-          <a href="./configuration.html">configuration reference</a>.
-        </p>
-      </section>
+          <p style="margin-top: 14px;">
+            The important split is declarative config versus mutable local state. Config drives
+            behavior; the SQLite-backed runtime holds the memory truth.
+          </p>
+          <p style="margin-top: 8px;">
+            For the exact supported config keys today, use the
+            <a href="./configuration.html">configuration reference</a>.
+          </p>
+        </div>
 
-      <section class="panel architecture-panel">
-        <p class="eyebrow">Operational flow</p>
-        <h2>How a request moves through the system</h2>
-        <div class="flow-steps">
-          <article class="flow-step">
-            <span>1</span>
-            <p>The client sends a versioned request envelope with operation, client profile, and parameters.</p>
-          </article>
-          <article class="flow-step">
-            <span>2</span>
-            <p>The runtime validates the request, trust profile, confirmations, and idempotency requirements.</p>
-          </article>
-          <article class="flow-step">
-            <span>3</span>
-            <p>The operation reads or mutates the project-scoped store against a stable snapshot or serialized write boundary.</p>
-          </article>
-          <article class="flow-step">
-            <span>4</span>
-            <p>The response returns machine-readable data, warnings, review items, remediation, and provenance summary.</p>
-          </article>
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">Operational flow</p>
+          <h2>How a request moves through the system</h2>
+          <div class="flow-steps" style="margin-top: 18px;">
+            <article class="flow-step">
+              <span>1</span>
+              <p>The client sends a versioned request envelope with operation, client profile, and parameters.</p>
+            </article>
+            <article class="flow-step">
+              <span>2</span>
+              <p>The runtime validates the request, trust profile, confirmations, and idempotency requirements.</p>
+            </article>
+            <article class="flow-step">
+              <span>3</span>
+              <p>The operation reads or mutates the project-scoped store against a stable snapshot or serialized write boundary.</p>
+            </article>
+            <article class="flow-step">
+              <span>4</span>
+              <p>The response returns machine-readable data, warnings, review items, remediation, and provenance summary.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">Compile model</p>
+          <h2>What makes Phantasm different from plain memory retrieval</h2>
+          <p>
+            The project README frames Phantasm as a context compiler rather than a simple memory
+            lookup layer. Conceptually, the runtime ingests structured project truth, resolves
+            contradictions and lineage, determines what is live, profiles importance, allocates what
+            fits within a token budget, and assembles the final context payload in model-aware order.
+          </p>
+          <p style="margin-top: 12px;">
+            Even where the current codebase is still maturing toward that broader design, the
+            implementation is already shaped around explicit operations, deterministic behavior, and
+            durable project-local state rather than "store embeddings and hope retrieval works."
+          </p>
         </div>
       </section>
 
-      <section class="panel architecture-panel">
-        <p class="eyebrow">Compile model</p>
-        <h2>What makes Phantasm different from plain memory retrieval</h2>
-        <p>
-          The project README frames Phantasm as a context compiler rather than a simple memory
-          lookup layer. Conceptually, the runtime ingests structured project truth, resolves
-          contradictions and lineage, determines what is live, profiles importance, allocates what
-          fits within a token budget, and assembles the final context payload in model-aware order.
-        </p>
-        <p>
-          Even where the current codebase is still maturing toward that broader design, the
-          implementation is already shaped around explicit operations, deterministic behavior, and
-          durable project-local state rather than “store embeddings and hope retrieval works.”
-        </p>
-      </section>
-
-      <section class="matrix-panel panel">
-        <p class="eyebrow">High-level comparison</p>
-        <h2>How the architecture differs from common competitors</h2>
-        <div class="matrix-table" role="table" aria-label="Architecture comparison table">
-          <div class="matrix-row matrix-head" role="row">
-            <div role="columnheader">System</div>
-            <div role="columnheader">Primary abstraction</div>
-            <div role="columnheader">Typical shape</div>
-            <div role="columnheader">How Phantasm differs</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Mem0 / OpenMemory</div>
-            <div role="cell">Memory layer service</div>
-            <div role="cell">Platform or MCP memory shared across apps and tools</div>
-            <div role="cell">Phantasm is narrower: the repository owns the memory runtime and its lifecycle.</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Zep / Graphiti</div>
-            <div role="cell">Context engineering plus temporal graph memory</div>
-            <div role="cell">Knowledge-graph-heavy retrieval and temporal reasoning</div>
-            <div role="cell">Phantasm favors simpler project-local operational semantics over graph-first architecture.</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">Letta</div>
-            <div role="cell">Stateful agent memory blocks</div>
-            <div role="cell">Agent-centric persistent state and attached memory</div>
-            <div role="cell">Phantasm is repository-centric rather than agent-centric.</div>
-          </div>
-          <div class="matrix-row" role="row">
-            <div role="cell">LangGraph memory</div>
-            <div role="cell">Framework persistence primitives</div>
-            <div role="cell">Short-term checkpointing plus long-term stores inside a graph framework</div>
-            <div role="cell">Phantasm is a product opinion and runtime contract, not just persistence building blocks.</div>
+      <section class="section">
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">High-level comparison</p>
+          <h2>How the architecture differs from common competitors</h2>
+          <div class="matrix-table" role="table" aria-label="Architecture comparison table">
+            <div class="matrix-row matrix-head" role="row">
+              <div role="columnheader">System</div>
+              <div role="columnheader">Primary abstraction</div>
+              <div role="columnheader">Typical shape</div>
+              <div role="columnheader">How Phantasm differs</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Mem0 / OpenMemory</div>
+              <div role="cell">Memory layer service</div>
+              <div role="cell">Platform or MCP memory shared across apps and tools</div>
+              <div role="cell">Phantasm is narrower: the repository owns the memory runtime and its lifecycle.</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Zep / Graphiti</div>
+              <div role="cell">Context engineering plus temporal graph memory</div>
+              <div role="cell">Knowledge-graph-heavy retrieval and temporal reasoning</div>
+              <div role="cell">Phantasm favors simpler project-local operational semantics over graph-first architecture.</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">Letta</div>
+              <div role="cell">Stateful agent memory blocks</div>
+              <div role="cell">Agent-centric persistent state and attached memory</div>
+              <div role="cell">Phantasm is repository-centric rather than agent-centric.</div>
+            </div>
+            <div class="matrix-row" role="row">
+              <div role="cell">LangGraph memory</div>
+              <div role="cell">Framework persistence primitives</div>
+              <div role="cell">Short-term checkpointing plus long-term stores inside a graph framework</div>
+              <div role="cell">Phantasm is a product opinion and runtime contract, not just persistence building blocks.</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="reasons-grid" aria-label="Implementation principles">
-        <article class="reason-panel panel">
-          <p class="card-label">Implementation principles</p>
-          <h2>What the codebase optimizes for</h2>
-          <ul class="compare-list">
-            <li>Project-scoped state instead of account-scoped or thread-scoped memory.</li>
-            <li>Single authoritative durable store per repository.</li>
-            <li>Explicit operations with auditability and idempotency.</li>
-            <li>Deterministic search and compile behavior for the same store state and request.</li>
-            <li>Operator-friendly backups, imports, maintenance, and recovery flows.</li>
-          </ul>
-        </article>
-
-        <article class="reason-panel panel">
-          <p class="card-label">Why this matters</p>
-          <h2>Why users may prefer this architecture</h2>
-          <ul class="compare-list">
-            <li>You can reason about the system as part of the repository, not as a hidden cloud memory product.</li>
-            <li>Memory behavior is easier to inspect, validate, and operate in engineering workflows.</li>
-            <li>The architecture fits teams who want local control, explicit contracts, and git-adjacent project boundaries.</li>
-          </ul>
-        </article>
+      <section class="section">
+        <div class="grid-2">
+          <article class="card">
+            <p class="card-num">Implementation principles</p>
+            <h2>What the codebase optimizes for</h2>
+            <ul>
+              <li>Project-scoped state instead of account-scoped or thread-scoped memory.</li>
+              <li>Single authoritative durable store per repository.</li>
+              <li>Explicit operations with auditability and idempotency.</li>
+              <li>Deterministic search and compile behavior for the same store state and request.</li>
+              <li>Operator-friendly backups, imports, maintenance, and recovery flows.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <p class="card-num">Why this matters</p>
+            <h2>Why users may prefer this architecture</h2>
+            <ul>
+              <li>You can reason about the system as part of the repository, not as a hidden cloud memory product.</li>
+              <li>Memory behavior is easier to inspect, validate, and operate in engineering workflows.</li>
+              <li>The architecture fits teams who want local control, explicit contracts, and git-adjacent project boundaries.</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
       <footer class="site-footer">
-        <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
-        <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
-        <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        <a class="footer-brand" href="./index.html"><img src="assets/phantasm-mark.png" alt="">Phantasm</a>
+        <div class="site-footer-links">
+          <a href="https://manojsachwani.com?utm_source=phatasm" target="_blank">manojsachwani.com</a>
+          <a href="https://indefiniteloop.com?utm_source=phatasm" target="_blank">indefiniteloop.com</a>
+          <a href="https://fullstack.tel?utm_source=phatasm" target="_blank">fullstack.tel</a>
+        </div>
       </footer>
     </main>
   </body>
