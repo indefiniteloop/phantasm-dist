@@ -19,7 +19,7 @@ auditing, snapshotting, and maintaining project memory.
 - Memory is project-scoped, not one global machine-wide memory bucket.
 - Runtime state is local to each repository under `.phantasm/state/`.
 - Durable truth lives in a single authoritative SQLite store per project.
-- The top-level CLI exposes `bootstrap`, `agents --add`, human memory commands, and `handle-request`.
+- The top-level CLI exposes `bootstrap`/`init`, `agents --add`, `agents-plugin`, `dashboard`, human memory commands, and `handle-request`.
 - Human memory commands include `list`, `show <id>`, `search "query"`, `add --kind <kind> --subject <key>`, `stats`, and `status`.
 - `phm` is installed as a shorthand alias for the same CLI as `phantasm`.
 - Requests use an explicit JSON envelope with versioned operations.
@@ -39,6 +39,8 @@ auditing, snapshotting, and maintaining project memory.
 - Records and suggestions support first-class `quality` metadata for confidence, source, verification, expiry, revalidation, and authorship. Search and compile filters can target that metadata.
 - `stale_review` is read-only freshness and changed-file impact review; `duplicate_review` is read-only semantic-overlap review with consolidation guidance.
 - `memory_export` writes Git-reviewable canonical JSON or review-only Markdown to a project-relative path. `memory_import` additively loads reviewed canonical JSON; sensitive export requires explicit inclusion and an export-capable profile.
+- `phantasm dashboard` launches a loopback-only, token-protected local dashboard with embedded offline UI, charts, graph exploration, and review actions.
+- `phantasm agents-plugin` installs the bundled harness-agnostic `phantasm-memory` plugin into supported local harness plugin directories.
 
 ## Core CLI
 
@@ -48,14 +50,18 @@ phm --help
 phantasm help agents
 phantasm --version
 phm --version
-phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
+phantasm bootstrap [project-path] [--agent-guidance] [--no-agent-plugin] [--agent-file <path>]
+phantasm init [project-path] [--agent-guidance] [--no-agent-plugin] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
+phantasm agents-plugin [--target <target>] [--path <dir>] [--dry-run] [--force]
+phantasm dashboard [--port <port>] [--no-open] [--profile <profile>]
 phantasm list
 phantasm show <id>
 phantasm search "query"
 phantasm add --kind decision --subject release-process
 phantasm stats
 phantasm status
+phantasm dashboard [--port <PORT>] [--no-open] [--profile <PROFILE>]
 phantasm handle-request '<json request envelope>'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json
@@ -66,6 +72,9 @@ phantasm handle-request '{"operation":"describe","params":{"target":"*"}}'
 Rerun `phantasm agents --add` after Phantasm updates when managed agent
 guidance changes. It refreshes the managed block in place, backs up
 existing files, and preserves text outside the managed markers.
+`phantasm bootstrap --agent-guidance` also installs the bundled
+harness-agnostic `phantasm-memory` plugin by default; use
+`--no-agent-plugin` to skip plugin installation.
 
 ## Common setup
 
@@ -76,8 +85,8 @@ curl -fsSL https://raw.githubusercontent.com/indefiniteloop/phantasm-dist/main/s
 phantasm --version
 phm --version
 cd /path/to/project
-phantasm bootstrap
-phantasm agents --add
+phantasm bootstrap --agent-guidance
+phantasm agents-plugin --dry-run
 ```
 
 ## Runtime operations

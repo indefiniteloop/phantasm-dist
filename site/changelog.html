@@ -61,9 +61,26 @@
 
       <section class="section-first">
         <div class="panel">
-          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.3</p>
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.4</p>
           <h2 style="margin-bottom: 0;">Current release</h2>
-          <p style="margin-top: 10px;">These changes ship in the Phantasm v0.2.3 release.</p>
+          <p style="margin-top: 10px;">These changes ship in the Phantasm v0.2.4 release.</p>
+          <h3>Added</h3>
+          <ul class="list-tight">
+            <li>Local interactive dashboard through <code>phantasm dashboard</code>, with loopback binding, per-session token auth, embedded offline assets, charts, graph exploration, and review actions.</li>
+            <li><code>phantasm agents-plugin</code> for installing the bundled harness-agnostic <code>phantasm-memory</code> plugin into supported local agent harnesses.</li>
+            <li><code>phantasm init</code> as an exact alias for <code>phantasm bootstrap</code>.</li>
+          </ul>
+          <h3>Changed</h3>
+          <ul class="list-tight">
+            <li><code>bootstrap --agent-guidance</code> now installs the bundled agent plugin by default; use <code>--no-agent-plugin</code> to opt out.</li>
+            <li>Repository and internal docs now reflect local-only git workflows and the completed beads backlog.</li>
+            <li>Dashboard attention links now navigate correctly after dynamic rendering.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.3</p>
+          <p>These changes ship in the Phantasm v0.2.3 release.</p>
           <h3>Added</h3>
           <ul class="list-tight">
             <li>First-class <code>quality</code> metadata for record confidence, source, verification, expiration, revalidation, and authorship, including search and compile filters.</li>

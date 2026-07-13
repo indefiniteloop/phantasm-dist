@@ -51,6 +51,7 @@ Supported keys:
 Built-in profile names currently available:
 
 - `generic_mcp`
+- `dashboard`
 - `codex`
 - `claude_code`
 
@@ -62,7 +63,7 @@ Default file contents:
 version = "v1"
 
 # User-defined profiles must inherit from exactly one built-in profile.
-# Built-ins: generic_mcp, codex, claude_code
+# Built-ins: generic_mcp, codex, claude_code, dashboard
 #
 # Example:
 # [profiles.codex_readonly]
@@ -90,7 +91,7 @@ Each custom profile section may contain these keys:
   Type: quoted string.
   Required: yes.
   Meaning: the built-in profile this custom profile extends.
-  Supported values: `generic_mcp`, `codex`, or `claude_code`.
+  Supported values: `generic_mcp`, `codex`, `claude_code`, or `dashboard`.
 
 - `display_name`
   Type: quoted string.
@@ -145,6 +146,15 @@ These built-ins ship in the runtime:
   `allow_authoritative_writes = true`
   `allow_sensitive_read = false`
   `allow_sensitive_export = false`
+
+- `dashboard`
+  `allow_suggestions = true`
+  `allow_authoritative_writes = true`
+  `allow_sensitive_read = false`
+  `allow_sensitive_export = false`
+
+  The HTTP dashboard additionally restricts this profile to read operations
+  and accept/reject/defer/resolve review actions.
 
 ## Example custom profile
 

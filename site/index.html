@@ -129,8 +129,8 @@ phantasm --version
 phm --version
 
 cd /path/to/project
-phantasm bootstrap
-phantasm agents --add
+phantasm bootstrap --agent-guidance
+phantasm agents-plugin --dry-run
 phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</code></pre>
                 </div>
             </section>
@@ -152,9 +152,11 @@ phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</co
                     <article class="card">
                         <h3>How do I review memory quality?</h3>
                         <p>
-                            v0.2.3 adds quality metadata, freshness review,
-                            duplicate review, and canonical JSON memory export
-                            for Git review. See the
+                            v0.2.4 adds the local dashboard, <code>init</code>,
+                            and the bundled harness-agnostic agent plugin
+                            installer. The quality metadata, freshness review,
+                            duplicate review, and canonical JSON export
+                            workflows remain available. See the
                             <a href="./commands.html">command reference</a>
                             for the exact discovery and request shapes.
                         </p>

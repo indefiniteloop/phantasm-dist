@@ -4,6 +4,45 @@ Phantasm changelog entries are version based. Each section describes
 what ships in that release. Use concrete version headings rather than
 placeholder holding sections.
 
+## v0.2.4
+
+These changes ship in the Phantasm v0.2.4 release.
+
+### Added
+
+- Added the local interactive dashboard: `phantasm dashboard`,
+  `phantasm dashboard --no-open`, and
+  `phantasm dashboard --port <PORT> --profile <PROFILE>`. The dashboard
+  binds to loopback, uses a per-session token, embeds its UI/chart/graph
+  assets for offline use, and permits read operations plus review actions
+  while blocking other mutations.
+- Added `phantasm agents-plugin` to install the bundled
+  `phantasm-memory` agent plugin into supported local agent harness
+  plugin directories. It supports `--target`, repeated `--path`,
+  `--dry-run`, and `--force`.
+- Added a harness-agnostic bundled Phantasm memory plugin with shared
+  skill/setup-command content and Codex/Claude discovery metadata.
+- Added `phantasm init` as an alias for `phantasm bootstrap`.
+
+### Changed
+
+- Updated `phantasm bootstrap --agent-guidance` and
+  `phantasm init --agent-guidance` to install the bundled agent plugin
+  by default. Use `--no-agent-plugin` to refresh managed guidance
+  without installing the plugin.
+- Updated repository guidance to require local-only git workflows unless
+  the project rule is explicitly changed.
+- Updated internal todo tracking to reflect the completed backlog and
+  point maintainers at beads as the authoritative source.
+- Updated the dashboard overview controls so dynamically rendered
+  attention links navigate correctly.
+
+### Notes
+
+- Development commits briefly added and then removed project-local
+  `.phantasm/` runtime files. They are not part of the shipped v0.2.4
+  runtime payload.
+
 ## v0.2.3
 
 These changes ship in the Phantasm v0.2.3 release.

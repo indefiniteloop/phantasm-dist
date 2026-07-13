@@ -83,15 +83,23 @@ phm --version</code></pre>
         <div class="panel">
           <h2>Turn it on for a project</h2>
           <pre><code>cd /path/to/project
-phantasm bootstrap</code></pre>
-          <p>This creates the local <code>.phantasm/</code> runtime for that project.</p>
+phantasm bootstrap
+# or
+phantasm init</code></pre>
+          <p>This creates the local <code>.phantasm/</code> runtime for that project. <code>init</code> is an alias for <code>bootstrap</code>.</p>
         </div>
 
         <div class="panel">
-          <h2>Add agent guidance</h2>
-          <pre><code>phantasm agents --add
+          <h2>Add agent guidance and plugin support</h2>
+          <pre><code>phantasm bootstrap --agent-guidance
+phantasm bootstrap --agent-guidance --no-agent-plugin
+phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-          <p>This adds or refreshes a managed Phantasm instruction block in common agent files. After updating Phantasm, rerun <code>phantasm agents --add</code> to replace the managed block in place; you do not need to remove it first. Phantasm asks for confirmation before it writes the file, backs up existing files before changing them, and preserves text outside the managed markers.</p>
+          <p><code>bootstrap --agent-guidance</code> adds or refreshes a managed Phantasm instruction block and installs the bundled <code>phantasm-memory</code> plugin into supported local harness plugin directories. Use <code>--no-agent-plugin</code> when you only want the guidance block. After updating Phantasm, rerun <code>phantasm agents --add</code> to replace the managed block in place; you do not need to remove it first. Phantasm asks for confirmation before it writes the file, backs up existing files before changing them, and preserves text outside the managed markers.</p>
+          <pre><code>phantasm agents-plugin
+phantasm agents-plugin --target codex
+phantasm agents-plugin --path ~/.codex/plugins</code></pre>
+          <p>Use <code>agents-plugin</code> when you only want to install or refresh the bundled plugin.</p>
         </div>
 
         <div class="panel">
@@ -119,7 +127,7 @@ printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm h
 phantasm handle-request --file request.json</code></pre>
           <p><code>handle-request</code> input must be valid UTF-8. JSON strings preserve printable Unicode and accept standard <code>\uXXXX</code> escapes.</p>
           <p>Every response includes <code>notices</code>. After a binary update, the first successful request from each client profile in a bootstrapped project includes a structured <code>release_update</code> notice; later calls suppress it until the installed version changes again.</p>
-          <p>After upgrading to v0.2.3, call <code>describe</code> again. The current discovery surface includes quality metadata, <code>stale_review</code>, <code>duplicate_review</code>, and Git-reviewable <code>memory_export</code>/<code>memory_import</code> workflows.</p>
+          <p>After upgrading to v0.2.4, call <code>describe</code> again. The current CLI surface includes the local dashboard, <code>init</code>, and the bundled agent plugin installer, while the runtime discovery surface continues to include quality metadata, <code>stale_review</code>, <code>duplicate_review</code>, and Git-reviewable <code>memory_export</code>/<code>memory_import</code> workflows.</p>
         </div>
 
         <div class="panel">

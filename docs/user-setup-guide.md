@@ -125,7 +125,7 @@ phm --version
 You should see output like:
 
 ```text
-phantasm 0.2.3
+phantasm 0.2.4
 ```
 
 You can also inspect the built-in help:
@@ -158,16 +158,25 @@ phantasm bootstrap
 
 That creates a `.phantasm/` directory inside the project.
 
+`phantasm init` is an alias for the same setup flow.
+
 If you also want repository agent instruction files to mention
-Phantasm automatically, run:
+Phantasm automatically and install the bundled agent plugin into
+supported local harnesses, run:
 
 ```bash
-phantasm agents --add
+phantasm bootstrap --agent-guidance
 ```
 
 Phantasm will ask for confirmation before it appends or creates any
 agent file content. Reply `y` or `yes` to continue. Before changing an
 existing agent file, it creates a timestamped sibling backup.
+
+Use `--no-agent-plugin` when you want only the managed instruction block:
+
+```bash
+phantasm bootstrap --agent-guidance --no-agent-plugin
+```
 
 After updating Phantasm, rerun `phantasm agents --add` to refresh the
 managed guidance block. You do not need to remove the old block first.
@@ -178,6 +187,15 @@ To target specific files instead of scanning common agent filenames:
 
 ```bash
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md
+```
+
+To install or refresh only the bundled harness-agnostic plugin:
+
+```bash
+phantasm agents-plugin
+phantasm agents-plugin --target codex
+phantasm agents-plugin --path ~/.codex/plugins
+phantasm agents-plugin --dry-run
 ```
 
 ## What `bootstrap` Creates
@@ -259,13 +277,12 @@ Use `target="all"` or `target="*"` for the complete operation catalog,
 `target="api"` for the complete API schema, and an operation name such
 as `ingest` for a focused schema.
 
-For v0.2.3, discover `stale_review`, `duplicate_review`,
-`memory_export`, and `memory_import` through the same surface. Store
-confidence, source, verification, expiry, revalidation, and authorship
-with record `quality` metadata. Export canonical JSON to a
-project-relative path for Git review; Markdown exports are review-only,
-and sensitive exports need a profile with `allow_sensitive_export=true`
-as well as explicit sensitive inclusion.
+For v0.2.4, discover the dashboard with `phantasm dashboard`, install
+the bundled agent plugin with `phantasm agents-plugin`, and use
+`phantasm init` anywhere you would use `phantasm bootstrap`. The v0.2.3
+memory-quality workflows remain available through the same discovery
+surface: `stale_review`, `duplicate_review`, `memory_export`,
+`memory_import`, and record `quality` metadata.
 
 That means:
 

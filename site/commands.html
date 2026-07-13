@@ -61,23 +61,26 @@
 phm --help
 phantasm --version
 phm --version
-phantasm bootstrap [project-path] [--agent-guidance] [--agent-file &lt;path&gt;]
+phantasm bootstrap [project-path] [--agent-guidance] [--no-agent-plugin] [--agent-file &lt;path&gt;]
+phantasm init [project-path] [--agent-guidance] [--no-agent-plugin] [--agent-file &lt;path&gt;]
 phantasm agents --add [project-path] [--agent-file &lt;path&gt;]
+phantasm agents-plugin [--target &lt;target&gt;] [--path &lt;dir&gt;] [--dry-run] [--force]
 phantasm list [--kind &lt;kind&gt;] [--settled]
 phantasm show &lt;id&gt;
 phantasm search "query"
 phantasm add --kind decision --subject release-process [--text "..."] [--review]
 phantasm stats
 phantasm status
+phantasm dashboard [--port &lt;PORT&gt;] [--no-open] [--profile &lt;PROFILE&gt;]
 phantasm handle-request '&lt;json request envelope&gt;'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json</code></pre>
-          <p><code>phm</code> is the shorthand alias for the same CLI. <code>phantasm --help</code> prints a command index. Use <code>phantasm agents --help</code> or <code>phantasm help agents</code> for command-specific options.</p>
+          <p><code>phm</code> is the shorthand alias for the same CLI. <code>init</code> is an alias for <code>bootstrap</code>. <code>phantasm --help</code> prints a command index. Use <code>phantasm agents-plugin --help</code>, <code>phantasm agents --help</code>, or <code>phantasm help agents</code> for command-specific options.</p>
         </div>
 
         <div class="panel">
           <h2>Common command</h2>
-          <p><code>phantasm bootstrap</code> is the standard setup command for a project.</p>
+          <p><code>phantasm bootstrap</code> is the standard setup command for a project. <code>phantasm init</code> runs the same flow.</p>
           <pre><code>phantasm bootstrap
 phantasm bootstrap .
 phantasm bootstrap /path/to/project</code></pre>
@@ -86,11 +89,22 @@ phantasm bootstrap /path/to/project</code></pre>
         <div class="panel">
           <h2>Agent guidance options</h2>
           <pre><code>phantasm bootstrap --agent-guidance
+phantasm bootstrap --agent-guidance --no-agent-plugin
 phantasm bootstrap --agent-file AGENTS.md
 phantasm bootstrap --agent-file AGENTS.md --agent-file CLAUDE.md
 phantasm agents --add
 phantasm agents --add --agent-file AGENTS.md --agent-file CLAUDE.md</code></pre>
-          <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. After updating Phantasm, rerun the command to replace the managed block in place; do not delete and re-add it manually. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup, preserves text outside the managed markers, and prompts for confirmation with a <code>y/N</code> question.</p>
+          <p>Use <code>agents --add</code> to add or refresh guidance without bootstrapping again. <code>bootstrap --agent-guidance</code> also installs the bundled <code>phantasm-memory</code> plugin into supported local harness plugin directories; add <code>--no-agent-plugin</code> to skip that. After updating Phantasm, rerun the command to replace the managed block in place; do not delete and re-add it manually. Before Phantasm changes an existing agent file, it creates a timestamped sibling backup, preserves text outside the managed markers, and prompts for confirmation with a <code>y/N</code> question.</p>
+        </div>
+
+        <div class="panel">
+          <h2>Agent plugin installer</h2>
+          <pre><code>phantasm agents-plugin
+phantasm agents-plugin --target codex
+phantasm agents-plugin --path ~/.codex/plugins
+phantasm agents-plugin --dry-run
+phantasm agents-plugin --force</code></pre>
+          <p>The installer copies the bundled harness-agnostic <code>phantasm-memory</code> plugin idempotently. Missing or unsupported auto-discovered harness targets are skipped and reported. Use <code>--path</code> for explicit plugin roots and <code>--force</code> only when replacing a changed existing plugin.</p>
         </div>
 
         <div class="panel">

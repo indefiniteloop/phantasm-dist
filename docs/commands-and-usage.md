@@ -15,20 +15,37 @@ phantasm --help
 phm --help
 phantasm --version
 phm --version
-phantasm bootstrap [project-path] [--agent-guidance] [--agent-file <path>]
+phantasm bootstrap [project-path] [--agent-guidance] [--no-agent-plugin] [--agent-file <path>]
+phantasm init [project-path] [--agent-guidance] [--no-agent-plugin] [--agent-file <path>]
 phantasm agents --add [project-path] [--agent-file <path>]
+phantasm agents-plugin [--target <target>] [--path <dir>] [--dry-run] [--force]
 phantasm list [--kind <kind>] [--settled]
 phantasm show <id>
 phantasm search "query"
 phantasm add --kind decision --subject release-process [--text "..."] [--review]
 phantasm stats
 phantasm status
+phantasm dashboard [--port <PORT>] [--no-open] [--profile <PROFILE>]
 phantasm handle-request '<json request envelope>'
 phantasm handle-request --stdin
 phantasm handle-request --file request.json
 ```
 
-`bootstrap` is the normal setup command.
+## `phantasm dashboard`
+
+```bash
+phantasm dashboard [--port <PORT>] [--no-open] [--profile <PROFILE>]
+```
+
+Starts the terminal-inspired interactive web dashboard for the current
+project. It always binds to `127.0.0.1`. With no explicit port it tries
+`4747` and falls back to an OS-assigned free port; an explicit port is
+strict. The browser opens automatically unless `--no-open` is supplied.
+The HTTP adapter exposes read operations plus accept/reject/defer/resolve
+review actions and cannot invoke other mutations.
+
+`bootstrap` is the normal setup command. `init` is an exact alias for
+`bootstrap`.
 
 The human memory commands wrap the runtime API for common terminal
 workflows: `list`, `show`, `search`, `add`, `stats`, and `status`.
@@ -79,6 +96,7 @@ Examples:
 phantasm bootstrap
 phantasm bootstrap .
 phantasm bootstrap /path/to/project
+phantasm init
 ```
 
 What it creates:
@@ -108,6 +126,7 @@ Examples:
 
 ```bash
 phantasm bootstrap . --agent-guidance
+phantasm bootstrap . --agent-guidance --no-agent-plugin
 phantasm bootstrap . --agent-file AGENTS.md
 phantasm bootstrap . --agent-file AGENTS.md --agent-file CLAUDE.md
 ```
@@ -116,6 +135,10 @@ Behavior:
 
 - `--agent-guidance` scans common files such as `AGENTS.md`,
   `CLAUDE.md`, `Agents.md`, and `Claude.md`
+- `--agent-guidance` also installs the bundled `phantasm-memory` agent
+  plugin into supported local harness plugin directories
+- `--no-agent-plugin` refreshes managed guidance without installing the
+  bundled plugin
 - if none are present, it creates `AGENTS.md`
 - the Phantasm block is managed and replaced idempotently on
   repeated runs
@@ -125,6 +148,25 @@ Behavior:
   `y/N` question in the terminal
 - existing files are copied to timestamped sibling backup files before
   Phantasm changes them
+
+## `phantasm agents-plugin`
+
+Installs the bundled harness-agnostic `phantasm-memory` plugin without
+bootstrapping a project or changing repository agent guidance.
+
+```bash
+phantasm agents-plugin
+phantasm agents-plugin --target codex
+phantasm agents-plugin --path ~/.codex/plugins
+phantasm agents-plugin --dry-run
+phantasm agents-plugin --force
+```
+
+With no `--path`, Phantasm discovers known local harness directories and
+installs only where the layout is supported. Unsupported or missing
+targets are skipped and reported. Use repeated `--path <dir>` arguments
+to install into explicit plugin roots. Use `--force` only when replacing
+an existing changed `phantasm-memory` plugin.
 
 ## `phantasm agents --add`
 
@@ -677,6 +719,38 @@ Returns full object details for specific IDs.
 - Mutating: no
 - Agent use: expand an ID returned by search, compile, audit, or
   review_queue
+
+### `metrics`
+
+Returns deterministic project aggregates for dashboards and MCP consumers.
+
+- Params: optional `range` (`7d`, `30d`, `90d`, `all`), `bucket`
+  (`day`, `week`), and standard record `filters`
+- Response: counts, activity, composition, quality, operation volume,
+  storage, recent/latest operation metadata, and reported usage
+- Usage is explicitly `unreported` when clients supplied no token data
+- Mutating: no
+
+### `relationships`
+
+Returns a bounded typed graph around a root memory record.
+
+- Required param: `root_id`
+- Optional params: `direction`, `relationship_types`, `depth` (maximum 4),
+  `max_nodes` (maximum 1000), and standard record `filters`
+- Response: typed nodes and edges, applied limits, and truncation metadata
+- Mutating: no
+
+### `usage_report`
+
+Persists authoritative token counts reported by a client or provider response.
+
+- Required params: `surface`, `input_tokens`, `output_tokens`
+- Optional params: `model`, `dry_run`
+- Requires `idempotency_key`
+- Counts are grouped by client profile and surface in `metrics`; Phantasm never
+  estimates missing token usage
+- Mutating: yes, operational telemetry only; it does not alter memory truth
 
 ### `audit`
 
