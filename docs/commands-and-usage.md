@@ -780,6 +780,10 @@ Reports runtime health, conflict count, live conflict subjects,
 review count, failed maintenance count, profiles, diagnostics, and
 recommended maintenance. It is the recommended first call after agent
 startup because it can surface one-time `release_update` notices.
+When opening an existing runtime, Phantasm also repairs older `v1`
+SQLite stores that are missing `records.quality_json` or
+`suggestions.quality_json`; no manual bootstrap or SQLite edit is
+required for that compatibility fix.
 
 - Params today: `{}`
 - Mutating: no

@@ -125,7 +125,7 @@ phm --version
 You should see output like:
 
 ```text
-phantasm 0.2.4
+phantasm 0.2.5
 ```
 
 You can also inspect the built-in help:
@@ -277,12 +277,13 @@ Use `target="all"` or `target="*"` for the complete operation catalog,
 `target="api"` for the complete API schema, and an operation name such
 as `ingest` for a focused schema.
 
-For v0.2.4, discover the dashboard with `phantasm dashboard`, install
-the bundled agent plugin with `phantasm agents-plugin`, and use
-`phantasm init` anywhere you would use `phantasm bootstrap`. The v0.2.3
-memory-quality workflows remain available through the same discovery
-surface: `stale_review`, `duplicate_review`, `memory_export`,
-`memory_import`, and record `quality` metadata.
+For v0.2.5, older `v1` stores missing `records.quality_json` or
+`suggestions.quality_json` repair themselves automatically when
+Phantasm loads the runtime. Upgrade and rerun the previously failing
+command; manual SQLite edits and rerunning `phantasm bootstrap` are not
+required. The v0.2.4 dashboard, bundled agent plugin installer, and
+`phantasm init` alias remain available, along with the v0.2.3
+memory-quality workflows.
 
 That means:
 

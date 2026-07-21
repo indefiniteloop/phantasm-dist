@@ -61,8 +61,22 @@
 
       <section class="section-first">
         <div class="panel">
-          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.4</p>
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.5</p>
           <h2 style="margin-bottom: 0;">Current release</h2>
+          <p style="margin-top: 10px;">These changes ship in the Phantasm v0.2.5 release.</p>
+          <h3>Fixed</h3>
+          <ul class="list-tight">
+            <li>Old <code>v1</code> stores that were created before <code>records.quality_json</code> and <code>suggestions.quality_json</code> now repair those columns automatically with <code>{}</code> defaults.</li>
+            <li><code>compile</code>, <code>search</code>, <code>health</code>, and mutating request paths no longer fail with <code>no such column: quality_json</code> against older bootstrapped projects.</li>
+          </ul>
+          <h3>Notes</h3>
+          <ul class="list-tight">
+            <li>Users do not need to rerun <code>phantasm bootstrap</code> or manually edit SQLite stores. Upgrading and rerunning the previously failing command applies the repair.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <p class="eyebrow" style="margin-bottom: 12px;">v0.2.4</p>
           <p style="margin-top: 10px;">These changes ship in the Phantasm v0.2.4 release.</p>
           <h3>Added</h3>
           <ul class="list-tight">

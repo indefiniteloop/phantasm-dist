@@ -152,11 +152,12 @@ phantasm handle-request '{"operation":"describe","params":{"target":"all"}}'</co
                     <article class="card">
                         <h3>How do I review memory quality?</h3>
                         <p>
-                            v0.2.4 adds the local dashboard, <code>init</code>,
-                            and the bundled harness-agnostic agent plugin
-                            installer. The quality metadata, freshness review,
-                            duplicate review, and canonical JSON export
-                            workflows remain available. See the
+                            v0.2.5 automatically repairs older stores missing
+                            <code>quality_json</code> metadata columns. The
+                            local dashboard, <code>init</code>, bundled agent
+                            plugin installer, quality metadata, freshness
+                            review, duplicate review, and canonical JSON
+                            export workflows remain available. See the
                             <a href="./commands.html">command reference</a>
                             for the exact discovery and request shapes.
                         </p>

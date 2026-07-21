@@ -102,7 +102,9 @@
             <p>
               The source of truth is one authoritative SQLite store per project under
               <code>.phantasm/state/store.sqlite</code>. Runtime caches may exist, but durable memory
-              truth lives in local state, not in prompt text or transient agent memory.
+              truth lives in local state, not in prompt text or transient agent memory. Current
+              runtimes automatically repair older <code>v1</code> stores that are missing
+              <code>quality_json</code> metadata columns.
             </p>
           </article>
           <article class="card">

@@ -4,6 +4,27 @@ Phantasm changelog entries are version based. Each section describes
 what ships in that release. Use concrete version headings rather than
 placeholder holding sections.
 
+## v0.2.5
+
+These changes ship in the Phantasm v0.2.5 release.
+
+### Fixed
+
+- Fixed old `v1` stores that had `metadata.schema_version = 'v1'` but
+  were created before `records.quality_json` and
+  `suggestions.quality_json` existed. Runtime loading now repairs those
+  columns automatically with `{}` defaults before ordinary commands read
+  the store.
+- Fixed `compile`, `search`, `health`, and mutating request paths that
+  could fail with `no such column: quality_json` against older
+  bootstrapped projects.
+
+### Notes
+
+- Users do not need to rerun `phantasm bootstrap` or manually edit
+  SQLite stores. Upgrading and rerunning the previously failing command
+  is enough to apply the repair.
+
 ## v0.2.4
 
 These changes ship in the Phantasm v0.2.4 release.

@@ -127,7 +127,7 @@ printf '%s' '{"operation":"describe","params":{"target":"ingest"}}' | phantasm h
 phantasm handle-request --file request.json</code></pre>
           <p><code>handle-request</code> input must be valid UTF-8. JSON strings preserve printable Unicode and accept standard <code>\uXXXX</code> escapes.</p>
           <p>Every response includes <code>notices</code>. After a binary update, the first successful request from each client profile in a bootstrapped project includes a structured <code>release_update</code> notice; later calls suppress it until the installed version changes again.</p>
-          <p>After upgrading to v0.2.4, call <code>describe</code> again. The current CLI surface includes the local dashboard, <code>init</code>, and the bundled agent plugin installer, while the runtime discovery surface continues to include quality metadata, <code>stale_review</code>, <code>duplicate_review</code>, and Git-reviewable <code>memory_export</code>/<code>memory_import</code> workflows.</p>
+          <p>After upgrading to v0.2.5, rerun any command that previously failed with <code>no such column: quality_json</code>. Older <code>v1</code> stores repair missing quality metadata columns automatically. The current CLI surface still includes the local dashboard, <code>init</code>, and the bundled agent plugin installer, while the runtime discovery surface continues to include quality metadata, <code>stale_review</code>, <code>duplicate_review</code>, and Git-reviewable <code>memory_export</code>/<code>memory_import</code> workflows.</p>
         </div>
 
         <div class="panel">

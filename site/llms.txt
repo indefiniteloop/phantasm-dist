@@ -19,6 +19,7 @@ auditing, snapshotting, and maintaining project memory.
 - Memory is project-scoped, not one global machine-wide memory bucket.
 - Runtime state is local to each repository under `.phantasm/state/`.
 - Durable truth lives in a single authoritative SQLite store per project.
+- v0.2.5 automatically repairs older v1 stores missing records.quality_json or suggestions.quality_json when the runtime is loaded.
 - The top-level CLI exposes `bootstrap`/`init`, `agents --add`, `agents-plugin`, `dashboard`, human memory commands, and `handle-request`.
 - Human memory commands include `list`, `show <id>`, `search "query"`, `add --kind <kind> --subject <key>`, `stats`, and `status`.
 - `phm` is installed as a shorthand alias for the same CLI as `phantasm`.
